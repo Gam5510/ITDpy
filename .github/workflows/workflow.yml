@@ -1,14 +1,14 @@
-name: Build and check itdpy
+name: Publish to PyPI
 
 on:
   push:
-    branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
+    tags:
+      - "v*"
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
+    environment: pypi
 
     steps:
       - name: Checkout repository
@@ -19,14 +19,17 @@ jobs:
         with:
           python-version: "3.9"
 
-      - name: Install dependencies
+      - name: Install build tools
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install build twine
 
-      - name: Import check
+      - name: Build package
+        run: python -m build
+
+      - name: Publish to PyPI
         run: |
-          python - <<EOF
-          import itdpy
-          print("itdpy imported successfully")
-          EOF
+          twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
