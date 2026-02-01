@@ -18,6 +18,7 @@ from .comments import (
     like_comment,
     unlike_comment,
     delete_comment,
+    get_comments,
 )
 
 # users
@@ -45,3 +46,4 @@ from .files import upload_file
 
 # profile
 from .profile import update_profile
+
