@@ -1,26 +1,40 @@
+from typing import List, Optional, Any
+from pydantic import Field, model_validator
+from .base import ITDBaseModel
 from .user_lite import UserLite
 
-
-class Users:
-    def __init__(self, response: dict):
-        data = response.get("data", {})
-
-        self._items = [UserLite(u) for u in data.get("users", [])]
-
-        pagination = data.get("pagination", {})
-        self.page = pagination.get("page")
-        self.limit = pagination.get("limit")
-        self.total = pagination.get("total")
-        self.has_more = pagination.get("hasMore")
+class Users(ITDBaseModel):
+    users: List[UserLite] = Field(default_factory=list)
+    page: Optional[int] = None
+    limit: Optional[int] = None
+    total: Optional[int] = None
+    has_more: Optional[bool] = Field(None, alias="hasMore")
+    
+    @model_validator(mode='before')
+    @classmethod
+    def parse_structure(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            root_data = data.get("data", {})
+            users_list = root_data.get("users", [])
+            pagination = root_data.get("pagination", {})
+            
+            return {
+                "users": users_list,
+                "page": pagination.get("page"),
+                "limit": pagination.get("limit"),
+                "total": pagination.get("total"),
+                "hasMore": pagination.get("hasMore")
+            }
+        return {"users": []}
 
     def __getitem__(self, index):
-        return self._items[index]
+        return self.users[index]
 
     def __len__(self):
-        return len(self._items)
+        return len(self.users)
 
     def __iter__(self):
-        return iter(self._items)
+        return iter(self.users)
 
     def __repr__(self):
         return f"<Users count={len(self)}>"

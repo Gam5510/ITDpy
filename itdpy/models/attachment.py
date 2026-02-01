@@ -1,12 +1,13 @@
-import json
+from typing import Optional
+from pydantic import Field
+from .base import ITDBaseModel
 
-class Attachment:
-    def __init__(self, data: dict):
-        self._data = data
-        self.id = data.get("id")
-        self.url = data.get("url")
-        self.filename = data.get("filename")
-        self.mimeType = data.get("mimeType")
-        self.size = data.get("size")
-    def __str__(self):
-        return json.dumps(self._data, ensure_ascii=False)
+class Attachment(ITDBaseModel):
+    id: str
+    url: str
+    filename: Optional[str] = None
+    mime_type: Optional[str] = Field(None, alias="mimeType")
+    size: Optional[int] = None
+    width: Optional[int] = None
+    height: Optional[int] = None
+    duration: Optional[int] = None

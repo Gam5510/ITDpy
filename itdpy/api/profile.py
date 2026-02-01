@@ -22,5 +22,5 @@ def update_profile(client, *, display_name: str | None = None, username: str | N
     r = client.put("/api/users/me", json=payload)
     r.raise_for_status()
 
-    return Me(r.json())
+    return Me.model_validate(r.json())
 

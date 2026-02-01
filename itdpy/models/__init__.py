@@ -6,3 +6,4 @@ from .comment import Comment
 from .attachment import Attachment
 from .posts import Posts
 from .users import Users
+from .comments import Comments

@@ -4,11 +4,11 @@ def get_posts(client, limit: int = 20, tab: str = "popular"):
     r = client.get(f"/api/posts?limit={limit}&tab={tab}")
     r.raise_for_status()
 
-    return Posts(r.json())
+    return Posts.model_validate(r.json())
 
 def get_post(client, post_id: str):
     r = client.get(f"/api/posts/{post_id}")
-    return Post(r.json())
+    return Post.model_validate(r.json())
 
 def create_post(client,content: str = "",attachment_ids: list[str] | str | None = None,wall_recipient_id: str | None = None):
 
@@ -31,7 +31,7 @@ def create_post(client,content: str = "",attachment_ids: list[str] | str | None 
     )
 
     r.raise_for_status()
-    return Post(r.json())
+    return Post.model_validate(r.json())
 
 def update_post(client, post_id: str, content: str):
     payload = {
@@ -80,4 +80,4 @@ def get_user_posts(client, username: str, limit: int = 20, sort: str = "new"):# 
     )
     r.raise_for_status()
 
-    return Posts(r.json())
+    return Posts.model_validate(r.json())

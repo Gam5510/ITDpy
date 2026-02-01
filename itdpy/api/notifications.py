@@ -7,7 +7,7 @@ def get_notifications(client, offset: int = 0, limit: int = 20):
     )
     r.raise_for_status()
 
-    return Notifications(r.json())
+    return Notifications.model_validate(r.json())
 
 
 def mark_notification_read(client, notification_id: str) -> bool:

@@ -5,8 +5,8 @@ class ITDClient:
 
     _DEFAULT_TIMEOUT = 15
     _UPLOAD_TIMEOUT = 3600
-    _SDK_NAME = "itd-sdk-python"
-    _SDK_VERSION = "0.1"
+    _SDK_NAME = "itdpy"
+    _SDK_VERSION = "0.2"
     _PLATFORM = "python"
     
 
@@ -103,3 +103,4 @@ class ITDClient:
 
     def delete(self, path: str, **kwargs):
         return self._request("DELETE", path, **kwargs)
+    

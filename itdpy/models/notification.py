@@ -1,19 +1,20 @@
+from typing import Optional
+from pydantic import Field
+from .base import ITDBaseModel
 from .actor import Actor
 
-class Notification:
-    def __init__(self, data: dict):
-        self.id = data.get("id")
-        self.type = data.get("type")              # comment | like | follow | reply
-        self.target_type = data.get("targetType") # post | None
-        self.target_id = data.get("targetId")
-        self.preview = data.get("preview")
-
-        self.read = data.get("read")
-        self.read_at = data.get("readAt")
-        self.created_at = data.get("createdAt")
-
-        actor_data = data.get("actor")
-        self.actor = Actor(actor_data) if actor_data else None
+class Notification(ITDBaseModel):
+    id: str
+    type: str 
+    target_type: Optional[str] = Field(None, alias="targetType") 
+    target_id: Optional[str] = Field(None, alias="targetId")
+    preview: Optional[str] = None
+    
+    read: bool = False
+    read_at: Optional[str] = Field(None, alias="readAt")
+    created_at: str = Field(..., alias="createdAt")
+    
+    actor: Optional[Actor] = None
 
     def __repr__(self):
-        return f"<Notification {self.type} from @{self.actor.username if self.actor else '?'}>"
+        return f"<Notification {self.type} from @{self.actor.username if self.actor and self.actor.username else '?'}>"

@@ -1,18 +1,11 @@
-import json
+from typing import Optional
+from pydantic import Field
+from .base import ITDBaseModel
 
-class UserLite:
-    def __init__(self, data: dict):
-        self._data = data or {}
-
-        self.id = data.get("id")
-        self.username = data.get("username")
-        self.displayName = data.get("displayName")
-        self.avatar = data.get("avatar")
-        self.verified = data.get("verified")
-        self.isFollowing = data.get("isFollowing")
-
-    def __repr__(self):
-        return f"<UserLite @{self.username}>"
-    
-    def __str__(self):
-        return json.dumps(self._data, ensure_ascii=False)
+class UserLite(ITDBaseModel):
+    id: str
+    username: Optional[str] = None
+    display_name: Optional[str] = Field(None, alias="displayName")
+    avatar: Optional[str] = None
+    verified: bool = False
+    is_following: bool = Field(False, alias="isFollowing")

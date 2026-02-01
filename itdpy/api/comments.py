@@ -1,4 +1,4 @@
-from ..models import Comment
+from ..models import Comment, Comments
 
 def create_comment(client, post_id: str, content: str, attachment_ids: list[str] | str | None = None):
     if attachment_ids is None:
@@ -17,7 +17,7 @@ def create_comment(client, post_id: str, content: str, attachment_ids: list[str]
     )
 
     r.raise_for_status()
-    return Comment(r.json())
+    return Comment.model_validate(r.json())
 
 def reply_to_comment(client, comment_id: str, content: str, attachment_ids: list[str] | str | None = None):
     
@@ -37,7 +37,7 @@ def reply_to_comment(client, comment_id: str, content: str, attachment_ids: list
     )
 
     r.raise_for_status()
-    return Comment(r.json())
+    return Comment.model_validate(r.json())
 
 def delete_comment(client, comment_id: str) -> bool:
     r = client.delete(f"/api/comments/{comment_id}")
@@ -62,3 +62,10 @@ def unlike_comment(client, comment_id: str):
     if r.status_code == 200:
         return True
     return False
+
+
+def get_comments(client, post_id, limit = 20, sort = "popular"):
+
+    r = client.get(f"/api/posts/{post_id}/comments?limit={limit}&sort={sort}")
+    r.raise_for_status()
+    return Comments.model_validate(r.json())

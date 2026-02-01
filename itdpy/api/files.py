@@ -8,4 +8,4 @@ def upload_file(client, file_path: str):
         )
 
     r.raise_for_status()
-    return Attachment(r.json())
+    return Attachment.model_validate(r.json())

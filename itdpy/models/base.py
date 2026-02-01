@@ -1,6 +1,6 @@
-class BaseModel:
-    def __init__(self, data: dict):
-        self._data = data
+from pydantic import BaseModel, ConfigDict
 
-    def to_dict(self):
-        return self._data
+class ITDBaseModel(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
