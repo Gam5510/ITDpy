@@ -1505,9 +1505,9 @@ while  True:
 
 client  =  ITDClient(refresh_token=&quot;Ваш_токен&quot;)
 
-file  =  client.upload_file(client,  &quot;matrix-rain-effect-animation-photoshop-editor.gif&quot;)
+file  =  client.upload_file(&quot;matrix-rain-effect-animation-photoshop-editor.gif&quot;)
 print(file.id)
-update  =  update_profile(client,  banner_id=file.id)
+update  =  client.update_profile(banner_id=file.id)
 print(update.banner)
 </code></pre>
 <p>← <a href="../">Назад к документации</a></p>
