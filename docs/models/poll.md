@@ -1,94 +1,154 @@
+# Poll Model
 
-# ITDpy
+## `Poll`
 
-## Модель poll (Опросов)
+Модель опроса, которая приходит из API и может использоваться для создания нового poll.
 
-### Пример ответа Poll
+### Поля
+
+| Поле | Тип |
+|---|---|
+| `id` | `str | None` |
+| `post_id` | `str | None` |
+| `question` | `str` |
+| `options` | `BaseList[PollOption]` |
+| `total_votes` | `int` |
+| `has_voted` | `bool` |
+| `voted_option_ids` | `BaseList[str]` |
+| `multiple_choice` | `bool` |
+| `created_at` | `str | None` |
+
+### Пример ответа API
+
 ```json
-"poll": {
-"id": "884e9f83-46bd-4503-9638-3cb7e104eae6",
-"postId": "687c8557-ddb5-442c-99f0-a28dd7b307ef",
-"question": "Лучший язык?",
-"multipleChoice": false,
-"options": [
- {
-	"id": "757928a6-ddf2-45ca-b555-69acd69e7898",
-	"text": "Python",
-	"position": 0,
-	 "votesCount": 13
-},
 {
-	"id": "0a82eb2a-3ce0-41ed-86af-9b59fa3cb571",
-	"text": "Go",
-	"position": 1,
-	"votesCount": 1
-},
-{
-	"id": "f35fdfeb-ea73-4dc6-86df-f97aa2e33d75",
-	"text": "Rust",
-	"position": 2,
-	"votesCount": 2
-},
-{
-	"id": "1d4169ad-c51c-4622-ac1e-8573eb1b3408",
-	"text": "JS",
-	"position": 3,
-	"votesCount": 1
-}
-],
-"totalVotes": 17,
-"hasVoted": true,
-"votedOptionIds": ["757928a6-ddf2-45ca-b555-69acd69e7898"],
-"createdAt": "2026-02-15 09:27:07.272285+03"
+  "id": "068ef603-9cc8-4a83-ab57-82152b173fd7",
+  "postId": "a90b001d-c7d3-497f-ba23-bb30b03d3891",
+  "question": "Как ваши дела?",
+  "multipleChoice": false,
+  "options": [
+    {
+      "id": "e2dc014d-4ec2-4cdf-b65c-0430ab73e5c8",
+      "text": "классно",
+      "position": 0,
+      "votesCount": 0
+    },
+    {
+      "id": "6f96247d-c097-43ce-941c-651d441387c3",
+      "text": "хорошо",
+      "position": 1,
+      "votesCount": 1
+    }
+  ],
+  "totalVotes": 1,
+  "hasVoted": true,
+  "votedOptionIds": [
+    "6f96247d-c097-43ce-941c-651d441387c3"
+  ],
+  "createdAt": "2026-03-20T13:25:59.248Z"
 }
 ```
 
-### Поля объекта Poll
+### Пример использования
 
-| Поле | Тип | Описание |
-|------|-----|----------|
-| id | str | ID опроса |
-| postId | str | ID поста |
-| question | str | Вопрос |
-| multipleChoice | bool | Можно выбрать несколько вариантов |
-| options | list | Список вариантов |
-| totalVotes | int | Общее количество голосов |
-| hasVoted | bool | Проголосовал ли текущий пользователь |
-| votedOptionIds | list[str] | ID выбранных вариантов |
-| createdAt| str | Дата создания опроса|
-
-### Поля объекта PollOption
-
-| Поле | Тип | Описание |
-|------|-----|----------|
-| id | str | ID варианта |
-| text | str | Текст варианта |
-| position | int | Позиция в списке |
-| votes_count | int | Количество голосов |
-
-
-## Пример использование:
 ```python
-post = client.get_post("687c8557-ddb5-442c-99f0-a28dd7b307ef")
-
 if post.poll:
-    print("\n--- Опрос ---")
-    print("ID опроса:", post.poll.id)
-    print("ID поста:", post.poll.post_id)
-    print("Вопрос:", post.poll.question)
-    print("Можно несколько:", post.poll.multiple_choice)
-    print("Всего голосов:", post.poll.total_votes)
-    print("Вы голосовали:", post.poll.has_voted)
-    print("Выбрали варианты:", post.poll.voted_option_ids)
-    print("Создан:", post.poll.created_at)
+    print(post.poll.question)
+    print(post.poll["multipleChoice"])
+    print(post.poll.options.to_json())
 
-    print("\nВарианты:")
     for option in post.poll.options:
-        print("  ID:", option.id)
-        print("  Текст:", option.text)
-        print("  Позиция:", option.position)
-        print("  Голосов:", option.votes_count)
-        print("---")
+        print(option.id, option.text, option.votes_count)
 ```
 
-← [Назад к документации](../index.md)
+### Методы
+
+#### `to_dict()`
+
+Полная сериализация модели.
+
+```python
+print(post.poll.to_dict())
+```
+
+#### `to_json()`
+
+```python
+print(post.poll.to_json())
+```
+
+#### `to_request_dict()`
+
+Payload для создания опроса через API.
+
+```python
+print(post.poll.to_request_dict())
+```
+
+#### `get()` и `__getitem__`
+
+```python
+print(post.poll.get("question"))
+print(post.poll["question"])
+print(post.poll["multipleChoice"])
+```
+
+## `PollOption`
+
+### Поля
+
+| Поле | Тип |
+|---|---|
+| `id` | `str | None` |
+| `text` | `str` |
+| `position` | `int` |
+| `votes_count` | `int` |
+
+## `PollBuilder`
+
+Удобный builder для пошагового создания опроса.
+
+### Пример
+
+```python
+from itdpy.models import PollBuilder
+
+poll = (
+    PollBuilder("Как подавать котлеты?")
+    .add("С пюрешкой")
+    .add("Без пюрешки")
+    .multiple_choice(True)
+)
+```
+
+### Методы
+
+| Метод | Описание |
+|---|---|
+| `add(value)` | Добавляет вариант ответа |
+| `multiple_choice(flag)` | Включает множественный выбор |
+| `build()` | Возвращает `Poll` |
+| `to_dict()` | Возвращает полную модель `Poll` |
+| `to_json()` | JSON-строка |
+| `to_request_dict()` | Payload для API |
+| `get()` | Получение поля как у dict |
+
+### Особенности
+
+- `add()` принимает не только `str`, но и числа, которые автоматически превращаются в строку
+- `PollBuilder` можно передавать напрямую в `client.posts.create(..., poll=...)`
+- `build()` нужен только если ты хочешь получить именно объект `Poll`
+
+### Пример с числами
+
+```python
+poll = PollBuilder("Какая цифра лучше?").add(1).add(2).add(3)
+
+print(poll.to_dict())
+print(poll.to_request_dict())
+```
+
+## См. также
+
+- [Polls API Usage](../polls.md)
+- [Post Model](post.md)

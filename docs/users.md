@@ -1,136 +1,79 @@
-# ITDpy
+# Users API
 
-## Users
+## Получить себя и пользователя
 
-Модуль `users` позволяет:
-
--   получать текущего пользователя
--   получать профиль по username
--   подписываться / отписываться
--   получать список подписчиков
--   получать список подписок
-    
-----------
-
-## Получить текущего пользователя
 ```python
-client.get_me()
+me = client.users.me()
+user = client.users.get("username")
 ```
 
-Возвращает модель `Me`  [подробнее](models/users.md)
+## Подписаться / отписаться
 
-### Пример:
 ```python
-me  =  client.get_me()  
-  
-print("ID:", me.id)  
-print("Username:", me.username)  
-print("Имя:", me.display_name)  
-print("Подписчиков:", me.followers_count)  
-print("Приватный профиль:", me.is_private)
-```
-----------
-
-## Получить пользователя по username
-```python
-client.get_user("gam5510")
-```
-### Параметры:
-
--   `username` — username пользователя
-
-Возвращает модель `User`  [подробнее](models/users.md)
-
-### Пример:
-```python
-user  =  client.get_user("gam5510")  
-  
-print("Имя:", user.display_name)  
-print("Bio:", user.bio)  
-print("Подписчиков:", user.followers_count)  
-print("Онлайн:", user.online)
-```
-----------
-
-## Подписаться на пользователя
-```python
-client.follow_user("gam5510")
-```
-### Параметры:
-
--   `username` — username пользователя
-    
-Возвращает `True`, если операция выполнена успешно.
-
-### Пример:
-```python
-success  =  client.follow_user("gam5510")  
-  
-if  success:  
-  print("Вы подписались на пользователя.")
-```
-----------
-
-## Отписаться от пользователя
-```python
-client.unfollow_user("gam5510")
-```
-### Параметры:
-
--   `username` — username пользователя
-    
-Возвращает `True`, если операция выполнена успешно.
-
-----------
-
-## Получить подписчиков
-```python
-client.get_followers("gam5510", page=1, limit=30)
+client.users.follow("username")
+client.users.unfollow("username")
 ```
 
-### Параметры:
+## Подписчики и подписки
 
--   `username` — username пользователя
--   `page` — номер страницы
--   `limit` — количество пользователей на странице
-    
-
-Возвращает модель `Users`  [подробнее](models/users.md)
-
-### Пример:
 ```python
-followers  =  client.get_followers("gam5510",  page=1,  limit=10)
+followers = client.users.get_followers("USER_ID", limit=25, page=1)
+following = client.users.get_following("USER_ID", limit=25, page=1)
 
-for  user  in  followers.users:
-	print(f"{user.avatar} @{user.username}")
+print(followers.to_json())
 ```
-----------
 
-## Получить подписки 
+## Follow status списком
+
 ```python
-client.get_following("gam5510", page=1, limit=30)
+statuses = client.users.follow_status([
+    "USER_ID_1",
+    "USER_ID_2",
+])
+
+for item in statuses:
+    print(item.id, item.is_following)
 ```
-### Параметры:
 
--   `username` — username пользователя
--   `page` — номер страницы
--   `limit` — количество пользователей на странице
-   
-Возвращает модель `Users`  [подробнее](models/users.md)
+## Обновить профиль
 
-### Пример:
 ```python
-following  =  client.get_following("gam5510")  
-  
-for  user  in  following.users:  
-  print(f"{user.avatar} @{user.display_name}")
+user = client.users.update_profile(
+    display_name="Новое имя",
+    bio="Новая bio",
+)
 ```
-----------
 
-## Особенности
+## Приватность
 
--   Методы `follow_user` и `unfollow_user` возвращают `True` при успешном выполнении.
--   Методы `get_followers` и `get_following` поддерживают пагинацию.
+```python
+from itdpy import AccessType
 
-  
-← [Назад к документации](index.md)
+privacy = client.users.update_privacy(
+    is_private=True,
+    wall_access=AccessType.FOLLOWERS,
+    likes_visibility=AccessType.EVERYONE,
+    show_last_seen=False,
+)
+```
+
+## Настройки уведомлений
+
+```python
+settings = client.users.update_notification_settings(
+    enabled=True,
+    comments=True,
+    follows=True,
+    likes=True,
+    mentions=True,
+    sound=True,
+    wall_posts=True,
+)
+```
+
+## Block / unblock
+
+```python
+client.users.block("username")
+client.users.unblock("username")
+```

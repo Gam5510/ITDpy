@@ -1,50 +1,74 @@
-﻿from .actor import Actor
-from .attachment import Attachment
-from .comment import Comment
-from .comments import Comments
-from .me import Me
-from .notification import Notification
-from .notifications import Notifications
-from .post import Post
-from .posts import Posts
-from .user import User
-from .user_lite import UserLite
-from .users import Users
-from .poll import Poll, PollOption
-from .post_update import PostUpdate
-from .pin import Pin
-from .pins import Pins
+from .base import BaseList, ITDBaseModel, LikesCountResponse, StatusResponse
+from .clan import Clan, TopClansResponse
+from .comment import Comment, CommentsList, CommentUpdate
+from .file import File
+from .follow_status import FollowStatusItem, PostViewResponse
+from .hashtags import Hashtag, HashtagPosts, TrendingHashtagsResponse
+from .notification import (
+    ConnectedEventData,
+    Notification,
+    NotificationActor,
+    NotificationsList,
+    NotificationTargetType,
+    NotificationType,
+)
 from .pagination import Pagination
-from .span import Span
+from .pin import Pin, Pins, PinStatusResponse
+from .portal import Portal
+from .post import Attachment, Poll, PollBuilder, PollOption, Post, PostsList, PostsResponse, Span, PostUpdate
+from .search import Search, SearchHashtagsResponse, SearchUsersResponse
+from .settings_models import NotificationSettings, PrivacySettings
+from .user import Me, User, UserLite, UsersList
 from .who_to_follow import WhoToFollow
-from .hashtags import HashtagPosts, TrendingHashtagsResponse, Hashtag
-from .search import Search
-from .settings_models import PrivacySettings, NotificationSettings
+
+Post.model_rebuild(_types_namespace={"UserLite": UserLite, "Post": Post})
+Comment.model_rebuild(_types_namespace={"UserLite": UserLite})
+Notification.model_rebuild(_types_namespace={"UserLite": UserLite, "Post": Post, "Comment": Comment})
+
 __all__ = [
-    "Actor",
-    "Attachment",
-    "Comment",
-    "Comments",
-    "Me",
-    "Notification",
-    "Notifications",
-    "Post",
-    "Posts",
+    "ITDBaseModel",
+    "BaseList",
+    "StatusResponse",
+    "LikesCountResponse",
     "User",
     "UserLite",
-    "Users",
+    "Me",
+    "UsersList",
+    "Post",
+    "PostsList",
+    "PostsResponse",
+    "Span",
     "Poll",
-    "PostUpdate",
+    "PollBuilder",
     "PollOption",
+    "Attachment",
+    "Comment",
+    "CommentsList",
+    "Notification",
+    "NotificationType",
+    "NotificationTargetType",
+    "NotificationActor",
+    "ConnectedEventData",
+    "NotificationsList",
+    "File",
+    "FollowStatusItem",
+    "PostViewResponse",
     "Pin",
     "Pins",
+    "PinStatusResponse",
     "Pagination",
-    "Span",
     "WhoToFollow",
+    "Hashtag",
     "HashtagPosts",
+    "TrendingHashtagsResponse",
     "Search",
+    "SearchUsersResponse",
+    "SearchHashtagsResponse",
     "PrivacySettings",
     "NotificationSettings",
-    "TrendingHashtagsResponse",
-    "Hashtag"
+    "Clan",
+    "TopClansResponse",
+    "Portal",
+    "PostUpdate",
+    "CommentUpdate",
 ]

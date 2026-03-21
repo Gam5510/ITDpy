@@ -1,6 +1,6 @@
 from pydantic import Field, model_validator
 from typing import List, Any
-from .base import ITDBaseModel
+from .base import BaseList, ITDBaseModel, parse_list, parse_model
 from .post import Post
 from .pagination import Pagination
 
@@ -10,10 +10,17 @@ class Hashtag(ITDBaseModel):
     name: str
     posts_count: int = Field(alias="postsCount")
 
-class HashtagPosts(ITDBaseModel):
-    hashtag: Hashtag
-    posts: List[Post]
-    pagination: Pagination | None = None
+class HashtagPosts(BaseList[Post]):
+    def __init__(
+        self,
+        items: List[Post] | None = None,
+        *,
+        hashtag: Hashtag,
+        pagination: Pagination | None = None,
+    ):
+        super().__init__(items)
+        self.hashtag = hashtag
+        self.pagination = pagination
 
     @model_validator(mode="before")
     @classmethod
@@ -22,26 +29,27 @@ class HashtagPosts(ITDBaseModel):
             return payload["data"]
         return payload
 
-    def __iter__(self):
-        return iter(self.posts)
+    @classmethod
+    def from_data(cls, payload: Any) -> "HashtagPosts":
+        flattened = cls.flatten_data(payload)
+        return cls(
+            parse_list(Post, flattened.get("posts", [])).to_list(),
+            hashtag=parse_model(Hashtag, flattened["hashtag"]),
+            pagination=parse_model(Pagination, flattened["pagination"]) if flattened.get("pagination") else None,
+        )
 
-    def __len__(self):
-        return len(self.posts)
-
-    def __getitem__(self, item):
-        return self.posts[item]
-
-    def __repr__(self):
-        return f"<HashtagPosts #{self.hashtag.name} posts={len(self)}>"
+    @property
+    def posts(self) -> List[Post]:
+        return self.items
     
-class TrendingHashtagsResponse(ITDBaseModel):
-    hashtags: list[Hashtag]
+class TrendingHashtagsResponse(BaseList[Hashtag]):
+    def __init__(self, items: list[Hashtag] | None = None):
+        super().__init__(items)
 
-    def __iter__(self):
-        return iter(self.hashtags)
+    @classmethod
+    def from_data(cls, data: dict) -> "TrendingHashtagsResponse":
+        return cls(parse_list(Hashtag, data.get("hashtags", [])).to_list())
 
-    def __len__(self):
-        return len(self.hashtags)
-
-    def __getitem__(self, item):
-        return self.hashtags[item]
+    @property
+    def hashtags(self) -> list[Hashtag]:
+        return self.items

@@ -1,27 +1,43 @@
-# ITDpy
-## HTML форматирование текста
+# Formatting
 
-| HTML | Формат | 
-|------|-----|
-| `<b>` `<strong>`| Жирный | 
-| `<i>` `<em>`| Курсив |
-| `<u>` | Подчёркивание | 
-| `<s>` `<del>` | Зачёркнутый |
-| `<code>` | код (Моноширинный)| 
-| `<spoiler>`| Спойлер |
+`itdpy` умеет автоматически преобразовывать Markdown и HTML в `content + spans`.
 
-## Ограничения
-
--   Внутри `<code>` нельзя использовать `<b>` и `<i>`
--   Дублирующиеся underline удаляются автоматически
--   Некорректные пересечения очищаются
-
-## Пример
+## Markdown
 
 ```python
-client.create_post(
-content="Обновление <b>ITDpy</b> уже в процессе 🚀 Добавлен <i>HTML → spans</i> парсер.", 
-parse_html=True )
+post = client.posts.create(
+    content="**Жирный** и `код`",
+    parse_md=True,
+)
 ```
 
-← [Назад к документации](index.md)
+Поддерживаются:
+
+- `**bold**`
+- `*italic*`
+- `~~strike~~`
+- `__underline__`
+- `` `code` ``
+- `||spoiler||`
+- `[text](url)`
+
+## HTML
+
+```python
+post = client.posts.create(
+    content="<b>Жирный</b> <spoiler>спойлер</spoiler>",
+    parse_html=True,
+)
+```
+
+Поддерживаются:
+
+- `<b>`, `<strong>`
+- `<i>`, `<em>`
+- `<s>`
+- `<u>`
+- `<code>`
+- `<spoiler>`
+- `<a href="...">`
+
+Также `||spoiler||` в HTML-режиме автоматически преобразуется в spoiler span.

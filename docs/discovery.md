@@ -1,93 +1,53 @@
-# ITDpy
+# Discovery API
 
-## Comments
+## Portal
 
-Модуль `comments` позволяет:
--   получать комментарии    
--   создавать комментарии    
--   отвечать на комментарии    
--   удалять комментарии
--   ставить лайки
--   получать ответы (replies)
-
-## Получить список комментариев
 ```python
-client.get_comments(post_id, limit=20, sort="popular")
+portal = client.discovery.portal()
+print(portal.to_dict())
 ```
-### Параметры:
 
-- post_id — ID поста
-- limit — сколько комментариев вернуть (от 20 до 500)
-- sort — сортировка:
-	 - "popular" 
-	 - "newest" 
-	 - "oldest"
+Пример ответа:
 
-Возвращает модель Comments [подробнее](models/comments.md)
-
-## Получить ответы на комментарий
 ```python
-client.get_replies(comment_id, sort="newest")
+{
+    "active": True,
+    "title": "PixelBattle",
+    "url": "https://pixel.xn--d1ah4a.com/"
+}
 ```
-### Параметры:
 
--   `comment_id` — ID комментария
--   `sort` — сортировка:
-    -   `"popular"`     
-    -   `"newest"`     
-    -   `"oldest"`
-        
-Возвращает модель Comments [подробнее](models/comments.md)
+## Топ кланы
 
-## Получить ответы на комментарий
 ```python
-client.get_replies(comment_id, sort="newest") 
+top_clans = client.discovery.get_top_clans()
+print(top_clans.to_json())
 ```
-### Параметры:
 
--   `comment_id` — ID комментария
--   `sort` — сортировка:
-    -   `"popular"`
-    -   `"newest"`
-    -   `"oldest"`
-        
-Возвращает модель Comments [подробнее](models/comments.md)
+## Кого читать
 
-## Создать комментарий
 ```python
-client.create_comment(post_id="post_id", content="Отличный пост!" )
+suggestions = client.discovery.who_to_follow()
+print(suggestions.to_json())
 ```
-### Параметры:
 
--   `post_id` — ID поста
--   `content` — текст комментария
--   `attachment_ids` — список ID медиа файлов [Загрузка файлов](upload.md)
+## Поиск
 
-Возвращает модель Comment [подробнее](models/comment.md)
-
-## Ответить на комментарий
 ```python
-client.reply_to_comment(comment_id="comment_id", content="Спасибо!") 
+result = client.discovery.search("python")
+print(result.users.to_json())
 ```
-### Параметры:
 
--   `comment_id` — ID комментария
--   `content` — текст ответа
--   `attachment_ids` — список ID медиа файлов [Загрузка файлов](upload.md)
-    
-Возвращает модель Comment [подробнее](models/comment.md)
+## Посты по хэштегу
 
-## Удалить комментарий
 ```python
-client.delete_comment(comment_id) 
+posts = client.discovery.search_hashtags("python", limit=20)
+print(posts.to_json())
 ```
-Возвращает `True`, если удалён успешно.
 
-## Реакции
+## Trending hashtags
+
 ```python
-client.like_comment(comment_id) # поставить лайк 
-client.unlike_comment(comment_id) # убрать лайк 
+trending = client.discovery.get_trending_hashtags(limit=10)
+print(trending.to_json())
 ```
-Возвращает `True` при успехе.
-
-← [Назад к документации](index.md)

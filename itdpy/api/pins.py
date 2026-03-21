@@ -1,18 +1,19 @@
 from __future__ import annotations
-from ..models import Pins, Pin
+from ..models import Pins, PinStatusResponse
+from ..api.base import BaseAPI
 
-def get_pins(client):
-    response = client.get("/api/users/me/pins")
-    response.raise_for_status()
-    return Pins.model_validate(response.json())
+class PinsAPI(BaseAPI):
 
-def remove_pin(client):
-    response = client.delete("/api/users/me/pin")
-    response.raise_for_status()
-    return response.json()
+    def get(self):
+        response = self._get("/users/me/pins")
+        return Pins.from_data(response.json())
 
-def set_pin(client, slug: str):
-    payload = {'slug': slug}
-    response = client.put("/api/users/me/pin", json=payload)
-    response.raise_for_status()
-    return response.json()
+    def remove(self):
+        response = self._delete("users/me/pin")
+        return PinStatusResponse.model_validate(response.json())
+    
+    def set(self, slug):
+        payload = {'slug': slug}
+        response = self._put("users/me/pin", json=payload)
+        return PinStatusResponse.model_validate(response.json())
+

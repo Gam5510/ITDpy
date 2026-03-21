@@ -6,3 +6,8 @@ venv/
 .vscode/
 test.py
 site/
+test/
+pixelbattle_app.py
+pixelbattle_config.json
+site.rar
+tests/

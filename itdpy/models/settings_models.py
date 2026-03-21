@@ -9,12 +9,6 @@ class PrivacySettings(ITDBaseModel):
     likes_visibility: Literal["nobody", "everyone", "followers", "mutual"]  = Field(alias="likesVisibility")
     show_last_seen: bool = Field(alias="showLastSeen")
 
-    def __repr__(self) -> str:
-        return (
-            "<PrivacySettings "
-            f"is_private={self.is_private} "
-            f"wall_access={self.wall_access}>"
-        )
     
 class NotificationSettings(ITDBaseModel):
     enabled: bool
@@ -24,9 +18,3 @@ class NotificationSettings(ITDBaseModel):
     mentions: bool
     sound: bool
     wall_posts: bool = Field(alias="wallPosts")
-
-    def __repr__(self) -> str:
-        return (
-            f"<NotificationSettings "
-            f"enabled={self.enabled} sound={self.sound}>"
-        )

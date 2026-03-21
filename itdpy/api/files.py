@@ -1,12 +1,18 @@
-﻿from __future__ import annotations
+﻿from ..api.base import BaseAPI
+from ..models import File
 
-from ..models import Attachment
 
-
-def upload_file(client, file_path: str) -> Attachment:
+class FilesAPI(BaseAPI):
     
-    with open(file_path, "rb") as file_obj:
-        response = client.post("/api/files/upload", files={"file": file_obj})
-
-    response.raise_for_status()
-    return Attachment.model_validate(response.json())
+    def upload(self, file_path: str) -> File:
+        with open(file_path, 'rb') as f:
+            files = {'file': f}
+            response = self._post("files/upload", files=files)
+        return File.model_validate(response.json())
+    
+    def get(self, file_id: str) -> File:
+        response = self._get(f"files/{file_id}")
+        return File.model_validate(response.json())
+    
+    def delete(self, file_id: str) -> None:
+      self._delete(f"files/{file_id}")

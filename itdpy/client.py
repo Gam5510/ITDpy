@@ -1,412 +1,179 @@
-﻿from __future__ import annotations
-
-from typing import Any
-import time
-import random
+from typing import Optional
+import threading
 import requests
-from requests import Response
-from .auth import AuthManager
-from .api import (
-    create_post, 
-    delete_post, 
-    get_post, 
-    get_posts, 
-    get_user_posts, 
-    like_post, 
-    repost_post, 
-    unlike_post, 
-    update_post, 
-    create_comment, 
-    delete_comment, 
-    get_comments,
-    like_comment,
-    reply_to_comment,
-    unlike_comment,
-    follow_user,
-    get_followers,
-    get_following,
-    get_me,
-    get_user,
-    unfollow_user,
-    get_notifications,
-    mark_all_notification_read,
-    mark_notification_read,
-    get_top_clans,
-    upload_file,
-    update_profile,
-    get_replies,
-    get_pins,
-    set_pin, 
-    remove_pin,
-    vote,
-    who_to_follow,
-    search_hashtags,
-    search,
-    update_notification_settings,
-    update_privacy,
-    get_trending_hashtags,
-)
-from .models import *
 
-class ClientInitResult:
-    def __init__(self, client=None, error=None):
-        self.client = client
-        self.error = error
-        self.success = client is not None
+from .config import Config
+from .request import RequestHandler
+from .api import PostsAPI, UsersAPI, CommentsAPI, NotificationsAPI, FilesAPI, SearchAPI, PinsAPI, DiscoveryAPI
+from .exceptions import AuthenticationError
 
-    def __bool__(self):
-        return self.success
 
 class ITDClient:
-    ######################################################
-    ############  Низкоуровневые методы API #############№
-    ######################################################
     
-    _DEFAULT_TIMEOUT = 15
-    _UPLOAD_TIMEOUT = 3600
-    _SDK_NAME = "itdpy"
-    _SDK_VERSION = "0.3.2"
-    _PLATFORM = "python"
-
-    def __init__(self, refresh_token: str, auto_auth: bool = True, enable_retry: bool = True):
-        self.base_url = "https://xn--d1ah4a.com"
-        self.session = requests.Session()
-
-        self._auth_failed: bool = False
-        self._enable_retry = enable_retry
-        self._access_token: str | None = None
-        self._user_id: str | None = None
-        self._auth_manager: Any = None
-
-        self.session.headers.update(
-            {
-                "Origin": self.base_url,
-                "Referer": f"{self.base_url}/",
-            }
-        )
-
-        self.session.cookies.set(
+    def __init__(
+        self,
+        refresh_token: str,
+        config: Optional[Config] = None,
+    ):
+        self.config = config or Config()
+        self._refresh_token = refresh_token
+        self._access_token: Optional[str] = None
+        self._user_id: Optional[str] = None
+        
+        self._request_handler = RequestHandler(self.config)
+        
+        self._setup_session()
+        
+        self._authenticate()
+        
+        self._posts: Optional[PostsAPI] = None
+        self._users: Optional[UsersAPI] = None
+        self._comments: Optional[CommentsAPI] = None
+        self._notifications: Optional[NotificationsAPI] = None
+        self._files: Optional[FilesAPI] = None
+        self._search: Optional[SearchAPI] = None
+        self._pins: Optional[PinsAPI] = None
+        self._discovery: Optional[DiscoveryAPI] = None
+        self._closed = False
+    
+    def _setup_session(self) -> None:
+        
+        self._request_handler.session.cookies.set(
             name="refresh_token",
-            value=refresh_token,
+            value=self._refresh_token,
             domain="xn--d1ah4a.com",
             path="/api",
         )
-
-        self._apply_user_agent(initial=True)
-        if auto_auth:
-            auth = AuthManager(self)
-            self._bind_auth_manager(auth)
-
-            try:
-                refreshed = auth.refresh_access_token()
-                if not refreshed:
-                    self._auth_failed = True
-            except Exception:
-                self._auth_failed = True
-                print("⚠ Invalid refresh token")
-
+        
+        self._request_handler.session.headers.update({
+            "Origin": self.config.base_url,
+            "Referer": f"{self.config.base_url}/",
+        })
+    
+    def _authenticate(self) -> None:
+        response = self._request_handler.request(
+            method="POST",
+            endpoint="v1/auth/refresh",
+            use_auth=False,
+        )
+        
+        data = response.json()
+        self._access_token = data.get("accessToken")
+        
+        if not self._access_token:
+            raise AuthenticationError("Failed to get access token")
+        
+        me_response = self._request_handler.request(
+            method="GET",
+            endpoint="users/me",
+            access_token=self._access_token,
+        )
+        
+        self._user_id = me_response.json().get("id")
+        self._update_user_agent()
+    
+    def _update_user_agent(self) -> None:
+        """User-Agent"""
+        user_agent = (
+            f"itdpy/{self.config.sdk_version} "
+            f"(userid={self._user_id}; platform=python)"
+            if self._user_id
+            else f"itdpy/{self.config.sdk_version} (initial; platform=python)"
+        )
+        self._request_handler.session.headers["User-Agent"] = user_agent
+    
     @property
-    def access_token(self) -> str | None:
+    def access_token(self) -> Optional[str]:
         return self._access_token
-
+    
     @property
-    def user_id(self) -> str | None:
+    def user_id(self) -> Optional[str]:
         return self._user_id
     
+    # API endpoints
+    
     @property
-    def is_authenticated(self) -> bool:
-        return not self._auth_failed
+    def posts(self) -> PostsAPI:
+        self._check_closed()
+        if self._posts is None:
+            self._posts = PostsAPI(self._request_handler, self._access_token)
+        return self._posts
+    
+    @property
+    def users(self) -> UsersAPI:
+        self._check_closed()
+        if self._users is None:
+            self._users = UsersAPI(self._request_handler, self._access_token)
+        return self._users
+    
+    @property
+    def comments(self) -> CommentsAPI:
+        self._check_closed()
+        if self._comments is None:
+            self._comments = CommentsAPI(self._request_handler, self._access_token)
+        return self._comments
+    
+    @property
+    def notifications(self) -> NotificationsAPI:
+        self._check_closed()
+        if self._notifications is None:
+            self._notifications = NotificationsAPI(self._request_handler, self._access_token)
+        return self._notifications
+    
+    @property
+    def files(self) -> FilesAPI:
+        self._check_closed()
+        if self._files is None:
+            self._files = FilesAPI(self._request_handler, self._access_token)
+        return self._files
+    
+    @property
+    def search(self) -> SearchAPI:
+        self._check_closed()
+        if self._search is None:
+            self._search = SearchAPI(self._request_handler, self._access_token)
+        return self._search
+    
+    @property 
+    def pins(self) -> PinsAPI:
+        self._check_closed()
+        if self._pins is None:
+            self._pins = PinsAPI(self._request_handler, self._access_token)
+        return self._pins
+    
+    @property
+    def discovery(self) -> DiscoveryAPI:
+        self._check_closed()
+        if self._discovery is None:
+            self._discovery = DiscoveryAPI(self._request_handler, self._access_token)
+        return self._discovery
 
-    def _bind_auth_manager(self, auth_manager: Any) -> None:
-        self._auth_manager = auth_manager
+    def close(self):
+        if not self._closed:
+            self._request_handler.close()
+            self._closed = True
+            
+    def _check_closed(self):
+        if self._closed:
+            raise RuntimeError("Client is closed")
+    
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
-    def _set_access_token(self, token: str) -> None: 
-        self._access_token = token 
-        self.session.headers["Authorization"] = f"Bearer {token}"
+    def keep_online(self, on_event=None, background: bool = True):
+        def _run():
+            stream = self.notifications.stream()
+            for event in stream:
+                if on_event and event.event != "connected":
+                    on_event(event.event, event.data)
 
-    def _set_user_id(self, user_id: str) -> None:
-        self._user_id = user_id
-        self._apply_user_agent()
+        if background:
+            thread = threading.Thread(target=_run, daemon=True)
+            thread.start()
+            return thread
 
-    def _build_user_agent(self, initial: bool = False) -> str:
-        if initial or not self._user_id:
-            return (
-                f"{self._SDK_NAME}/{self._SDK_VERSION} "
-                f"(initial; platform={self._PLATFORM})"
-            )
-        return (
-            f"{self._SDK_NAME}/{self._SDK_VERSION} "
-            f"(userid={self._user_id}; platform={self._PLATFORM})"
-        )
-
-    def _apply_user_agent(self, initial: bool = False) -> None:
-        self.session.headers["User-Agent"] = self._build_user_agent(initial)
-
-    def _request(
-        self,
-        method: str,
-        path: str,
-        *,
-        retry: bool = True,
-        retry_count: int = 0,
-        **kwargs
-    ):
-        if not path.startswith("/"):
-            path = f"/{path}"
-
-        url = f"{self.base_url}{path}"
-        timeout = kwargs.pop("timeout", (5, 10))
-
-        try:
-            response = self.session.request(method, url, timeout=timeout, **kwargs)
-        except requests.RequestException:
-            fake = requests.Response()
-            fake.status_code = 0
-            fake._content = b"Network error"
-            return fake
-
-        if response.status_code == 401 and retry and self._auth_manager:
-            refreshed = self._auth_manager.refresh_access_token()
-            if refreshed:
-                return self._request(method, path, retry=False, **kwargs)
-
-        if response.status_code == 429 and self._enable_retry:
-            if retry_count >= 3:
-                print("⚠ Rate limit max retries reached.")
-                return response
-
-            wait_time = random.uniform(1.5, 3.5)
-            print(f"⚠ Rate limited. Sleeping {wait_time:.2f}s")
-            time.sleep(wait_time)
-
-            return self._request(
-                method,
-                path,
-                retry=retry,
-                retry_count=retry_count + 1,
-                **kwargs
-            )
-
-        return response
-
-    def get(self, path: str, **kwargs: Any) -> Response:
-        return self._request("GET", path, **kwargs)
-
-    def post(self, path: str, **kwargs: Any) -> Response:
-        return self._request("POST", path, **kwargs)
-
-    def put(self, path: str, **kwargs: Any) -> Response:
-        return self._request("PUT", path, **kwargs)
-
-    def patch(self, path: str, **kwargs: Any) -> Response:
-        return self._request("PATCH", path, **kwargs)
-
-    def delete(self, path: str, **kwargs: Any) -> Response:
-        return self._request("DELETE", path, **kwargs)
-    
-    @classmethod
-    def create(cls, refresh_token: str):
-
-        client = cls(refresh_token, auto_auth=False, enable_retry=False)
-
-        auth = AuthManager(client)
-        client._bind_auth_manager(auth)
-
-        try:
-            refreshed = auth.refresh_access_token()
-        except Exception as e:
-            return ClientInitResult(
-                client=None,
-                error={
-                    "type": "auth_exception",
-                    "message": str(e),
-                }
-            )
-
-        if not refreshed:
-            return ClientInitResult(
-                client=None,
-                error={
-                    "type": "invalid_token",
-                    "message": "Invalid refresh token",
-                }
-            )
-
-        response = client.get("/api/users/me")
-
-        if response.status_code != 200:
-            return ClientInitResult(
-                client=None,
-                error={
-                    "type": "auth_failed",
-                    "status_code": response.status_code,
-                    "message": response.text or "Authentication failed",
-                }
-            )
-
-        return ClientInitResult(client=client)
-
-    ######################################################
-    ############  Высокоуровневые методы API #############
-    ######################################################
-
-    def create_comment(
-        self,
-        post_id: str,
-        content: str,
-        attachment_ids: list[str] | str | None = None,
-    ) -> Comment:
-        return create_comment(self, post_id, content, attachment_ids)
-
-    def reply_to_comment(
-        self,
-        comment_id: str,
-        content: str,
-        attachment_ids: list[str] | str | None = None,
-    )  -> Comment:
-        return reply_to_comment(self, comment_id, content, attachment_ids)
-    
-    def delete_comment(self, comment_id: str) -> bool:
-        return delete_comment(self, comment_id)
-    
-    def like_comment(self, comment_id: str) -> bool:
-        return like_comment(self, comment_id)
-    
-    def unlike_comment(self, comment_id: str) -> bool:
-        return unlike_comment(self, comment_id)
-
-    def get_comments(self, post_id: str, limit: int = 20, sort: str = "popular") -> Comments:
-        return get_comments(self, post_id, limit, sort)
-    
-    def upload_file(self, file_path):
-        return upload_file(self, file_path)
-    
-    def get_top_clans(self):
-        return get_top_clans(self)
-    
-    def get_notifications(self, offset: int = 0, limit: int = 20) -> Notifications:
-        return get_notifications(self, offset, limit)
-    
-    def mark_notification_read(self, notification_id) -> bool:
-        return mark_notification_read(self, notification_id)
-    
-    def mark_all_notification_read(self, notification_ids):
-        return mark_notification_read(self, notification_ids)
-    
-    def get_posts(self, limit: int = 20, tab: str = "popular", cursor: int = 1 ) -> Posts:
-        return get_posts(self, limit, tab, cursor)
-    
-    def get_post(self, post_id: str) -> Post:
-        return get_post(self, post_id)
-    
-    def create_post(
-        self,
-        content: str = "",
-        attachment_ids: list[str] | str | None = None,
-        wall_recipient_id: str | None = None,
-        poll: dict | Poll | None = None,
-        parse_html: bool = False,
-    ) -> Post:
-        return create_post(self, content, attachment_ids, wall_recipient_id, poll, parse_html)
-    
-    def update_post(self, post_id: str, content: str, parse_html: bool = False) -> dict:
-        return update_post(self, post_id, content, parse_html)
-    
-    def delete_post(self, post_id: str) -> bool:
-        return delete_post(self, post_id)
-    
-    def like_post(self, post_id: str) -> bool:
-        return like_post(self, post_id)
-    
-    def unlike_post(self, post_id: str) -> bool:
-        return unlike_post(self, post_id)
-    
-    def repost_post(self, post_id: str, content: str | None = None) -> bool:
-        return repost_post(self, post_id, content)
-    
-    def get_user_posts(self, username: str, limit: int = 20, sort: str = "new",  cursor: str | None = None) -> Posts:
-        return get_user_posts(self, username, limit, sort, cursor)
-    
-    def update_profile(
-    self,
-    *,
-    display_name: str | None = None,
-    username: str | None = None,
-    bio: str | None = None,
-    banner_id: str | None = None,
-    ) -> Me:
-        return update_profile(self, display_name=display_name, username=username, bio=bio, banner_id=banner_id)
-    
-    def get_me(self) -> Me:
-        return get_me(self)
-    
-    def get_user(self, username: str) -> User:
-        return get_user(self, username)
-    
-    def follow_user(self, username: str) -> bool:
-        return follow_user(self, username)
-    
-    def unfollow_user(self, username: str) -> bool:
-        return unfollow_user(self, username)
-    
-    def get_followers(self, username: str, page: int = 1, limit: int = 30) -> Users:
-        return get_followers(self, username, page, limit)
-    
-    def get_following(self, username: str, page: int = 1, limit: int = 30) -> Users:
-        return get_following(self, username, page, limit)
-
-    def get_replies(self, comment_id: str, sort = "newest"):
-        return get_replies(self, comment_id, sort)
-    
-    def get_pins(self):
-        return get_pins(self)
-    
-    def remove_pin(self):
-        return remove_pin(self)
-    
-    def set_pin(self, slug):
-        return set_pin(self, slug)
-    
-    def vote(self, post_id, option_ids):
-        return vote(self, post_id, option_ids)
-    
-    def who_to_follow(self):
-        return who_to_follow(self)
-    
-    def search_hashtags(self, name, limit = 20):
-        return search_hashtags(self, name, limit)
-    
-    def search(self, query, user_limit = 5, hashtag_limit = 5):
-        return search(self, query, user_limit, hashtag_limit)
-    
-    def update_privacy(
-        self,
-        *,
-        is_private: bool | None = None,
-        wall_access: str | None = None,
-        likes_visibility: str | None = None,
-        show_last_seen: bool | None = None,
-    ):
-        return update_privacy(
-        self,
-        is_private=is_private,
-        wall_access=wall_access,
-        likes_visibility=likes_visibility,
-        show_last_seen=show_last_seen,
-    )
-
-    def update_notification_settings(
-        self,
-        *,
-        enabled: bool | None = None,
-        comments: bool | None = None,
-        follows: bool | None = None,
-        likes: bool | None = None,
-        mentions: bool | None = None,
-        sound: bool | None = None,
-        wall_posts: bool | None = None,
-    ):
-        return update_notification_settings(self, enabled=enabled, comments=comments, follows=follows, likes=likes, mentions=mentions, sound=sound, wall_posts=wall_posts)
-    
-    def get_trending_hashtags(self, limit: int = 10):
-        return get_trending_hashtags(self, limit)
+        _run()
+        return None

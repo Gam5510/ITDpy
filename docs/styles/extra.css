@@ -1,0 +1,15 @@
+:root {
+  --md-primary-fg-color: #4f46e5;
+}
+
+.md-header {
+  backdrop-filter: blur(10px);
+}
+
+.md-content code {
+  border-radius: 8px;
+}
+
+.md-typeset h1 {
+  font-weight: 700;
+}

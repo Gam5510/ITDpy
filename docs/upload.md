@@ -1,22 +1,25 @@
-# ITDpy
-## Загрузка файлов 
-```python
-file = client.upload_file("python.png")
+# Files API
 
-print("\n--- Файл ---")
-print("ID:", file.id)
-print("Тип:", file.type_)
-print("URL:", file.url)
-print("Thumbnail:", file.thumbnail_url)
-print("Имя файла:", file.filename)
-print("MIME тип:", file.mime_type)
-print("Размер:", file.size)
-print("Ширина:", file.width)
-print("Высота:", file.height)
-print("Длительность:", file.duration)
-print("Порядок:", file.order)
+## Upload файла
+
+```python
+file = client.files.upload("test.jpg")
+
+print(file.id)
+print(file.url)
+print(file.filename)
+print(file.mime_type)
 ```
 
-Так можно получить такие данные как id которую можно использовать для `аttachment` или чтобы поменять баннер в профиле. Загружать можно любые файлы, только некоторые специфические файлы сайт итд.com не может отображать.
+## Получить файл
 
-← [Назад к документации](index.md)
+```python
+file = client.files.get("FILE_ID")
+print(file.to_json())
+```
+
+## Удалить файл
+
+```python
+client.files.delete("FILE_ID")
+```

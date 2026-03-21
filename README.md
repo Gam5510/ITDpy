@@ -9,10 +9,12 @@
 ![License](https://img.shields.io/github/license/Gam5510/ITDpy)
 
 Python SDK для социальной сети итд.com.
-> ⚠️ Неофициальный API-клиент.  
->SDK предназначен для разработки клиентских приложений и тестирования API в рамках действующих правил платформы.
 
-## Установка pip
+> ⚠️ Неофициальный API-клиент.  
+> SDK предназначен для разработки клиентских приложений и тестирования API в рамках действующих правил платформы.
+
+## Установка
+
 ```bash
 pip install itdpy
 ```
@@ -26,105 +28,177 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-## Документация  
+## Документация
 
 [![Docs](https://img.shields.io/badge/docs-online-blue)](https://gam5510.github.io/ITDpy/)
 
-
 ## Быстрый старт
 
-> Blockquote ![Получение токена](https://i.ibb.co/DH1m8GL7/Assistant.png)
-Как получить токен
+> ![Получение токена](https://i.ibb.co/DH1m8GL7/Assistant.png)
+> Как получить токен
 
 ```python
-from  itdpy.client  import  ITDClient
+from itdpy.client import ITDClient
 
-client  =  ITDClient(refresh_token="Ваш refresh token")
+client = ITDClient(refresh_token="Ваш refresh token")
 
-me  =  client.get_me()
+me = client.users.me()
 print(me.id)
 print(me.username)
 ```
+## Новые функции 1.x версии библиотеки 
 
-### Скрипт на обновление имени
+### Модели как объект, dict и JSON сразу
 
 ```python
-from  itdpy.client  import  ITDClient
-from  datetime  import  datetime
-import  time
+post = client.posts.get("POST_ID")
 
-client = ITDClient(refresh_token="Ваш_токен")
-
-while  True:
-	client.update_profile(display_name=f"Фазлиддин |{datetime.now().strftime('%m.%d %H:%M:%S')}|")
-	time.sleep(1)
+print(post.id)
+print(post["createdAt"])
+print(post.get("created_at"))
+print(post.to_dict())
+print(post.to_json())
 ```
 
-### Скрипт на обновление баннера 
+### Списки как list-like объекты
+
 ```python
-from  itdpy.client  import  ITDClient
+posts = client.posts.list(limit=10)
 
-client  =  ITDClient(refresh_token="Ваш_токен")
-
-file  =  client.upload_file("matrix-rain-effect-animation-photoshop-editor.gif")
-print(file.id)
-update  =  client.update_profile(banner_id=file.id)
-print(update.banner)
+print(len(posts))
+print(posts[0].id)
+print(posts.first())
+print(posts.to_json())
 ```
 
-# Костомные запросы  
+### Вложенные списки тоже умеют `to_json()`
 
-## ✅ Базовый пример кастомного GET
 ```python
-response = client.get("/api/users/me")
-data = response.json() 
-print(data)
+result = client.search.all("python")
+
+print(result.users.to_json())
+print(result.hashtags.to_json())
 ```
-### Можно добавить любой эндпоинт
-----------
 
-## ✅ POST с JSON
-```python
-response = client.post( 
-		"/api/posts",
-    json={ "content": "Привет из кастомного запроса" }
-) 
-print(response.status_code) 
-print(response.json())
-```
-----------
+### PollBuilder
 
-## ✅ PUT / PATCH
 ```python
-response = client.patch( "/api/profile",
-    json={ "displayName": "Фазлиддин 😎" }
-)
-```
-----------
+from itdpy.models import PollBuilder
 
-## ✅ DELETE
-```python
-client.delete("/api/posts/POST_ID") 
-```
-----------
+poll = PollBuilder("Как подавать котлеты?").add("С пюрешкой").add("Без пюрешки").multiple_choice(True).build()
 
-## ✅ Передача query-параметров
-```python
-response = client.get( "/api/posts",
-    params={ "limit": 50, "sort": "popular" }
+post = client.posts.create(
+    content="Голосуем",
+    poll=poll,
 )
 ```
 
-## Планы
+### Poll можно сериализовать и как модель, и как payload
 
-- Улучшенная обработка и форматирование ошибок
-- Логирование (через `logging`)
-- Расширение объектной модели (Post, Comment, User и др.)
-- Дополнительные API-эндпоинты по мере появления
-- Улучшение документации и примеров
+```python
+print(poll.to_dict())
+print(poll.to_json())
+print(poll.to_request_dict())
+```
 
+### Markdown и HTML парсинг
+
+```python
+client.posts.create(
+    content="**Жирный** текст",
+    parse_md=True,
+)
+
+client.posts.create(
+    content="<b>Жирный</b> текст",
+    parse_html=True,
+)
+```
+
+### Sync SSE streaming
+
+```python
+stream = client.notifications.stream()
+
+@stream.on("notification")
+def on_notification(event):
+    print(event.data)
+
+stream.run()
+```
+
+### Фильтрация событий по типу
+
+```python
+from itdpy.models import NotificationType
+
+@stream.on("notification", type=NotificationType.LIKE)
+def on_like(event):
+    print(event.data)
+```
+
+### keep_online
+
+```python
+client.keep_online(
+    on_event=lambda event_type, data: print(event_type, data),
+    background=True,
+)
+```
+
+### Enums вместо строк
+
+```python
+from itdpy import PostsTab, UserPostSorting, AccessType
+
+posts = client.posts.list(tab=PostsTab.POPULAR)
+user_posts = client.posts.get_user_posts("username", sort=UserPostSorting.NEW)
+client.users.update_privacy(wall_access=AccessType.FOLLOWERS)
+```
+
+### Ошибки разделены по типам
+
+```python
+from itdpy import NotFoundError, ValidationError, RateLimitError, APIError
+
+try:
+    client.posts.get("invalid")
+except NotFoundError:
+    print("Не найдено")
+except ValidationError as e:
+    print(e.message)
+except RateLimitError as e:
+    print(e.retry_after)
+except APIError as e:
+    print(e.message)
+```
+
+### Пагинация батчами
+
+```python
+all_posts = client.posts.list_all(limit=100)
+all_comments = client.comments.list_all("POST_ID", limit=100)
+all_notifications = client.notifications.list_all(limit=100)
+```
+
+### Пост на чужую стену
+
+```python
+post = client.posts.post_to_wall(
+    username="username",
+    content="Привет на стену",
+)
+```
+
+### После `close()` запросы больше не идут
+
+```python
+client.close()
+client.posts.list()# -> RuntimeError
+```
 
 ## Прочее
 
 Проект активно развивается.
-Если у вас есть идеи или предложения — создавайте issue или pull request.
+Если у вас есть идеи или предложения, создавайте issue или pull request.
+Мой телеграм [@gam5510](https://t.me/gam5510) для обратной связи.

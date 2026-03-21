@@ -1,55 +1,55 @@
+# Быстрый старт
 
-# ITDpy
+## Установка
 
-## Установка pip
 ```bash
 pip install itdpy
 ```
-## Через git
-```bash
-git clone https://github.com/Gam5510/ITDpy
-cd itdpy
-pip install -r requirements.txt
-pip install -e .
-```
-## Быстрый старт
+> ![Получение токена](https://i.ibb.co/DH1m8GL7/Assistant.png)
+> Как получить токен
 
-![Получение токена](https://i.ibb.co/DH1m8GL7/Assistant.png)
+- Открой итд.com в браузере и войди в аккаунт
+- Открой DevTools (F12) → Application → Cookies
+- Найди куку refresh_token и скопируй значение
+
+## Инициализация клиента
 
 ```python
-from  itdpy.client  import  ITDClient
+from itdpy import ITDClient
 
-client  =  ITDClient(refresh_token="Ваш_refresh_token")
+client = ITDClient(refresh_token="YOUR_REFRESH_TOKEN")
+```
 
-me  =  client.get_me()
+## Получить себя
+
+```python
+me = client.users.me()
+
 print(me.id)
 print(me.username)
+print(me.to_json())
 ```
 
-### Скрипт на обновление имени
+## Получить ленту
 
 ```python
-from  itdpy.client  import  ITDClient
-from  datetime  import  datetime
-import  time
+from itdpy import PostsTab
 
-client = ITDClient(refresh_token="Ваш_токен")
+posts = client.posts.list(limit=10, tab=PostsTab.POPULAR)
 
-while  True:
-	client.update_profile(display_name=f"Фазлиддин |{datetime.now().strftime('%m.%d %H:%M:%S')}|")
-	time.sleep(1)
+for post in posts:
+    print(post.id, post.content)
 ```
 
-### Скрипт на обновление баннера 
+## Создать пост
+
 ```python
-from  itdpy.client  import  ITDClient
-
-client  =  ITDClient(refresh_token="Ваш_токен")
-
-file  =  client.upload_file("matrix-rain-effect-animation-photoshop-editor.gif")
-print(file.id)
-update  =  client.update_profile(banner_id=file.id)
-print(update.banner)
+post = client.posts.create(content="Привет из itdpy")
+print(post.id)
 ```
 
-← [Назад к документации](index.md)
+## Закрыть клиента
+
+```python
+client.close()
+```

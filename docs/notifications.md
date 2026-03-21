@@ -1,61 +1,44 @@
-# ITDpy
+# Notifications API
 
-## Notification
+## Получить уведомления
 
-Модуль `notifications` позволяет:
-
--   получать список уведомлений
--   отмечать уведомление как прочитанное
--   отмечать несколько уведомлений сразу
-
-----------
-
-## Получить список уведомлений
 ```python
-client.get_notifications(offset=0, limit=20) 
-```
-### Параметры:
-
--   `offset` — смещение (по умолчанию `0`)
--   `limit` — сколько уведомлений вернуть (по умолчанию `20`)
-    
-
-Возвращает модель `Notifications` [Подробнее](models/notifications.md) 
-
-## Отметить уведомление как прочитанное
-```python
-client.mark_notification_read(notification_id)
+notifications = client.notifications.list(limit=20)
+print(notifications.to_json())
 ```
 
-### Параметры:
+## Получить все уведомления
 
--   `notification_id` — ID уведомления
+Если `limit=None`, SDK забирает всё батчами по `50`.
 
-### Возвращает 
-True при успехе
+```python
+all_notifications = client.notifications.list_all()
+limited_notifications = client.notifications.list_all(limit=120)
+```
 
-## Отметить несколько уведомлений как прочитанные
+## Отметить уведомление прочитанным
 
-`client.mark_all_notification_read(notification_ids)` 
+```python
+client.notifications.mark_read("NOTIFICATION_ID")
+```
 
-### Параметры:
+Если id невалидный, SDK выбросит `ValidationError`.  
+Если id валидный, но сервер не находит уведомление, SDK преобразует ошибку в `NotFoundError`.
 
--   `notification_ids` — список ID уведомлений  
-    Можно передать:
-    
-    -   `list[str]`        
-    -   один `str`
-        
-Если передать `None` или пустой список — метод вернёт `0`.
+## Отметить все уведомления прочитанными
 
+```python
+client.notifications.mark_all_read()
+```
 
-## Типы уведомлений
+## Streaming
 
-Поле `type` может содержать:
+```python
+stream = client.notifications.stream()
 
--   `"follow"` — новый подписчик
--   `"like"` — лайк
--   `"comment"` — комментарий
--   `"reply"` — ответ на комментарий
+@stream.on("notification")
+def on_notification(event):
+    print(event.data)
 
-← [Назад к документации](index.md)
+stream.run()
+```

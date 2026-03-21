@@ -1,88 +1,112 @@
-# ITDpy
-## Posts
-Модуль `posts` позволяет:
--   получать посты
--   создавать посты
--   обновлять посты
--   удалять посты
--   ставить лайки
--   делать репосты
+# Posts API
 
-## Получить список постов
+## Получить ленту
 
 ```python
-client.get_posts(limit=20, tab="popular")
+from itdpy import PostsTab
+
+posts = client.posts.list(limit=20, tab=PostsTab.POPULAR)
+print(posts.to_json())
 ```
-### Параметры:
 
--   `limit` — сколько постов вернуть (от 20 до 50)
--   `tab` — сортировка:
-    
-    -   `"popular"`
-    -   `"newest"`
-    -   `"oldest"`
-        
-Возвращает модель `Posts` [Подробнее](models/posts.md).
+## Получить всю ленту
 
-## Получить один пост
+`list_all()` забирает посты батчами по `50`.
+
 ```python
-client.get_post(post_id) 
+all_posts = client.posts.list_all(limit=120)
+print(len(all_posts))
 ```
-Возвращает модель `Post` [Подробнее](models/post.md).
+
+## Получить пост
+
+```python
+post = client.posts.get("POST_ID")
+print(post.to_json())
+```
 
 ## Создать пост
+
 ```python
-client.create_post(content="Привет!") 
+post = client.posts.create(content="Привет")
 ```
-### Параметры:
 
--   `content` — текст поста
--   `attachment_ids` — список ID медиа файлов [Загрузка файлов](upload.md)
--   `wall_recipient_id` — если пост на стену другого пользователя
--   `poll` — опрос [Структура опроса](models/poll.md)
--   `parse_html=True` — включить HTML форматирование [HTML форматирование](formatting.md)
+## Markdown / HTML
 
-### Пример с HTML
 ```python
-client.create_post(content="Обновление <b>ITDpy</b>", parse_html=True )
- ```
- 
- ### Пример с опросом
+client.posts.create(content="**Жирный**", parse_md=True)
+client.posts.create(content="<b>Жирный</b>", parse_html=True)
+```
+
+## Пост на чужую стену
+
+По `username`:
+
 ```python
-client.create_post(
-    content="Голосование",
-    poll={ "question": "Лучший язык?", "options": ["Python", "Go"]}
+post = client.posts.post_to_wall(
+    username="username",
+    content="Привет на стену",
 )
 ```
+
+По `user_id`:
+
+```python
+post = client.posts.post_to_wall(
+    user_id="USER_ID",
+    content="Привет на стену по id",
+)
+```
+
 ## Обновить пост
-```python
-client.update_post(post_id, "Новый текст")
-```
-Возвращает `PostUpdate`, [Модель PostUpdate](models/posts.md).
 
-## Удалить пост
 ```python
-client.delete_post(post_id)
+updated = client.posts.update("POST_ID", content="Новый текст")
+print(updated.updated_at)
 ```
-Возвращает `True`, если удалён успешно.
 
-## Реакции
+`client.posts.update(...)` возвращает `PostUpdate`.
+
+## Лайки и репосты
+
 ```python
-client.like_post(post_id) # поставить лайк
-client.unlike_post(post_id) # убрать лайк
+likes = client.posts.like("POST_ID")
+client.posts.unlike("POST_ID")
+repost = client.posts.repost("POST_ID", content="Мой репост")
 ```
-Возвращает `True` при успехе.
 
-## Репост
+## Посты пользователя
+
 ```python
-client.repost_post(post_id, content="Мой комментарий")
-```
-Возвращает `True` при успехе
+from itdpy import UserPostSorting
 
-## Получить посты пользователя
+posts = client.posts.get_user_posts("username", sort=UserPostSorting.NEW)
+all_posts = client.posts.get_all_user_posts("username", limit=100)
+```
+
+## Poll
+
 ```python
-client.get_user_posts("username")
-```
-Возвращает модель `Posts` [Подробнее](models/posts.md).
+from itdpy.models import PollBuilder
 
-← [Назад к документации](index.md)
+post = client.posts.create(
+    content="Голосуем",
+    poll=PollBuilder("Как подавать котлеты?")
+        .add("С пюрешкой")
+        .add("Без пюрешки"),
+)
+```
+
+## Голосование
+
+```python
+poll = client.posts.vote(post_id="POST_ID", option_ids="OPTION_ID")
+print(poll.to_json())
+```
+
+## Просмотр поста
+
+```python
+view = client.posts.view("POST_ID")
+views = client.posts.view_many(["POST_ID_1", "POST_ID_2"])
+```

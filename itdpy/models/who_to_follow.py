@@ -1,6 +1,6 @@
 from pydantic import Field
 from typing import List
-from .base import ITDBaseModel
+from .base import BaseList, ITDBaseModel, parse_list
 
 
 class SuggestedUser(ITDBaseModel):
@@ -11,17 +11,15 @@ class SuggestedUser(ITDBaseModel):
     verified: bool
     followers_count: int = Field(alias="followersCount")
 
-class WhoToFollow(ITDBaseModel):
-    users: List[SuggestedUser] = Field(default_factory=list)
+class WhoToFollow(BaseList[SuggestedUser]):
+    def __init__(self, items: List[SuggestedUser] | None = None):
+        super().__init__(items)
 
-    def __iter__(self):
-        return iter(self.users)
+    @classmethod
+    def from_data(cls, data: dict) -> "WhoToFollow":
+        return cls(parse_list(SuggestedUser, data.get("users", [])).to_list())
 
-    def __getitem__(self, item):
-        return self.users[item]
+    @property
+    def users(self) -> List[SuggestedUser]:
+        return self.items
 
-    def __len__(self):
-        return len(self.users)
-
-    def __repr__(self):
-        return f"<WhoToFollow count={len(self)}>"

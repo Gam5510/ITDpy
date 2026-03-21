@@ -1,87 +1,107 @@
-﻿from __future__ import annotations
+﻿from typing import List, Optional
 
-from ..models import Comment, Comments
-from ._common import build_query, normalize_id_list, truthy_response_status
-from ..formatting import format_html
+from ..api.base import BaseAPI
+from ..enums import CommentSort
+from ..models import Comment, CommentsList, CommentUpdate
 
-def create_comment(
-    client,
-    post_id: str,
-    content: str,
-    attachment_ids: list[str] | str | None = None,
-) -> Comment:
-    
-    payload = {
+
+class CommentsAPI(BaseAPI):
+    @staticmethod
+    def _unwrap_data(payload: dict | list) -> dict | list:
+        if isinstance(payload, dict) and "data" in payload:
+            return payload["data"]
+        return payload
+
+    def list(
+        self,
+        post_id: str,
+        *,
+        limit: int = 20,
+        sort: CommentSort = CommentSort.POPULAR,
+        cursor: Optional[str] = None,
+    ) -> CommentsList:
+        params = {"limit": limit, "sort": sort.value}
+        if cursor is not None:
+            params["cursor"] = cursor
+
+        response = self._get(f"posts/{post_id}/comments", params=params)
+        return CommentsList.from_data(response.json())
+
+    def list_all(
+        self,
+        post_id: str,
+        *,
+        limit: int = 50,
+        sort: CommentSort = CommentSort.POPULAR,
+    ) -> CommentsList:
+        if limit <= 0:
+            return CommentsList([], total=0, next_cursor=None, has_more=False)
+
+        items: list[Comment] = []
+        cursor: Optional[str] = None
+        total: Optional[int] = None
+        has_more = True
+
+        while has_more and len(items) < limit:
+            batch_limit = min(50, limit - len(items))
+            page = self.list(post_id, limit=batch_limit, sort=sort, cursor=cursor)
+            items.extend(page.to_list())
+            total = page.total
+            cursor = page.next_cursor
+            has_more = page.has_more
+
+            if len(page) == 0:
+                break
+
+        return CommentsList(
+            items[:limit],
+            total=total,
+            next_cursor=cursor,
+            has_more=has_more and len(items) >= limit,
+        )
+
+    def create(
+        self,
+        post_id: str,
+        *,
+        content: str,
+        attachment_ids: Optional[List[str]] = None,
+    ) -> Comment:
+        payload = {
             "content": content,
-            "attachmentIds": normalize_id_list(attachment_ids),
-    }
-    
-    response = client.post(f"/api/posts/{post_id}/comments", json=payload)
-    response.raise_for_status()
-    return Comment.model_validate(response.json())
+            "attachmentIds": attachment_ids or [],
+        }
+        response = self._post(f"posts/{post_id}/comments", json=payload)
+        return Comment.model_validate(self._unwrap_data(response.json()))
 
+    def reply(
+        self,
+        comment_id: str,
+        *,
+        content: str,
+        attachment_ids: Optional[List[str]] = None,
+    ) -> Comment:
+        payload = {
+            "content": content,
+            "attachmentIds": attachment_ids or [],
+        }
+        response = self._post(f"comments/{comment_id}/replies", json=payload)
+        return Comment.model_validate(self._unwrap_data(response.json()))
 
-def reply_to_comment(
-    client,
-    comment_id: str,
-    content: str,
-    attachment_ids: list[str] | str | None = None,
-) -> Comment:
-    payload = {
-        "content": content,
-        "attachmentIds": normalize_id_list(attachment_ids),
-    }
-    response = client.post(f"/api/comments/{comment_id}/replies", json=payload)
-    response.raise_for_status()
-    return Comment.model_validate(response.json())
+    def delete(self, comment_id: str) -> None:
+        self._delete(f"comments/{comment_id}")
 
+    def like(self, comment_id: str) -> None:
+        self._post(f"comments/{comment_id}/like")
 
-def delete_comment(client, comment_id: str) -> bool:
-    response = client.delete(f"/api/comments/{comment_id}")
-    if response.status_code == 204:
-        return True
-    response.raise_for_status()
-    return False
+    def unlike(self, comment_id: str) -> None:
+        self._delete(f"comments/{comment_id}/like")
 
-
-def like_comment(client, comment_id: str) -> bool:
-    response = client.post(f"/api/comments/{comment_id}/like")
-    response.raise_for_status()
-    return truthy_response_status(response.status_code)
-
-
-def unlike_comment(client, comment_id: str) -> bool:
-    response = client.delete(f"/api/comments/{comment_id}/like")
-    response.raise_for_status()
-    return truthy_response_status(response.status_code)
-
-
-def get_comments(client, post_id: str, limit: int = 20, sort: str = "popular", cursor: str | None = None ) -> Comments:
-    allowed_sorts = {"popular", "newest", "oldest"}
-
-    if sort not in allowed_sorts:
-        raise ValueError(
-            f"Invalid sort value '{sort}'. "
-            f"Allowed values: {', '.join(allowed_sorts)}"
-        )
-    if cursor:
-        query = build_query({"limit": limit, "sort": sort, "cursor": cursor})
-    else:
-        query = build_query({"limit": limit, "sort": sort})
-        
-    response = client.get(f"/api/posts/{post_id}/comments?{query}")
-    response.raise_for_status()
-    return Comments.model_validate(response.json())
-
-def get_replies(client, comment_id: str, sort: str = "newest") -> Comments:
-    allowed_sorts = {"popular", "newest", "oldest"}
-
-    if sort not in allowed_sorts:
-        raise ValueError(
-            f"Invalid sort value '{sort}'. "
-            f"Allowed values: {', '.join(allowed_sorts)}"
-        )
-    query = build_query({"sort": sort})
-    response = client.get(f"/api/comments/{comment_id}/replies?{query}")
-    response.raise_for_status()
-    return Comments.model_validate(response.json())
+    def update(
+        self,
+        comment_id: str,
+        content: str,
+    ) -> CommentUpdate:
+        payload = {"content": content}
+        response = self._patch(f"comments/{comment_id}", json=payload)
+        return CommentUpdate.model_validate(self._unwrap_data(response.json()))

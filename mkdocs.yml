@@ -1,7 +1,8 @@
 site_name: ITDpy
-site_description: Python SDK for ИТД.com API 
+site_description: Python SDK for ИТД.com API
 site_author: Gam5510
 site_url: https://gam5510.github.io/ITDpy/
+
 repo_name: Gam5510/ITDpy
 repo_url: https://github.com/Gam5510/ITDpy
 
@@ -9,6 +10,17 @@ theme:
   name: material
   logo: assets/favicon.png
   favicon: assets/favicon.png
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.tabs.link
+
   palette:
     - scheme: default
       primary: blue
@@ -24,41 +36,67 @@ theme:
         icon: material/weather-sunny
         name: Light mode
 
+  font:
+    text: Inter
+    code: JetBrains Mono
+
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - tables
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.details
+  - pymdownx.highlight
+
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Gam5510/ITDpy
+
+
+extra_css:
+  - styles/extra.css
+
+
 nav:
   - Home: index.md
-
-  - Getting Started:
-      - Quickstart: quickstart.md
-
-  - Navigation:
-      - Navigation: NAVIGATION.md
+  - Getting Started: quickstart.md
+  - Migration 0.x to 1.x: MIGRATION.md
+  - Navigation: NAVIGATION.md
+  - Models type: models.md
+  - API overview: api.md
+  - Streaming (SSE): streaming.md
+  - Formatting: formatting.md
 
   - API:
       - Clans: clans.md
       - Comments: comments.md
-      - Discovery: discovery.md  
-      - Formatting: formatting.md  
+      - Discovery: discovery.md
       - Notifications: notifications.md
       - Pins: pins.md
-      - Polls: polls.md  
-      - Posts: posts.md 
-      - Profile: profile.md 
+      - Polls: polls.md
+      - Posts: posts.md
+      - Profile: profile.md
       - Settings: settings.md
       - Upload: upload.md
-      - Users: users.md  
-  
+      - Users: users.md
 
   - Models:
       - Actor: models/actor.md
-      - Comment: models/comment.md  
+      - Comment: models/comment.md
       - Comments: models/comments.md
       - Discovery: models/discovery.md
       - Notification: models/notification.md
       - Notifications: models/notifications.md
       - Pagination: models/pagination.md
       - Pins: models/pins.md
-      - Poll: models/poll.md  
-      - Post: models/post.md  
-      - Posts: models/posts.md  
+      - Poll: models/poll.md
+      - Post: models/post.md
+      - Posts: models/posts.md
       - Settings: models/settings.md
-      - Users: models/users.md  
+      - Users: models/users.md

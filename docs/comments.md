@@ -1,93 +1,53 @@
-# ITDpy
+# Comments API
 
-## Comments
+## Получить комментарии поста
 
-Модуль `comments` позволяет:
--   получать комментарии    
--   создавать комментарии    
--   отвечать на комментарии    
--   удалять комментарии
--   ставить лайки
--   получать ответы (replies)
-
-## Получить список комментариев
 ```python
-client.get_comments(post_id, limit=20, sort="popular")
+from itdpy import CommentSort
+
+comments = client.comments.list(
+    "POST_ID",
+    limit=20,
+    sort=CommentSort.POPULAR,
+)
+
+print(comments.to_json())
 ```
-### Параметры:
 
-- post_id — ID поста
-- limit — сколько комментариев вернуть (от 20 до 500)
-- sort — сортировка:
-	 - "popular" 
-	 - "newest" 
-	 - "oldest"
+## Получить все комментарии
 
-Возвращает модель Comments [подробнее](models/comments.md)
+`list_all()` идёт по курсору и забирает комментарии батчами по `50`.
 
-## Получить ответы на комментарий
 ```python
-client.get_replies(comment_id, sort="newest")
+comments = client.comments.list_all("POST_ID", limit=100)
+print(len(comments))
 ```
-### Параметры:
-
--   `comment_id` — ID комментария
--   `sort` — сортировка:
-    -   `"popular"`     
-    -   `"newest"`     
-    -   `"oldest"`
-        
-Возвращает модель Comments [подробнее](models/comments.md)
-
-## Получить ответы на комментарий
-```python
-client.get_replies(comment_id, sort="newest") 
-```
-### Параметры:
-
--   `comment_id` — ID комментария
--   `sort` — сортировка:
-    -   `"popular"`
-    -   `"newest"`
-    -   `"oldest"`
-        
-Возвращает модель Comments [подробнее](models/comments.md)
 
 ## Создать комментарий
+
 ```python
-client.create_comment(post_id="post_id", content="Отличный пост!" )
+comment = client.comments.create("POST_ID", content="Мой комментарий")
+print(comment.id, comment.content)
 ```
-### Параметры:
-
--   `post_id` — ID поста
--   `content` — текст комментария
--   `attachment_ids` — список ID медиа файлов [Загрузка файлов](upload.md)
-
-Возвращает модель Comment [подробнее](models/comment.md)
 
 ## Ответить на комментарий
+
 ```python
-client.reply_to_comment(comment_id="comment_id", content="Спасибо!") 
+reply = client.comments.reply("COMMENT_ID", content="Ответ")
+print(reply.id)
 ```
-### Параметры:
 
--   `comment_id` — ID комментария
--   `content` — текст ответа
--   `attachment_ids` — список ID медиа файлов [Загрузка файлов](upload.md)
-    
-Возвращает модель Comment [подробнее](models/comment.md)
+## Обновить комментарий
 
-## Удалить комментарий
 ```python
-client.delete_comment(comment_id) 
+updated = client.comments.update("COMMENT_ID", "Обновлённый текст")
+print(updated.updated_at)
 ```
-Возвращает `True`, если удалён успешно.
 
-## Реакции
+## Лайк / анлайк / удаление
+
 ```python
-client.like_comment(comment_id) # поставить лайк 
-client.unlike_comment(comment_id) # убрать лайк 
+client.comments.like("COMMENT_ID")
+client.comments.unlike("COMMENT_ID")
+client.comments.delete("COMMENT_ID")
 ```
-Возвращает `True` при успехе.
-
-← [Назад к документации](index.md)
