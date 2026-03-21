@@ -9,4 +9,4 @@ class Config:
     upload_timeout: int = 120
     max_retries: int = 3
     backoff_factor: float = 1.5
-    sdk_version: str = "1.0.0"
+    sdk_version: str = "1.0.1"
