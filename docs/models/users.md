@@ -8,7 +8,7 @@ user = client.users.get("username")
 print(user.id)
 print(user.username)
 print(user.display_name)
-print(user.avatar_url)
+print(user.avatar)
 print(user.to_json())
 ```
 
@@ -23,7 +23,7 @@ print(user.to_json())
 
 SDK автоматически понимает разные варианты ключей сервера:
 
-- `avatarUrl` и `avatar`
+- `avatar`
 - `isVerified`, `verified`, `verifieed`
 - `username` и `userrname`
 

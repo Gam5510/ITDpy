@@ -13,10 +13,7 @@ class UserLite(ITDBaseModel):
     )
     display_name: Optional[str] = Field(None, alias="displayName")
 
-    avatar_url: Optional[str] = Field(
-        None,
-        alias="avatar"
-    )
+    avatar: Optional[str] = Field(None, alias="avatar")
     is_verified: bool = Field(
         False,
         alias="isVerified",
