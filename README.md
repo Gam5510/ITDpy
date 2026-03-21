@@ -4,7 +4,7 @@
   <img src="https://i.postimg.cc/gJ9z8RDk/ITDpy-(1)-pixian-ai.png" width="700">
 </p>
 
-![PyPI version](https://img.shields.io/pypi/v/itdpy)
+![PyPI version](https://img.shields.io/pypi/v/itdpy?nocache=1)
 ![Downloads](https://static.pepy.tech/badge/itdpy)
 ![License](https://img.shields.io/github/license/Gam5510/ITDpy)
 

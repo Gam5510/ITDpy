@@ -4,8 +4,8 @@
   <img src="https://i.postimg.cc/gJ9z8RDk/ITDpy-(1)-pixian-ai.png" width="700">
 </p>
 
-![PyPI version](https://img.shields.io/pypi/v/itdpy)
-![Downloads](https://static.pepy.tech/badge/itdpy)
+![PyPI version](https://img.shields.io/pypi/v/itdpy?nocache=1)
+![Downloads](https://static.pepy.tech/badge/itdpy?nocache=1)
 ![License](https://img.shields.io/github/license/Gam5510/ITDpy)
 
 Python SDK для социальной сети итд.com.
@@ -41,3 +41,4 @@ print(posts.first())
 
 client.close()
 ```
+
