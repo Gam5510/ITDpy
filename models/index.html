@@ -12,13 +12,13 @@
         <meta name="author" content="Gam5510">
       
       
-        <link rel="canonical" href="https://gam5510.github.io/ITDpy/polls/">
+        <link rel="canonical" href="https://gam5510.github.io/ITDpy/models/">
       
       
-        <link rel="prev" href="../pins/">
+        <link rel="prev" href="../NAVIGATION/">
       
       
-        <link rel="next" href="../posts/">
+        <link rel="next" href="../api/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Polls - ITDpy</title>
+        <title>Models type - ITDpy</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#polls" class="md-skip">
+        <a href="#itdpy" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Polls
+              Models type
             
           </span>
         </div>
@@ -302,9 +302,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../models/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -378,12 +380,10 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../clans/" class="md-tabs__link">
           
   
@@ -404,7 +404,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../models/actor/" class="md-tabs__link">
+        <a href="actor/" class="md-tabs__link">
           
   
   
@@ -572,10 +572,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../models/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models type
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -591,6 +618,297 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что это значит на практике
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что это значит на практике">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pydantic-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как обычная Pydantic-модель
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как словарь
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Универсальные методы моделей
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Универсальные методы моделей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_dict()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_json()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_request_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_request_dict()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#__getitem__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __getitem__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#__repr__-__str__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __repr__ и __str__
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Списковые модели
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#baselist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что умеет BaseList
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что умеет BaseList">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итерация
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Индексация
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Длина
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Первый элемент
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сериализация
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Доступ как список
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Вложенные списки внутри моделей
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели можно передавать обратно в API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pollbuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PollBuilder тоже ведёт себя как модель
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем это сделано
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кратко
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -680,31 +998,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
             
   
   
@@ -722,7 +1037,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
@@ -877,37 +1192,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Polls
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../polls/" class="md-nav__link">
         
   
   
@@ -923,209 +1211,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Быстрый старт
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Быстрый старт">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#poll" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Через Poll
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pollbuilder" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Через PollBuilder
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Отправка опроса
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Отправка опроса">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Создать пост с опросом
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#builder-build" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Builder без build()
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Пост на чужую стену
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Сериализация
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Сериализация">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#to_dict" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        to_dict()
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#to_request_dict" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        to_request_dict()
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#to_json" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        to_json()
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dict" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Работа как с dict
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Числовые варианты
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Голосование
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        См. также
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1339,7 +1424,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/actor/" class="md-nav__link">
+      <a href="actor/" class="md-nav__link">
         
   
   
@@ -1367,7 +1452,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/comment/" class="md-nav__link">
+      <a href="comment/" class="md-nav__link">
         
   
   
@@ -1395,7 +1480,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/comments/" class="md-nav__link">
+      <a href="comments/" class="md-nav__link">
         
   
   
@@ -1423,7 +1508,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/discovery/" class="md-nav__link">
+      <a href="discovery/" class="md-nav__link">
         
   
   
@@ -1451,7 +1536,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/notification/" class="md-nav__link">
+      <a href="notification/" class="md-nav__link">
         
   
   
@@ -1479,7 +1564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/notifications/" class="md-nav__link">
+      <a href="notifications/" class="md-nav__link">
         
   
   
@@ -1507,7 +1592,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/pagination/" class="md-nav__link">
+      <a href="pagination/" class="md-nav__link">
         
   
   
@@ -1535,7 +1620,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/pins/" class="md-nav__link">
+      <a href="pins/" class="md-nav__link">
         
   
   
@@ -1563,7 +1648,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/poll/" class="md-nav__link">
+      <a href="poll/" class="md-nav__link">
         
   
   
@@ -1591,7 +1676,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/post/" class="md-nav__link">
+      <a href="post/" class="md-nav__link">
         
   
   
@@ -1619,7 +1704,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/posts/" class="md-nav__link">
+      <a href="posts/" class="md-nav__link">
         
   
   
@@ -1647,7 +1732,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/settings/" class="md-nav__link">
+      <a href="settings/" class="md-nav__link">
         
   
   
@@ -1675,7 +1760,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/users/" class="md-nav__link">
+      <a href="users/" class="md-nav__link">
         
   
   
@@ -1733,19 +1818,19 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Быстрый старт
+        Что это значит на практике
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Быстрый старт">
+    <nav class="md-nav" aria-label="Что это значит на практике">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#poll" class="md-nav__link">
+  <a href="#pydantic-" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Через Poll
+        Как обычная Pydantic-модель
       
     </span>
   </a>
@@ -1753,60 +1838,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pollbuilder" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Через PollBuilder
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Отправка опроса
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Отправка опроса">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Создать пост с опросом
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#builder-build" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Builder без build()
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Пост на чужую стену
+        Как словарь
       
     </span>
   </a>
@@ -1819,15 +1854,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Сериализация
+        Универсальные методы моделей
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Сериализация">
+    <nav class="md-nav" aria-label="Универсальные методы моделей">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1835,6 +1870,17 @@
     <span class="md-ellipsis">
       
         to_dict()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_json()
       
     </span>
   </a>
@@ -1853,10 +1899,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#to_json" class="md-nav__link">
+  <a href="#get" class="md-nav__link">
     <span class="md-ellipsis">
       
-        to_json()
+        get()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#__getitem__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __getitem__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#__repr__-__str__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __repr__ и __str__
       
     </span>
   </a>
@@ -1869,10 +1937,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dict" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Работа как с dict
+        Списковые модели
       
     </span>
   </a>
@@ -1880,21 +1948,93 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#baselist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что умеет BaseList
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что умеет BaseList">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итерация
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Числовые варианты
+        Индексация
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Голосование
+        Длина
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Первый элемент
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сериализация
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Доступ как список
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Вложенные списки внутри моделей
       
     </span>
   </a>
@@ -1902,10 +2042,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
+  <a href="#api" class="md-nav__link">
     <span class="md-ellipsis">
       
-        См. также
+        Модели можно передавать обратно в API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pollbuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PollBuilder тоже ведёт себя как модель
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем это сделано
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кратко
       
     </span>
   </a>
@@ -1932,10 +2105,132 @@
   
 
 
-<h1 id="polls">Polls<a class="headerlink" href="#polls" title="Permanent link">&para;</a></h1>
-<p><code>Poll</code> и <code>PollBuilder</code> используются для создания и отправки опросов в <code>posts.create()</code> и <code>posts.post_to_wall()</code>.</p>
-<h2 id="_1">Быстрый старт<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<h3 id="poll">Через <code>Poll</code><a class="headerlink" href="#poll" title="Permanent link">&para;</a></h3>
+<h1 id="itdpy">Модели в itdpy<a class="headerlink" href="#itdpy" title="Permanent link">&para;</a></h1>
+<p>Начиная с текущей архитектуры SDK, <code>itdpy</code> использует единый подход к данным:</p>
+<ul>
+<li>API никогда не должен возвращать сырые <code>dict</code> как основной результат</li>
+<li>данные приходят как Pydantic-модели</li>
+<li>списки приходят как list-like объекты на базе <code>BaseList</code></li>
+<li>модели можно использовать и как объект, и как словарь, и как JSON</li>
+</ul>
+<h2 id="_1">Что это значит на практике<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Одна и та же сущность может использоваться в нескольких стилях одновременно.</p>
+<h3 id="pydantic-">Как обычная Pydantic-модель<a class="headerlink" href="#pydantic-" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">post</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POST_ID&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+</code></pre></div>
+<p>Здесь модель ведёт себя как обычный typed-объект с автодополнением IDE и строгими типами.</p>
+<h3 id="_2">Как словарь<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s2">&quot;createdAt&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s2">&quot;created_at&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;wallRecipientId&quot;</span><span class="p">))</span>
+</code></pre></div>
+<p>Поддерживаются:</p>
+<ul>
+<li>Python-имена полей: <code>created_at</code></li>
+<li>alias API: <code>createdAt</code></li>
+</ul>
+<h2 id="_3">Универсальные методы моделей<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Практически каждая модель в SDK поддерживает одинаковый интерфейс:</p>
+<h3 id="to_dict"><code>to_dict()</code><a class="headerlink" href="#to_dict" title="Permanent link">&para;</a></h3>
+<p>Возвращает словарь с alias API.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+</code></pre></div>
+<p>Пример:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;POST_ID&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Привет&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-03-21T10:00:00Z&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="to_json"><code>to_json()</code><a class="headerlink" href="#to_json" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
+</code></pre></div>
+<h3 id="to_request_dict"><code>to_request_dict()</code><a class="headerlink" href="#to_request_dict" title="Permanent link">&para;</a></h3>
+<p>Используется для сериализации в payload запроса.</p>
+<p>Для большинства моделей это то же самое, что <code>to_dict()</code>.</p>
+<p>Для специальных моделей, например <code>Poll</code>, это именно формат для API:</p>
+<div class="highlight"><pre><span></span><code><span class="n">poll</span><span class="o">.</span><span class="n">to_request_dict</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="get"><code>get()</code><a class="headerlink" href="#get" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;createdAt&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;missing&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+</code></pre></div>
+<h3 id="__getitem__"><code>__getitem__</code><a class="headerlink" href="#__getitem__" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s2">&quot;createdAt&quot;</span><span class="p">])</span>
+</code></pre></div>
+<h3 id="__repr__-__str__"><code>__repr__</code> и <code>__str__</code><a class="headerlink" href="#__repr__-__str__" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">post</span><span class="p">))</span>
+</code></pre></div>
+<p><code>print(post)</code> даёт JSON-подобный вывод, удобный для отладки.<br />
+<code>repr(post)</code> даёт короткий debug-view.</p>
+<h2 id="_4">Списковые модели<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>Списковые ответы в <code>itdpy</code> не являются сырыми <code>list</code>.<br />
+Они являются list-like объектами на базе <code>BaseList</code>.</p>
+<p>Например:</p>
+<ul>
+<li><code>PostsList</code></li>
+<li><code>UsersList</code></li>
+<li><code>CommentsList</code></li>
+<li><code>NotificationsList</code></li>
+<li>вложенные списки вроде <code>post.attachments</code>, <code>poll.options</code>, <code>result.users</code></li>
+</ul>
+<h2 id="baselist">Что умеет <code>BaseList</code><a class="headerlink" href="#baselist" title="Permanent link">&para;</a></h2>
+<h3 id="_5">Итерация<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">posts</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">posts</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="_6">Индексация<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">posts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">posts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="_7">Длина<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">posts</span><span class="p">))</span>
+</code></pre></div>
+<h3 id="_8">Первый элемент<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">posts</span><span class="o">.</span><span class="n">first</span><span class="p">())</span>
+</code></pre></div>
+<h3 id="_9">Сериализация<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">posts</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">posts</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">posts</span><span class="o">.</span><span class="n">to_request_dict</span><span class="p">())</span>
+</code></pre></div>
+<h3 id="_10">Доступ как список<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">posts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</code></pre></div>
+<h2 id="_11">Вложенные списки внутри моделей<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<p>Это важная часть DX.</p>
+<p>Например:</p>
+<div class="highlight"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">hashtags</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+</code></pre></div>
+<p>Или:</p>
+<div class="highlight"><pre><span></span><code><span class="n">post</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POST_ID&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">attachments</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">spans</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+</code></pre></div>
+<p>Или:</p>
+<div class="highlight"><pre><span></span><code><span class="n">poll</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">vote</span><span class="p">(</span><span class="n">post_id</span><span class="o">=</span><span class="s2">&quot;POST_ID&quot;</span><span class="p">,</span> <span class="n">option_ids</span><span class="o">=</span><span class="s2">&quot;OPTION_ID&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">voted_option_ids</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+</code></pre></div>
+<h2 id="api">Модели можно передавать обратно в API<a class="headerlink" href="#api" title="Permanent link">&para;</a></h2>
+<p>Некоторые модели можно не только получать, но и использовать как входные данные.</p>
+<p>Пример с <code>Poll</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Poll</span>
 
 <span class="n">poll</span> <span class="o">=</span> <span class="n">Poll</span><span class="p">(</span>
@@ -1943,122 +2238,57 @@
     <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;С пюрешкой&quot;</span><span class="p">,</span> <span class="s2">&quot;Без пюрешки&quot;</span><span class="p">],</span>
     <span class="n">multipleChoice</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="n">post</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Голосуем&quot;</span><span class="p">,</span>
+    <span class="n">poll</span><span class="o">=</span><span class="n">poll</span><span class="p">,</span>
+<span class="p">)</span>
 </code></pre></div>
-<h3 id="pollbuilder">Через <code>PollBuilder</code><a class="headerlink" href="#pollbuilder" title="Permanent link">&para;</a></h3>
+<p>Пример с <code>PollBuilder</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">PollBuilder</span>
 
 <span class="n">poll</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">PollBuilder</span><span class="p">(</span><span class="s2">&quot;Как подавать котлеты?&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;С пюрешкой&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Без пюрешки&quot;</span><span class="p">)</span>
+    <span class="n">PollBuilder</span><span class="p">(</span><span class="s2">&quot;Что добавить в itdpy?&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Больше моделей&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Больше примеров&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">multiple_choice</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
-<span class="p">)</span>
-</code></pre></div>
-<h2 id="_2">Отправка опроса<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<h3 id="_3">Создать пост с опросом<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="n">post</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-    <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Голосуем&quot;</span><span class="p">,</span>
-    <span class="n">poll</span><span class="o">=</span><span class="n">Poll</span><span class="p">(</span>
-        <span class="n">question</span><span class="o">=</span><span class="s2">&quot;Как подавать котлеты?&quot;</span><span class="p">,</span>
-        <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;С пюрешкой&quot;</span><span class="p">,</span> <span class="s2">&quot;Без пюрешки&quot;</span><span class="p">],</span>
-        <span class="n">multipleChoice</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-</code></pre></div>
-<h3 id="builder-build">Builder без <code>build()</code><a class="headerlink" href="#builder-build" title="Permanent link">&para;</a></h3>
-<p><code>PollBuilder</code> тоже поддерживает сериализацию, поэтому его можно передавать напрямую:</p>
-<div class="highlight"><pre><span></span><code><span class="n">post</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-    <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Голосуем&quot;</span><span class="p">,</span>
-    <span class="n">poll</span><span class="o">=</span><span class="p">(</span>
-        <span class="n">PollBuilder</span><span class="p">(</span><span class="s2">&quot;Как подавать котлеты?&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;С пюрешкой&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Без пюрешки&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">multiple_choice</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-</code></pre></div>
-<h3 id="_4">Пост на чужую стену<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="n">post</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">post_to_wall</span><span class="p">(</span>
-    <span class="n">username</span><span class="o">=</span><span class="s2">&quot;username&quot;</span><span class="p">,</span>
-    <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Опрос на стену&quot;</span><span class="p">,</span>
-    <span class="n">poll</span><span class="o">=</span><span class="p">(</span>
-        <span class="n">PollBuilder</span><span class="p">(</span><span class="s2">&quot;Что добавить в itdpy?&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Больше моделей&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Больше примеров&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Больше streaming&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">multiple_choice</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-</code></pre></div>
-<h2 id="_5">Сериализация<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<h3 id="to_dict"><code>to_dict()</code><a class="headerlink" href="#to_dict" title="Permanent link">&para;</a></h3>
-<p>Возвращает полную модель <code>Poll</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">poll</span> <span class="o">=</span> <span class="n">Poll</span><span class="p">(</span>
-    <span class="n">question</span><span class="o">=</span><span class="s2">&quot;Как ваши дела?&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Отлично&quot;</span><span class="p">,</span> <span class="s2">&quot;Нормально&quot;</span><span class="p">,</span> <span class="s2">&quot;Плохо&quot;</span><span class="p">],</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<span class="n">post</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Опрос&quot;</span><span class="p">,</span>
+    <span class="n">poll</span><span class="o">=</span><span class="n">poll</span><span class="p">,</span>
+<span class="p">)</span>
 </code></pre></div>
-<p>Результат:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-    <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;Как ваши дела?&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Отлично&quot;</span><span class="p">,</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;votesCount&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Нормально&quot;</span><span class="p">,</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;votesCount&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Плохо&quot;</span><span class="p">,</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;votesCount&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
-    <span class="p">],</span>
-    <span class="s2">&quot;totalVotes&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s2">&quot;hasVoted&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s2">&quot;votedOptionIds&quot;</span><span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;multipleChoice&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">}</span>
-</code></pre></div>
-<h3 id="to_request_dict"><code>to_request_dict()</code><a class="headerlink" href="#to_request_dict" title="Permanent link">&para;</a></h3>
-<p>Возвращает payload для API.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">to_request_dict</span><span class="p">())</span>
-</code></pre></div>
-<p>Результат:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-    <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;Как ваши дела?&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;multipleChoice&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Отлично&quot;</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Нормально&quot;</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Плохо&quot;</span><span class="p">},</span>
-    <span class="p">],</span>
-<span class="p">}</span>
-</code></pre></div>
-<h3 id="to_json"><code>to_json()</code><a class="headerlink" href="#to_json" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
-</code></pre></div>
-<h2 id="dict">Работа как с dict<a class="headerlink" href="#dict" title="Permanent link">&para;</a></h2>
-<p>И <code>Poll</code>, и <code>PollBuilder</code> поддерживают:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;multipleChoice&quot;</span><span class="p">))</span>
-</code></pre></div>
-<h2 id="_6">Числовые варианты<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<p><code>PollBuilder</code> автоматически приводит значения к строке:</p>
+<h2 id="pollbuilder">PollBuilder тоже ведёт себя как модель<a class="headerlink" href="#pollbuilder" title="Permanent link">&para;</a></h2>
+<p>Даже если это builder, он поддерживает:</p>
 <div class="highlight"><pre><span></span><code><span class="n">poll</span> <span class="o">=</span> <span class="n">PollBuilder</span><span class="p">(</span><span class="s2">&quot;Какая цифра лучше?&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 
+<span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">to_request_dict</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;multipleChoice&quot;</span><span class="p">))</span>
 </code></pre></div>
-<h2 id="_7">Голосование<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">poll</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">vote</span><span class="p">(</span>
-    <span class="n">post_id</span><span class="o">=</span><span class="s2">&quot;POST_ID&quot;</span><span class="p">,</span>
-    <span class="n">option_ids</span><span class="o">=</span><span class="s2">&quot;OPTION_ID&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">question</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">total_votes</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">poll</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
-</code></pre></div>
-<h2 id="_8">См. также<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>То есть его можно использовать почти так же, как обычную модель.</p>
+<h2 id="_12">Зачем это сделано<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<p>Цель этой архитектуры:</p>
 <ul>
-<li><a href="../models/poll/">Poll Model</a></li>
-<li><a href="../posts/">Posts API</a></li>
+<li>сохранить типобезопасность Pydantic</li>
+<li>не заставлять пользователя работать с сырыми словарями</li>
+<li>оставить удобство JSON-стиля</li>
+<li>сделать ответы API предсказуемыми</li>
+<li>упростить сериализацию обратно в API</li>
 </ul>
+<h2 id="_13">Кратко<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<p>В <code>itdpy</code> модель может быть:</p>
+<ul>
+<li>Pydantic-моделью</li>
+<li>объектом с атрибутами</li>
+<li>dict-like сущностью</li>
+<li>JSON-источником</li>
+<li>частью request payload</li>
+</ul>
+<p>И всё это без ручной конвертации в каждом месте.</p>
 
 
 
