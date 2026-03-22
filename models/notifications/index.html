@@ -1647,7 +1647,7 @@
 <h1 id="itdpy">ITDpy<a class="headerlink" href="#itdpy" title="Permanent link">&para;</a></h1>
 <h2 id="notification">Модель Notification<a class="headerlink" href="#notification" title="Permanent link">&para;</a></h2>
 <h3 id="notification_1">Пример ответа Notification<a class="headerlink" href="#notification_1" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;08007db7-b4da-4f45-a365-2ace3a57987f&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;follow&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;targetType&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
@@ -1664,17 +1664,62 @@
 <span class="w">      </span><span class="nt">&quot;read&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="p">}</span>
 </code></pre></div>
-|Поле|Тип|Описание|
-|--|--|--|
-|id|str|ID уведомления|
-|type|str|Тип события (<code>like</code>, <code>comment</code>, <code>reply</code>, <code>follow</code> и др.)|
-|target_type|str|Откуда уведомление, например <code>post</code> и др.|
-|target_id|str|ID к источнику из <code>target_type</code>|
-|preview|str|Краткий текст уведомление|
-|read|bool|Прочитано ли уведомление|
-|read_at|str|Время прочтение|
-|created_at|str|Дата создание уведомление |
-|actor|<a href="../actor/">Actor</a>|Модель Actor|</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>str</td>
+<td>ID уведомления</td>
+</tr>
+<tr>
+<td>type</td>
+<td>str</td>
+<td>Тип события (<code>like</code>, <code>comment</code>, <code>reply</code>, <code>follow</code> и др.)</td>
+</tr>
+<tr>
+<td>target_type</td>
+<td>str</td>
+<td>Откуда уведомление, например <code>post</code> и др.</td>
+</tr>
+<tr>
+<td>target_id</td>
+<td>str</td>
+<td>ID к источнику из <code>target_type</code></td>
+</tr>
+<tr>
+<td>preview</td>
+<td>str</td>
+<td>Краткий текст уведомление</td>
+</tr>
+<tr>
+<td>read</td>
+<td>bool</td>
+<td>Прочитано ли уведомление</td>
+</tr>
+<tr>
+<td>read_at</td>
+<td>str</td>
+<td>Время прочтение</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>str</td>
+<td>Дата создание уведомление</td>
+</tr>
+<tr>
+<td>actor</td>
+<td><a href="../actor/">Actor</a></td>
+<td>Модель Actor</td>
+</tr>
+</tbody>
+</table>
 <h2 id="_1">Пример использование:<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="n">notifications</span>  <span class="o">=</span>  <span class="n">client</span><span class="o">.</span><span class="n">get_notifications</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 
