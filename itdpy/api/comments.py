@@ -17,7 +17,7 @@ class CommentsAPI(BaseAPI):
         post_id: str,
         *,
         limit: int = 20,
-        sort: CommentSort = CommentSort.POPULAR,
+        sort: CommentSort | str = CommentSort.POPULAR,
         cursor: Optional[str] = None,
     ) -> CommentsList:
         params = {"limit": limit, "sort": sort.value}
@@ -27,12 +27,37 @@ class CommentsAPI(BaseAPI):
         response = self._get(f"posts/{post_id}/comments", params=params)
         return CommentsList.from_data(response.json())
 
+    def list_replies(
+        self,
+        comment_id: str,
+        *,
+        limit: int = 20,
+        sort: CommentSort | str = CommentSort.NEWEST,
+        cursor: Optional[str] = None,
+    ) -> CommentsList:
+        params = {"limit": limit, "sort": sort.value}
+        if cursor is not None:
+            params["cursor"] = cursor
+
+        response = self._get(f"comments/{comment_id}/replies", params=params)
+        return CommentsList.from_data(response.json())
+
+    def get_replies(
+        self,
+        comment_id: str,
+        *,
+        limit: int = 20,
+        sort: CommentSort | str = CommentSort.NEWEST,
+        cursor: Optional[str] = None,
+    ) -> CommentsList:
+        return self.list_replies(comment_id, limit=limit, sort=sort, cursor=cursor)
+
     def list_all(
         self,
         post_id: str,
         *,
         limit: int = 50,
-        sort: CommentSort = CommentSort.POPULAR,
+        sort: CommentSort | str = CommentSort.POPULAR,
     ) -> CommentsList:
         if limit <= 0:
             return CommentsList([], total=0, next_cursor=None, has_more=False)

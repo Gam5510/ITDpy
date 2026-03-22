@@ -1,4 +1,4 @@
-from typing import List, Optional
+﻿from typing import List, Optional
 
 from ..api.base import BaseAPI
 from ..enums import PostsTab, UserPostSorting
@@ -40,15 +40,16 @@ class PostsAPI(BaseAPI):
 
         data["options"] = normalized_options
         return data
-
     def list(
         self,
         *,
         limit: int = 20,
-        tab: PostsTab = PostsTab.POPULAR,
+        tab: PostsTab | str = PostsTab.POPULAR,
         cursor: Optional[int] = None,
     ) -> PostsList:
-        params = {"limit": limit, "tab": tab.value}
+        tab_value = tab.value if isinstance(tab, PostsTab) else str(tab)
+
+        params = {"limit": limit, "tab": tab_value}
         if cursor is not None:
             params["cursor"] = cursor
 
@@ -59,7 +60,7 @@ class PostsAPI(BaseAPI):
         self,
         *,
         limit: int = 50,
-        tab: PostsTab = PostsTab.POPULAR,
+        tab: PostsTab | str = PostsTab.POPULAR,
     ) -> PostsList:
         if limit <= 0:
             return PostsList([], cursor=None, has_more=False)
@@ -189,7 +190,7 @@ class PostsAPI(BaseAPI):
         username: str,
         *,
         limit: int = 20,
-        sort: UserPostSorting = UserPostSorting.NEW,
+        sort: UserPostSorting | str = UserPostSorting.NEW,
         cursor: Optional[str] = None,
     ) -> PostsList:
         params = {"limit": limit, "sort": sort.value}
@@ -204,7 +205,7 @@ class PostsAPI(BaseAPI):
         username: str,
         *,
         limit: int = 50,
-        sort: UserPostSorting = UserPostSorting.NEW,
+        sort: UserPostSorting | str = UserPostSorting.NEW,
     ) -> PostsList:
         if limit <= 0:
             return PostsList([], cursor=None, has_more=False)

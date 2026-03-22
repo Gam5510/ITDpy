@@ -13,6 +13,19 @@ Python SDK для социальной сети итд.com.
 > ⚠️ Неофициальный API-клиент.  
 > SDK предназначен для разработки клиентских приложений и тестирования API в рамках действующих правил платформы.
 
+## 🔒 Безопасность и использование
+
+ITDpy использует собственный User-Agent, в котором указывается версия SDK,
+а также может быть указано имя сервиса.
+
+Это сделано для:
+
+- повышения безопасности
+- предотвращения злоупотреблений
+- более корректного и легального использования API платформы
+
+Это стандартная практика для SDK и не влияет на обычное использование библиотеки.
+
 ## Установка
 
 ```bash
@@ -196,6 +209,40 @@ post = client.posts.post_to_wall(
 client.close()
 client.posts.list()# -> RuntimeError
 ```
+
+### Config библиотеки
+
+```python
+from itdpy import ITDClient, Config
+
+config = Config(
+    timeout=30,
+    upload_timeout=180,
+    max_retries=5,
+    backoff_factor=2.0,
+)
+
+client = ITDClient(
+    refresh_token="Ваш refresh token",
+    config=config,
+)
+```
+
+### Имя сервиса
+
+Можно указать имя вашего приложения или сервиса через `Config.service`:
+
+```python
+from itdpy import ITDClient, Config
+
+config = Config(service="my_app")
+client = ITDClient(
+    refresh_token="Ваш refresh token",
+    config=config,
+)
+```
+
+SDK автоматически добавит это значение в `User-Agent`.
 
 ## Прочее
 

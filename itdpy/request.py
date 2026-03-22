@@ -63,7 +63,6 @@ class RequestHandler:
         
         if timeout is None:
             timeout = self.config.upload_timeout if files else self.config.timeout
-        
         try:
             response = self.session.request(
                 method=method.upper(),

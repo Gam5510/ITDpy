@@ -29,3 +29,6 @@ class ContentError(ITDError):
 
 class BlockedUserError(ITDError):
     pass
+
+class ITDAttributeError(Exception):
+    pass

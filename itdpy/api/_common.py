@@ -1,11 +1,9 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from typing import Iterable, Sequence
+from typing import Sequence
 from urllib.parse import urlencode
 
-
 def normalize_id_list(values: Sequence[str] | str | None) -> list[str]:
-
     if values is None:
         return []
     if isinstance(values, str):
@@ -20,3 +18,10 @@ def truthy_response_status(status_code: int) -> bool:
 def build_query(params: dict[str, object]) -> str:
     clean = {k: v for k, v in params.items() if v is not None}
     return urlencode(clean)
+
+
+__all__ = [
+    "build_query",
+    "normalize_id_list",
+    "truthy_response_status",
+]

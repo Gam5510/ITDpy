@@ -4,7 +4,6 @@ from ..api.base import BaseAPI
 from ..enums import AccessType
 from ..models import FollowStatusItem, NotificationSettings, PrivacySettings, User, UsersList
 
-
 class UsersAPI(BaseAPI):
     def me(self) -> User:
         response = self._get("users/me")
@@ -67,8 +66,8 @@ class UsersAPI(BaseAPI):
         self,
         *,
         is_private: Optional[bool] = None,
-        wall_access: Optional[AccessType] = None,
-        likes_visibility: Optional[AccessType] = None,
+        wall_access: Optional[AccessType | str] = None,
+        likes_visibility: Optional[AccessType | str] = None,
         show_last_seen: Optional[bool] = None,
     ) -> PrivacySettings:
         payload = {}
@@ -76,10 +75,12 @@ class UsersAPI(BaseAPI):
             payload["isPrivate"] = is_private
 
         if wall_access is not None:
-            payload["wallAccess"] = wall_access.value
+            payload["wallAccess"] = wall_access.value if isinstance(wall_access, AccessType) else str(wall_access)
 
         if likes_visibility is not None:
-            payload["likesVisibility"] = likes_visibility.value
+            payload["likesVisibility"] = (
+                likes_visibility.value if isinstance(likes_visibility, AccessType) else str(likes_visibility)
+            )
 
         if show_last_seen is not None:
             payload["showLastSeen"] = show_last_seen
