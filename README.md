@@ -4,10 +4,14 @@
   <img src="https://i.postimg.cc/gJ9z8RDk/ITDpy-(1)-pixian-ai.png" width="700">
 </p>
 
-![PyPI version](https://img.shields.io/pypi/v/itdpy?nocache=1)
-![Downloads](https://static.pepy.tech/badge/itdpy?nocache=1)
-![License](https://img.shields.io/github/license/Gam5510/ITDpy)
-[![Docs](https://img.shields.io/badge/docs-online-blue)](https://gam5510.github.io/ITDpy/)
+<p align="center">
+  <img src="https://img.shields.io/pypi/v/itdpy?nocache=1" alt="PyPI version">
+  <img src="https://static.pepy.tech/badge/itdpy?nocache=1" alt="Downloads">
+  <img src="https://img.shields.io/github/license/Gam5510/ITDpy" alt="License">
+  <a href="https://gam5510.github.io/ITDpy/">
+    <img src="https://img.shields.io/badge/docs-online-blue" alt="Docs">
+  </a>
+</p>
 
 Python SDK для социальной сети итд.com.
 
@@ -64,6 +68,7 @@ pip install -e .
 ## Документация
 
 [![Docs](https://img.shields.io/badge/docs-online-blue)](https://gam5510.github.io/ITDpy/)
+[https://gam5510.github.io/ITDpy/](https://gam5510.github.io/ITDpy/) 
 
 ## Быстрый старт
 
