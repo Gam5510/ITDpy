@@ -12,13 +12,13 @@
         <meta name="author" content="Gam5510">
       
       
-        <link rel="canonical" href="https://gam5510.github.io/ITDpy/streaming/">
+        <link rel="canonical" href="https://gam5510.github.io/ITDpy/config/">
       
       
-        <link rel="prev" href="../api/">
+        <link rel="prev" href="../quickstart/">
       
       
-        <link rel="next" href="../formatting/">
+        <link rel="next" href="../MIGRATION/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Streaming (SSE) - ITDpy</title>
+        <title>Config - ITDpy</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#streaming" class="md-skip">
+        <a href="#config" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Streaming (SSE)
+              Config
             
           </span>
         </div>
@@ -264,9 +264,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../config/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -359,11 +361,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../streaming/" class="md-tabs__link">
         
   
   
@@ -537,10 +537,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../config/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -556,6 +583,258 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Базовый пример
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Все поля Config
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Описание полей
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Описание полей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base_url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        base_url
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload_timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        upload_timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#max_retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        max_retries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backoff_factor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        backoff_factor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdk_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sdk_version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initial_user_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        initial_user_agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom_user_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        custom_user_agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_agent_template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_agent_template
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use_user_data_in_user_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        use_user_data_in_user_agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как работает User-Agent в библиотеке
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекомендуемые сценарии
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендуемые сценарии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обычное использование
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-agent_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Свой User-Agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-agent_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User-Agent с данными сервиса и пользователя
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что выбрать
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -672,37 +951,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Streaming (SSE)
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../streaming/" class="md-nav__link">
         
   
   
@@ -718,92 +970,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#for" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Итерация через for
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#callback" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Callback стиль
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Фильтрация по типу уведомления
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Остановка
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#keep_online" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        keep_online
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#stream" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Что умеет stream
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1656,32 +1822,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#for" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Итерация через for
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#callback" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Callback стиль
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Фильтрация по типу уведомления
+        Базовый пример
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Все поля Config
       
     </span>
   </a>
@@ -1692,7 +1847,145 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Остановка
+        Описание полей
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Описание полей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base_url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        base_url
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload_timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        upload_timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#max_retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        max_retries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backoff_factor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        backoff_factor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdk_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sdk_version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initial_user_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        initial_user_agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom_user_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        custom_user_agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_agent_template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_agent_template
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use_user_data_in_user_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        use_user_data_in_user_agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как работает User-Agent в библиотеке
       
     </span>
   </a>
@@ -1700,21 +1993,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#keep_online" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        keep_online
+        Рекомендуемые сценарии
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендуемые сценарии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обычное использование
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#stream" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#user-agent_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Что умеет stream
+        Свой User-Agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-agent_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User-Agent с данными сервиса и пользователя
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что выбрать
       
     </span>
   </a>
@@ -1741,49 +2073,191 @@
   
 
 
-<h1 id="streaming">Streaming<a class="headerlink" href="#streaming" title="Permanent link">&para;</a></h1>
-<p><code>itdpy</code> поддерживает sync SSE streaming для уведомлений.</p>
-<h2 id="for">Итерация через <code>for</code><a class="headerlink" href="#for" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">notifications</span><span class="o">.</span><span class="n">stream</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">event</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="callback">Callback стиль<a class="headerlink" href="#callback" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">notifications</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+<h1 id="config">Config<a class="headerlink" href="#config" title="Permanent link">&para;</a></h1>
+<p><code>Config</code> управляет сетевыми настройками клиента, ретраями, таймаутами и поведением <code>User-Agent</code>.</p>
+<h2 id="_1">Базовый пример<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">ITDClient</span>
 
-<span class="nd">@stream</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;connected&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">on_connected</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">upload_timeout</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>
+    <span class="n">max_retries</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">backoff_factor</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="nd">@stream</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;notification&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">on_notification</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-
-<span class="n">stream</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-</code></pre></div>
-<h2 id="_1">Фильтрация по типу уведомления<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotificationType</span>
-
-<span class="nd">@stream</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;notification&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">NotificationType</span><span class="o">.</span><span class="n">LIKE</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">on_like</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="_2">Остановка<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">stream</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-</code></pre></div>
-<h2 id="keep_online">keep_online<a class="headerlink" href="#keep_online" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">keep_online</span><span class="p">(</span>
-    <span class="n">on_event</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event_type</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">event_type</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
-    <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ITDClient</span><span class="p">(</span>
+    <span class="n">refresh_token</span><span class="o">=</span><span class="s2">&quot;YOUR_REFRESH_TOKEN&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-<h2 id="stream">Что умеет stream<a class="headerlink" href="#stream" title="Permanent link">&para;</a></h2>
+<h2 id="config_1">Все поля Config<a class="headerlink" href="#config_1" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://xn--d1ah4a.com&quot;</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">upload_timeout</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+    <span class="n">max_retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">backoff_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+    <span class="n">sdk_version</span><span class="o">=</span><span class="s2">&quot;1.0.2&quot;</span><span class="p">,</span>
+    <span class="n">service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">initial_user_agent</span><span class="o">=</span><span class="p">(</span>
+        <span class="s2">&quot;Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) &quot;</span>
+        <span class="s2">&quot;AppleWebKit/537.36 (KHTML, like Gecko) &quot;</span>
+        <span class="s2">&quot;Chrome/146.0.0.0 Mobile Safari/537.36&quot;</span>
+    <span class="p">),</span>
+    <span class="n">custom_user_agent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">user_agent_template</span><span class="o">=</span><span class="s2">&quot;itdpy/</span><span class="si">{sdk_version}</span><span class="s2"> (</span><span class="si">{parts}</span><span class="s2">)&quot;</span><span class="p">,</span>
+    <span class="n">use_user_data_in_user_agent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="_2">Описание полей<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="base_url"><code>base_url</code><a class="headerlink" href="#base_url" title="Permanent link">&para;</a></h3>
+<p>Базовый адрес API.</p>
+<p>По умолчанию:</p>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;https://xn--d1ah4a.com&quot;</span>
+</code></pre></div>
+<p>Обычно менять не нужно. Поле пригодится только если у тебя есть тестовый стенд, прокси или отдельный gateway.</p>
+<h3 id="timeout"><code>timeout</code><a class="headerlink" href="#timeout" title="Permanent link">&para;</a></h3>
+<p>Таймаут обычных запросов в секундах.</p>
+<p>По умолчанию:</p>
+<div class="highlight"><pre><span></span><code><span class="mi">20</span>
+</code></pre></div>
+<p>Используется для стандартных API-вызовов, где нет загрузки файлов.</p>
+<h3 id="upload_timeout"><code>upload_timeout</code><a class="headerlink" href="#upload_timeout" title="Permanent link">&para;</a></h3>
+<p>Таймаут загрузки файлов в секундах.</p>
+<p>По умолчанию:</p>
+<div class="highlight"><pre><span></span><code><span class="mi">120</span>
+</code></pre></div>
+<p>Нужен отдельно, потому что upload-запросы могут идти заметно дольше обычных.</p>
+<h3 id="max_retries"><code>max_retries</code><a class="headerlink" href="#max_retries" title="Permanent link">&para;</a></h3>
+<p>Количество автоматических повторов для временных сетевых ошибок и ответов сервера <code>500</code>, <code>502</code>, <code>503</code>, <code>504</code>.</p>
+<p>По умолчанию:</p>
+<div class="highlight"><pre><span></span><code><span class="mi">3</span>
+</code></pre></div>
+<p>Если API иногда отвечает нестабильно, это поле помогает пережить кратковременные сбои без ручной логики повтора.</p>
+<h3 id="backoff_factor"><code>backoff_factor</code><a class="headerlink" href="#backoff_factor" title="Permanent link">&para;</a></h3>
+<p>Коэффициент задержки между повторами.</p>
+<p>По умолчанию:</p>
+<div class="highlight"><pre><span></span><code><span class="mf">1.5</span>
+</code></pre></div>
+<p>Чем больше значение, тем осторожнее библиотека ведёт себя при повторных попытках.</p>
+<h3 id="sdk_version"><code>sdk_version</code><a class="headerlink" href="#sdk_version" title="Permanent link">&para;</a></h3>
+<p>Версия SDK, которая может использоваться в шаблоне <code>User-Agent</code>.</p>
+<p>По умолчанию:</p>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;1.0.2&quot;</span>
+</code></pre></div>
+<p>Обычно вручную не задаётся.</p>
+<h3 id="service"><code>service</code><a class="headerlink" href="#service" title="Permanent link">&para;</a></h3>
+<p>Имя твоего приложения или сервиса.</p>
+<p>Пример:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Config</span><span class="p">(</span><span class="n">service</span><span class="o">=</span><span class="s2">&quot;my_app&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Это поле используется только если включён режим <code>use_user_data_in_user_agent=True</code> или если ты сам используешь его в <code>user_agent_template</code>.</p>
+<h3 id="initial_user_agent"><code>initial_user_agent</code><a class="headerlink" href="#initial_user_agent" title="Permanent link">&para;</a></h3>
+<p>Стартовый <code>User-Agent</code>, который библиотека использует по умолчанию.</p>
+<p>По умолчанию:</p>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36&quot;</span>
+</code></pre></div>
+<p>Это не декоративная настройка, а вынужденная мера совместимости.</p>
+<p>Причина:</p>
 <ul>
-<li>sync loop</li>
-<li>callbacks</li>
-<li>авто-реконнект</li>
-<li>exponential backoff</li>
-<li>игнор <code>ping</code></li>
-<li>парсинг <code>connected</code> и <code>notification</code></li>
+<li>refresh-запрос к API может не работать с дефолтным <code>python-requests/...</code></li>
+<li>сервер может воспринимать такой запрос как бот</li>
+<li>без браузерного стартового профиля аутентификация может ломаться</li>
+</ul>
+<p>ITDpy использует этот стартовый <code>User-Agent</code>, чтобы библиотека работала стабильно.</p>
+<p>Проект не поддерживает спам, абьюз API и вредоносную автоматизацию. Эта настройка нужна только для совместимости клиентских и сервисных сценариев.</p>
+<h3 id="custom_user_agent"><code>custom_user_agent</code><a class="headerlink" href="#custom_user_agent" title="Permanent link">&para;</a></h3>
+<p>Полностью переопределяет <code>User-Agent</code>.</p>
+<p>Пример:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Config</span><span class="p">(</span><span class="n">custom_user_agent</span><span class="o">=</span><span class="s2">&quot;my-app/2.0&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Если поле задано, библиотека будет использовать именно его вместо <code>initial_user_agent</code> и вместо шаблонного SDK <code>User-Agent</code>.</p>
+<p>Это самый прямой способ задать собственный <code>User-Agent</code>.</p>
+<h3 id="user_agent_template"><code>user_agent_template</code><a class="headerlink" href="#user_agent_template" title="Permanent link">&para;</a></h3>
+<p>Шаблон <code>User-Agent</code>, который используется после авторизации, если включён <code>use_user_data_in_user_agent=True</code>.</p>
+<p>По умолчанию:</p>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;itdpy/</span><span class="si">{sdk_version}</span><span class="s2"> (</span><span class="si">{parts}</span><span class="s2">)&quot;</span>
+</code></pre></div>
+<p>Доступные плейсхолдеры:</p>
+<ul>
+<li><code>{sdk_version}</code></li>
+<li><code>{parts}</code></li>
+<li><code>{user_id}</code></li>
+<li><code>{service}</code></li>
+</ul>
+<p>Пример:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Config</span><span class="p">(</span>
+    <span class="n">use_user_data_in_user_agent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">user_agent_template</span><span class="o">=</span><span class="s2">&quot;itdpy/</span><span class="si">{sdk_version}</span><span class="s2"> (uid=</span><span class="si">{user_id}</span><span class="s2">; </span><span class="si">{parts}</span><span class="s2">; service=</span><span class="si">{service}</span><span class="s2">)&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="use_user_data_in_user_agent"><code>use_user_data_in_user_agent</code><a class="headerlink" href="#use_user_data_in_user_agent" title="Permanent link">&para;</a></h3>
+<p>Флаг, который включает переключение на <code>User-Agent</code> с данными пользователя после успешной авторизации.</p>
+<p>По умолчанию:</p>
+<div class="highlight"><pre><span></span><code><span class="kc">False</span>
+</code></pre></div>
+<p>Когда флаг выключен:</p>
+<ul>
+<li>библиотека продолжает использовать <code>initial_user_agent</code></li>
+<li>это самый безопасный режим совместимости</li>
+</ul>
+<p>Когда флаг включен:</p>
+<ul>
+<li>после <code>users/me</code> библиотека собирает новый <code>User-Agent</code></li>
+<li>в него могут попасть <code>userid</code>, <code>platform=python</code> и <code>service</code></li>
+</ul>
+<p>Пример:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">ITDClient</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+    <span class="n">service</span><span class="o">=</span><span class="s2">&quot;my_app&quot;</span><span class="p">,</span>
+    <span class="n">use_user_data_in_user_agent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ITDClient</span><span class="p">(</span>
+    <span class="n">refresh_token</span><span class="o">=</span><span class="s2">&quot;YOUR_REFRESH_TOKEN&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="user-agent">Как работает User-Agent в библиотеке<a class="headerlink" href="#user-agent" title="Permanent link">&para;</a></h2>
+<p>Логика такая:</p>
+<ol>
+<li>При создании сессии библиотека ставит стартовый <code>User-Agent</code>.</li>
+<li>Если задан <code>custom_user_agent</code>, используется он.</li>
+<li>Если <code>custom_user_agent</code> не задан, используется <code>initial_user_agent</code>.</li>
+<li>Если включён <code>use_user_data_in_user_agent=True</code>, после авторизации <code>User-Agent</code> обновляется по шаблону <code>user_agent_template</code>.</li>
+</ol>
+<h2 id="_3">Рекомендуемые сценарии<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="_4">Обычное использование<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>Ничего дополнительно настраивать не нужно:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ITDClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ITDClient</span><span class="p">(</span><span class="n">refresh_token</span><span class="o">=</span><span class="s2">&quot;YOUR_REFRESH_TOKEN&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>В этом режиме библиотека использует безопасный стартовый браузерный <code>User-Agent</code>.</p>
+<h3 id="user-agent_1">Свой User-Agent<a class="headerlink" href="#user-agent_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">ITDClient</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">custom_user_agent</span><span class="o">=</span><span class="s2">&quot;my-app/2.0&quot;</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ITDClient</span><span class="p">(</span><span class="n">refresh_token</span><span class="o">=</span><span class="s2">&quot;YOUR_REFRESH_TOKEN&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="user-agent_2">User-Agent с данными сервиса и пользователя<a class="headerlink" href="#user-agent_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">ITDClient</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+    <span class="n">service</span><span class="o">=</span><span class="s2">&quot;my_app&quot;</span><span class="p">,</span>
+    <span class="n">use_user_data_in_user_agent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ITDClient</span><span class="p">(</span><span class="n">refresh_token</span><span class="o">=</span><span class="s2">&quot;YOUR_REFRESH_TOKEN&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="_5">Что выбрать<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Если тебе нужна просто рабочая библиотека, используй настройки по умолчанию.</li>
+<li>Если у тебя свой сервис и нужен собственный идентификатор клиента, используй <code>custom_user_agent</code>.</li>
+<li>Если тебе нужен шаблонный SDK <code>User-Agent</code> с <code>userid/service</code>, включай <code>use_user_data_in_user_agent=True</code>.</li>
 </ul>
 
 
