@@ -68,7 +68,8 @@ pip install -e .
 ## Документация
 
 [![Docs](https://img.shields.io/badge/docs-online-blue)](https://gam5510.github.io/ITDpy/)
-[https://gam5510.github.io/ITDpy/](https://gam5510.github.io/ITDpy/) 
+
+Ссылка: [https://gam5510.github.io/ITDpy/](https://gam5510.github.io/ITDpy/) 
 
 ## Быстрый старт
 
