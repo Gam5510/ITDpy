@@ -11,9 +11,9 @@ class Config:
     sdk_version: str = "1.0.2"
     service: str | None = None
     initial_user_agent: str = (
-        "Mozilla/5.0 (Linux; Android 10; K)"
-        "AppleWebKit/537.36 (KHTML, like Gecko)" 
-        "Chrome/122.0.0.0 Mobile Safari/537.36"
+        "Mozilla/5.0 (Linux; Android 11; SM-G991B)"
+        "AppleWebKit/537.36 (KHTML, like Gecko)"
+        "Chrome/120.0.6099.144 Mobile Safari/537.36"
     )
     custom_user_agent: str | None = None
     user_agent_template: str = "itdpy/{sdk_version} ({parts})"
