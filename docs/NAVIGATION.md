@@ -4,7 +4,8 @@
 
 - [Главная](index.md)
 - [Быстрый старт](quickstart.md)
-- [Миграция 0.x → 1.x](MIGRATION.md)
+- [Config](config.md)
+- [Миграция 0.x -> 1.x](MIGRATION.md)
 - [Модели в SDK](models.md)
 - [Обзор API](api.md)
 - [Streaming (SSE)](streaming.md)
@@ -39,4 +40,3 @@
 - [Posts](models/posts.md)
 - [Settings](models/settings.md)
 - [Users](models/users.md)
-

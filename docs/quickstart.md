@@ -5,12 +5,17 @@
 ```bash
 pip install itdpy
 ```
+
+## Как получить refresh token
+
 > ![Получение токена](https://i.ibb.co/DH1m8GL7/Assistant.png)
 > Как получить токен
 
-- Открой итд.com в браузере и войди в аккаунт
-- Открой DevTools (F12) → Application → Cookies
-- Найди куку refresh_token и скопируй значение
+- Открой `итд.com` в браузере и войди в аккаунт.
+- Открой DevTools.
+- Перейди в `Application` -> `Cookies`.
+- Найди cookie `refresh_token`.
+- Скопируй её значение.
 
 ## Инициализация клиента
 
@@ -20,10 +25,10 @@ from itdpy import ITDClient
 client = ITDClient(refresh_token="YOUR_REFRESH_TOKEN")
 ```
 
-## Config библиотеки
+## Config
 
 ```python
-from itdpy import ITDClient, Config
+from itdpy import Config, ITDClient
 
 config = Config(
     timeout=30,
@@ -38,21 +43,27 @@ client = ITDClient(
 )
 ```
 
-## Имя сервиса
+Подробное описание всех параметров:
+
+- [Config](config.md)
+
+## Service name
 
 ```python
-from itdpy import ITDClient, Config
+from itdpy import Config, ITDClient
 
-config = Config(service="my_app")
+config = Config(
+    service="my_app",
+    use_user_data_in_user_agent=True,
+)
+
 client = ITDClient(
     refresh_token="YOUR_REFRESH_TOKEN",
     config=config,
 )
 ```
 
-SDK добавит `service=my_app` в `User-Agent`.
-
-## Получить себя
+## Получить свой профиль
 
 ```python
 me = client.users.me()
@@ -80,7 +91,7 @@ post = client.posts.create(content="Привет из itdpy")
 print(post.id)
 ```
 
-## Закрыть клиента
+## Закрыть клиент
 
 ```python
 client.close()

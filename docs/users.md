@@ -77,4 +77,3 @@ settings = client.users.update_notification_settings(
 client.users.block("username")
 client.users.unblock("username")
 ```
-

@@ -40,14 +40,7 @@ class ITDClient:
             name="refresh_token",
             value=self._refresh_token,
             domain="xn--d1ah4a.com",
-            path="/api",
-        )
-
-        self._request_handler.session.headers.update(
-            {
-                "Origin": self.config.base_url,
-                "Referer": f"{self.config.base_url}/",
-            }
+            path="/",
         )
 
     def _authenticate(self) -> None:
@@ -73,6 +66,14 @@ class ITDClient:
         self._update_user_agent()
 
     def _update_user_agent(self) -> None:
+        if self.config.custom_user_agent:
+            self._request_handler.session.headers["User-Agent"] = self.config.custom_user_agent
+            return
+
+        if not self.config.use_user_data_in_user_agent:
+            self._request_handler.session.headers["User-Agent"] = self.config.initial_user_agent
+            return
+
         parts = [f"platform=python"]
         if self._user_id:
             parts.insert(0, f"userid={self._user_id}")
@@ -81,7 +82,12 @@ class ITDClient:
         if self.config.service:
             parts.append(f"service={self.config.service}")
 
-        user_agent = f"itdpy/{self.config.sdk_version} ({'; '.join(parts)})"
+        user_agent = self.config.user_agent_template.format(
+            sdk_version=self.config.sdk_version,
+            parts="; ".join(parts),
+            user_id=self._user_id or "",
+            service=self.config.service or "",
+        )
         self._request_handler.session.headers["User-Agent"] = user_agent
 
     @property

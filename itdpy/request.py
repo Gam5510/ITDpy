@@ -37,8 +37,22 @@ class RequestHandler:
         adapter = HTTPAdapter(max_retries=retry_strategy)
         session.mount("http://", adapter)
         session.mount("https://", adapter)
+
+        session.headers.update(self._build_default_headers())
         
         return session
+
+    def _build_default_headers(self) -> dict[str, str]:
+        return {
+            "User-Agent": self._build_initial_user_agent(),
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Origin": self.config.base_url,
+            "Referer": f"{self.config.base_url}/",
+        }
+
+    def _build_initial_user_agent(self) -> str:
+        return self.config.custom_user_agent or self.config.initial_user_agent
     
     def request(
         self,

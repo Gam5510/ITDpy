@@ -66,6 +66,7 @@ extra_css:
 nav:
   - Home: index.md
   - Getting Started: quickstart.md
+  - Config: config.md
   - Migration 0.x to 1.x: MIGRATION.md
   - Navigation: NAVIGATION.md
   - Models type: models.md

@@ -10,3 +10,11 @@ class Config:
     backoff_factor: float = 1.5
     sdk_version: str = "1.0.2"
     service: str | None = None
+    initial_user_agent: str = (
+        "Mozilla/5.0 (Linux; Android 10; K)"
+        "AppleWebKit/537.36 (KHTML, like Gecko)" 
+        "Chrome/122.0.0.0 Mobile Safari/537.36"
+    )
+    custom_user_agent: str | None = None
+    user_agent_template: str = "itdpy/{sdk_version} ({parts})"
+    use_user_data_in_user_agent: bool = False

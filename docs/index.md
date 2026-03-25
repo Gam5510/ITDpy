@@ -8,21 +8,22 @@
 ![Downloads](https://static.pepy.tech/badge/itdpy?nocache=1)
 ![License](https://img.shields.io/github/license/Gam5510/ITDpy)
 
-Python SDK для социальной сети итд.com.
+Python SDK для итд.com API.
 
-Основные возможности:
+## Основные возможности
 
-- объектные Pydantic-модели
+- объектные модели на Pydantic
 - dict-like и JSON-like доступ к данным
 - list-like ответы для коллекций
-- polling и `PollBuilder`
+- PollBuilder
 - sync SSE streaming
-- типизированные enums
-- нормальная классификация ошибок
+- enums
+- нормальная типизация ошибок
 
 ## Быстрые ссылки
 
 - [Быстрый старт](quickstart.md)
+- [Config](config.md)
 - [Обзор API](api.md)
 - [Модели в SDK](models.md)
 - [Streaming](streaming.md)
@@ -41,4 +42,3 @@ print(posts.first())
 
 client.close()
 ```
-
