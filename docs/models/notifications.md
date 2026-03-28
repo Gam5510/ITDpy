@@ -25,7 +25,7 @@
 |Поле|Тип|Описание|
 |--|--|--|
 |id|str|ID уведомления|
-|type|str|Тип события (`like`, `comment`, `reply`, `follow` и др.)|
+|type|str|Тип события (`like`, `comment`, `reply`, `repost`, `follow`, `wall_post` и др.)|
 |target_type|str|Откуда уведомление, например `post` и др.|
 |target_id|str|ID к источнику из `target_type`|
 |preview|str|Краткий текст уведомление|

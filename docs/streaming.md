@@ -35,6 +35,8 @@ def on_like(event):
     print(event.data)
 ```
 
+Доступные значения `NotificationType`: `LIKE`, `COMMENT`, `REPLY`, `REPOST`, `FOLLOW`, `WALL_POST`.
+
 ## Остановка
 
 ```python

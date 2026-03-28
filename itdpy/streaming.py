@@ -45,6 +45,7 @@ class NotificationStream:
         self._stopped = False
         self._last_event_id: str | None = None
         self._handlers: dict[str, list[_HandlerSubscription]] = {}
+        self._active_response: requests.Response | None = None
 
     def on(
         self,
@@ -64,17 +65,23 @@ class NotificationStream:
 
     def stop(self) -> None:
         self._stopped = True
+        self._close_active_response()
 
     def run(self) -> None:
-        for _ in self:
-            pass
+        try:
+            for _ in self:
+                pass
+        except KeyboardInterrupt:
+            self.stop()
 
     def __iter__(self) -> Iterator[StreamEvent]:
         backoff = 1
 
         while not self._stopped:
+            response: requests.Response | None = None
             try:
                 response = self._connect()
+                self._active_response = response
                 backoff = 1
 
                 client = self._create_sse_client(response)
@@ -89,7 +96,9 @@ class NotificationStream:
 
                     self._dispatch(parsed_event)
                     yield parsed_event
-
+            except KeyboardInterrupt:
+                self.stop()
+                return
             except requests.RequestException as exc:
                 error_event = StreamEvent(event="error", data={"message": str(exc)})
                 self._dispatch(error_event)
@@ -98,6 +107,11 @@ class NotificationStream:
                 error_event = StreamEvent(event="error", data={"message": str(exc)})
                 self._dispatch(error_event)
                 yield error_event
+            finally:
+                if response is not None:
+                    response.close()
+                if self._active_response is response:
+                    self._active_response = None
 
             if self._stopped:
                 break
@@ -105,7 +119,11 @@ class NotificationStream:
             reconnect_event = StreamEvent(event="reconnecting", data={"delay": backoff})
             self._dispatch(reconnect_event)
             yield reconnect_event
-            time.sleep(backoff)
+            try:
+                time.sleep(backoff)
+            except KeyboardInterrupt:
+                self.stop()
+                break
             backoff = min(self._next_backoff(backoff), self._max_backoff)
 
     def _connect(self) -> requests.Response:
@@ -189,3 +207,12 @@ class NotificationStream:
         if current < 5:
             return 5
         return current * 2
+
+    def _close_active_response(self) -> None:
+        if self._active_response is None:
+            return
+
+        try:
+            self._active_response.close()
+        finally:
+            self._active_response = None

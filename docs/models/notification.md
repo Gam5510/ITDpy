@@ -37,3 +37,4 @@ print(notification.actor.display_name)
 - `REPLY`
 - `REPOST`
 - `FOLLOW`
+- `WALL_POST`

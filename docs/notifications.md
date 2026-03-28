@@ -42,3 +42,5 @@ def on_notification(event):
 
 stream.run()
 ```
+
+Для фильтрации по типу уведомления используйте `NotificationType`, включая новое значение `NotificationType.WALL_POST`.

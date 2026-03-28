@@ -60,6 +60,7 @@ class NotificationType(str, Enum):
     REPLY = "reply"
     REPOST = "repost"
     FOLLOW = "follow"
+    WALL_POST = "wall_post"
 
 
 class NotificationTargetType(str, Enum):
