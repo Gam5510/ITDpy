@@ -793,7 +793,7 @@
   <a href="#stream" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Что умеет stream
+        События Stream
       
     </span>
   </a>
@@ -1714,7 +1714,7 @@
   <a href="#stream" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Что умеет stream
+        События Stream
       
     </span>
   </a>
@@ -1752,11 +1752,20 @@
 
 <span class="nd">@stream</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;connected&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">on_connected</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connected!&quot;</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
 <span class="nd">@stream</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;notification&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">on_notification</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Got notification:&quot;</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="nd">@stream</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;reconnecting&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_reconnecting</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="n">delay</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;delay&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reconnecting in </span><span class="si">{</span><span class="n">delay</span><span class="si">}</span><span class="s2">s (token refreshed automatically)&quot;</span><span class="p">)</span>
+
+<span class="nd">@stream</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_error</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">stream</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
@@ -1777,15 +1786,38 @@
     <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-<h2 id="stream">Что умеет stream<a class="headerlink" href="#stream" title="Permanent link">&para;</a></h2>
-<ul>
-<li>sync loop</li>
-<li>callbacks</li>
-<li>авто-реконнект</li>
-<li>exponential backoff</li>
-<li>игнор <code>ping</code></li>
-<li>парсинг <code>connected</code> и <code>notification</code></li>
-</ul>
+<h2 id="stream">События Stream<a class="headerlink" href="#stream" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Событие</th>
+<th>Описание</th>
+<th>Данные</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>connected</code></td>
+<td>Успешное подключение</td>
+<td><code>ConnectedEventData</code> (user_id, timestamp)</td>
+</tr>
+<tr>
+<td><code>notification</code></td>
+<td>Новое уведомление</td>
+<td><code>Notification</code> (type, actor, preview)</td>
+</tr>
+<tr>
+<td><code>reconnecting</code></td>
+<td>Переподключение</td>
+<td><code>{"delay": int}</code> (секунды до переподключения)</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>Ошибка</td>
+<td><code>{"message": str}</code></td>
+</tr>
+</tbody>
+</table>
 
 
 
