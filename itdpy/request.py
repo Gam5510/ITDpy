@@ -1,6 +1,6 @@
 import json
 import time
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Callable
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -18,10 +18,16 @@ from .exceptions import (
 
 class RequestHandler:
 
-    def __init__(self, config: Config):
+    def __init__(
+        self,
+        config: Config,
+        on_token_refresh: Optional[Callable[[], str]] = None,
+    ):
         self.config = config
         self.session = self._create_session()
         self._closed = False
+        self._on_token_refresh = on_token_refresh
+        self._token_refresh_in_progress = False
     
     def _create_session(self) -> requests.Session:
         session = requests.Session()
@@ -44,15 +50,12 @@ class RequestHandler:
 
     def _build_default_headers(self) -> dict[str, str]:
         return {
-            "User-Agent": self._build_initial_user_agent(),
+            "User-Agent": self.config.get_user_agent(),
             "Accept": "application/json",
             "Content-Type": "application/json",
             "Origin": self.config.base_url,
             "Referer": f"{self.config.base_url}/",
         }
-
-    def _build_initial_user_agent(self) -> str:
-        return self.config.custom_user_agent or self.config.initial_user_agent
     
     def request(
         self,
@@ -87,6 +90,24 @@ class RequestHandler:
                 headers=headers,
                 timeout=timeout,
             )
+            
+            if response.status_code == 401 and use_auth and access_token and self._on_token_refresh and not self._token_refresh_in_progress:
+                self._token_refresh_in_progress = True
+                try:
+                    new_token = self._on_token_refresh()
+                    
+                    headers["Authorization"] = f"Bearer {new_token}"
+                    response = self.session.request(
+                        method=method.upper(),
+                        url=url,
+                        params=params,
+                        json=json,
+                        files=files,
+                        headers=headers,
+                        timeout=timeout,
+                    )
+                finally:
+                    self._token_refresh_in_progress = False
             
             self._handle_response(response)
             return response
@@ -156,3 +177,6 @@ class RequestHandler:
         if not self._closed:
             self.session.close()
             self._closed = True
+
+    def get_token_refresh_callback(self) -> Optional[Callable[[], str]]:
+        return self._on_token_refresh

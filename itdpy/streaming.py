@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import time
 from dataclasses import dataclass
-from typing import Callable, Iterator
+from typing import Callable, Iterator, Optional
 
 import requests
 
@@ -36,6 +36,7 @@ class NotificationStream:
         endpoint: str = "notifications/stream",
         timeout: int = 60,
         max_backoff: int = 10,
+        on_token_refresh: Optional[Callable[[], str]] = None,
     ):
         self._request = request_handler
         self._access_token = access_token
@@ -46,6 +47,7 @@ class NotificationStream:
         self._last_event_id: str | None = None
         self._handlers: dict[str, list[_HandlerSubscription]] = {}
         self._active_response: requests.Response | None = None
+        self._on_token_refresh = on_token_refresh
 
     def on(
         self,
@@ -118,7 +120,18 @@ class NotificationStream:
 
             reconnect_event = StreamEvent(event="reconnecting", data={"delay": backoff})
             self._dispatch(reconnect_event)
-            yield reconnect_event
+
+            if self._on_token_refresh:
+                try:
+                    self._access_token = self._on_token_refresh()
+                except Exception as exc:
+                    refresh_error_event = StreamEvent(
+                        event="error", 
+                        data={"message": f"Token refresh failed: {str(exc)}"}
+                    )
+                    self._dispatch(refresh_error_event)
+                    yield refresh_error_event
+            
             try:
                 time.sleep(backoff)
             except KeyboardInterrupt:

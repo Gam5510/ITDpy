@@ -13,232 +13,90 @@
   </a>
 </p>
 
-Python SDK для социальной сети итд.com.
+Python SDK для интеграции с платформой ИТД.com.
 
-> Неофициальный API-клиент.
-> SDK предназначен для клиентских приложений, интеграций и сервисов, работающих в рамках правил платформы.
+> SDK предназначен для клиентских приложений, интеграций и сервисов.
+> Проект ориентирован на безопасное, прозрачное и корректное взаимодействие с платформой.
 
-## Безопасность и позиция проекта
+## Принципы безопасности
 
-ITDpy не поддерживает спам, массовую автоматизацию, накрутку, ботов для злоупотреблений и другие сценарии, нарушающие правила платформы.
+ITDpy разработан с акцентом на доверие и соблюдение правил платформы:
 
-Библиотека ориентирована на:
+прозрачная идентификация клиента через User-Agent
+отсутствие маскировки под браузер
+отсутствие обхода ограничений платформы
+соблюдение rate limits и правил API
 
-- клиентские приложения
-- внутренние сервисы
-- интеграции
-- тестирование API
+### SDK не поддерживает:
+
+- спам
+- массовую автоматизацию
+- накрутку
+- любые формы злоупотребления API
 
 ## User-Agent
 
-По умолчанию библиотека использует браузерный User-Agent:
+ITDpy использует фиксированный и прозрачный формат User-Agent:
 
-```text
-Mozilla/5.0 (Linux; Android 11; SM-G991B)
-AppleWebKit/537.36 (KHTML, like Gecko)
-Chrome/120.0.6099.144 Mobile Safari/537.36
-```
+itdpy/{version} (platform=python; type=sdk; service={service})
 
-Это сделано для обеспечения стабильной работы, так как некоторые эндпоинты API могут некорректно обрабатывать нестандартные клиенты.
+- User-Agent не может быть изменён пользователем
+- SDK не имитирует браузеры или мобильные клиенты
+- это позволяет платформе корректно идентифицировать источник трафика
 
-Библиотека не использует User-Agent для обхода ограничений и ориентирована на корректное использование API.
-
-## Установка
-
+## 📦 Установка
 ```bash
 pip install itdpy
 ```
 
-### Через git
-
-```bash
-git clone https://github.com/Gam5510/ITDpy
-cd ITDpy
-pip install -r requirements.txt
-pip install -e .
-```
-
-## Документация
-
-[![Docs](https://img.shields.io/badge/docs-online-blue)](https://gam5510.github.io/ITDpy/)
-
-Ссылка: [https://gam5510.github.io/ITDpy/](https://gam5510.github.io/ITDpy/) 
-
-## Быстрый старт
-
-> ![Получение токена](https://i.ibb.co/DH1m8GL7/Assistant.png)
-> Как получить токен
-
-- Открой `итд.com` в браузере и войди в аккаунт.
-- Открой DevTools (F12).
-- Перейди в `Application` -> `Cookies`.
-- Найди cookie `refresh_token`.
-- Скопируй её значение.
-
+## 🚀 Быстрый старт
 ```python
-from itdpy import ITDClient
+from itdpy import Client
 
-client = ITDClient(refresh_token="YOUR_REFRESH_TOKEN")
+client = Client(refresh_token="YOUR_REFRESH_TOKEN")
 
-me = client.users.me()
+me = client.users.get_me()
 print(me.id)
 print(me.username)
 ```
 
-## Конфигурация
+## ⚙️ Конфигурация
 
 ```python
-from itdpy import ITDClient, Config
+from itdpy import Client, Config
 
 config = Config(
-    timeout=30,
-    upload_timeout=180,
-    max_retries=5,
-    backoff_factor=2.0,
+    service="my_application"
 )
 
-client = ITDClient(
-    refresh_token="YOUR_REFRESH_TOKEN",
-    config=config,
-)
+client = Client(config=config, refresh_token="TOKEN")
 ```
 
-## Кастомный User-Agent
+Доступные параметры:
 
-Если нужен полностью свой `User-Agent`, можно передать его через `Config.custom_user_agent`:
+- `service` — имя вашего сервиса (используется в User-Agent)
+- `timeout` — таймаут запросов
+- `max_retries` — количество повторов
 
-```python
-from itdpy import ITDClient, Config
+## 📚 Документация
 
-config = Config(
-    custom_user_agent="my-app/2.0",
-)
+[https://gam5510.github.io/ITDpy/](https://gam5510.github.io/ITDpy/)
 
-client = ITDClient(
-    refresh_token="YOUR_REFRESH_TOKEN",
-    config=config,
-)
-```
+## ⚠️ Ограничения
 
-Если `custom_user_agent` не задан, библиотека использует стандартный стартовый браузерный `User-Agent`.
+SDK не предназначена для:
 
-## User-Agent с данными пользователя
+- массовых автоматизированных действий
+- обхода ограничений платформы
+- использования в целях, нарушающих правила
 
-Если нужно после авторизации переключиться на `User-Agent` с данными SDK и пользователя, включи `use_user_data_in_user_agent=True`:
+## 🤝 Сотрудничество
 
-```python
-from itdpy import ITDClient, Config
+Проект открыт к взаимодействию с платформой ИТД.com и ориентирован на официальную интеграцию.
 
-config = Config(
-    service="my_app",
-    use_user_data_in_user_agent=True,
-)
+Если вы представляете платформу или хотите обсудить сотрудничество, то свяжитесь через GitHub или Telegram.
 
-client = ITDClient(
-    refresh_token="YOUR_REFRESH_TOKEN",
-    config=config,
-)
-```
+## Обратная связь
 
-По умолчанию этот режим выключен.
-
-Шаблон можно переопределить через `Config.user_agent_template`:
-
-```python
-from itdpy import Config
-
-config = Config(
-    use_user_data_in_user_agent=True,
-    user_agent_template="itdpy/{sdk_version} ({parts})",
-)
-```
-
-Доступные поля шаблона:
-
-- `{sdk_version}`
-- `{parts}`
-- `{user_id}`
-- `{service}`
-
-## Примеры
-
-### Получить пост
-
-```python
-post = client.posts.get("POST_ID")
-print(post.id)
-print(post.to_dict())
-```
-
-### Лента постов
-
-```python
-posts = client.posts.list(limit=10)
-print(len(posts))
-print(posts[0].id)
-```
-
-### Создать пост
-
-```python
-client.posts.create(
-    content="Привет из ITDpy",
-)
-```
-
-### Markdown и HTML
-
-```python
-client.posts.create(
-    content="**Жирный** текст",
-    parse_md=True,
-)
-
-client.posts.create(
-    content="<b>Жирный</b> текст",
-    parse_html=True,
-)
-```
-
-### SSE streaming
-
-```python
-stream = client.notifications.stream()
-
-@stream.on("notification")
-def on_notification(event):
-    print(event.data)
-
-stream.run()
-```
-
-### keep_online
-
-```python
-client.keep_online(
-    on_event=lambda event_type, data: print(event_type, data),
-    background=True,
-)
-```
-
-### Обработка ошибок
-
-```python
-from itdpy import APIError, NotFoundError, RateLimitError, ValidationError
-
-try:
-    client.posts.get("invalid")
-except NotFoundError:
-    print("Не найдено")
-except ValidationError as e:
-    print(e.message)
-except RateLimitError as e:
-    print(e.retry_after)
-except APIError as e:
-    print(e.message)
-```
-
-## Прочее
-
-Проект активно развивается. Если у вас есть предложения или pull request, создавайте issue в репозитории.
-Мой телеграм для обратной связи: [@gam5510](https://t.me/gam5510)
+Telegram: [@gam5510](https://t.me/gam5510)
+GitHub Issues: [https://github.com/Gam5510/ITDpy](https://github.com/Gam5510/ITDpy)

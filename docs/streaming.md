@@ -16,11 +16,20 @@ stream = client.notifications.stream()
 
 @stream.on("connected")
 def on_connected(event):
-    print(event.data)
+    print("Connected!", event.data)
 
 @stream.on("notification")
 def on_notification(event):
-    print(event.data)
+    print("Got notification:", event.data)
+
+@stream.on("reconnecting")
+def on_reconnecting(event):
+    delay = event.data.get("delay")
+    print(f"Reconnecting in {delay}s (token refreshed automatically)")
+
+@stream.on("error")
+def on_error(event):
+    print(f"Error: {event.data.get('message')}")
 
 stream.run()
 ```
@@ -52,11 +61,11 @@ client.keep_online(
 )
 ```
 
-## Что умеет stream
+## События Stream
 
-- sync loop
-- callbacks
-- авто-реконнект
-- exponential backoff
-- игнор `ping`
-- парсинг `connected` и `notification`
+| Событие | Описание | Данные |
+|---------|---------|--------|
+| `connected` | Успешное подключение | `ConnectedEventData` (user_id, timestamp) |
+| `notification` | Новое уведомление | `Notification` (type, actor, preview) |
+| `reconnecting` | Переподключение | `{"delay": int}` (секунды до переподключения) |
+| `error` | Ошибка | `{"message": str}` |

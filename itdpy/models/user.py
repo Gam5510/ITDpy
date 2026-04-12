@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import AliasChoices, Field
 
 from .base import BaseList, ITDBaseModel, parse_list
-
+from .pin import Pin
 
 class UserLite(ITDBaseModel):
     id: Optional[str] = None
@@ -32,6 +32,8 @@ class UserLite(ITDBaseModel):
         validation_alias=AliasChoices("isFollowedBy", "followedBy"),
         serialization_alias="isFollowedBy",
     )
+    has_nuksta: Optional[bool] = Field(None, alias="hasNuksta")
+    pin: Optional[Pin] = None
 
 
 class User(UserLite):
@@ -108,6 +110,13 @@ class Actor(ITDBaseModel):
     )
     display_name: Optional[str] = Field(None, alias="displayName")
     avatar: Optional[str] = None
+    is_verified: bool = Field(
+        False,
+        alias="isVerified",
+        validation_alias=AliasChoices("isVerified", "verified", "verifieed"),
+        serialization_alias="isVerified",
+    )
+    pin: Optional[Pin] = None
 
 
 class Me(User):

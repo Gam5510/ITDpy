@@ -1,6 +1,10 @@
 # Config
 
-`Config` управляет сетевыми настройками клиента, ретраями, таймаутами и поведением `User-Agent`.
+`Config` управляет сетевыми настройками клиента, ретраями и таймаутами.
+
+SDK использует **фиксированную и безопасную конфигурацию User-Agent**, которая не может быть изменена пользователем.
+
+---
 
 ## Базовый пример
 
@@ -12,6 +16,7 @@ config = Config(
     upload_timeout=180,
     max_retries=5,
     backoff_factor=2.0,
+    service="my_app"
 )
 
 client = ITDClient(
@@ -19,6 +24,8 @@ client = ITDClient(
     config=config,
 )
 ```
+
+---
 
 ## Все поля Config
 
@@ -31,18 +38,12 @@ config = Config(
     upload_timeout=120,
     max_retries=3,
     backoff_factor=1.5,
-    sdk_version="1.0.2",
+    sdk_version="1.0.5",
     service=None,
-    initial_user_agent=(
-        "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/146.0.0.0 Mobile Safari/537.36"
-    ),
-    custom_user_agent=None,
-    user_agent_template="itdpy/{sdk_version} ({parts})",
-    use_user_data_in_user_agent=False,
 )
 ```
+
+---
 
 ## Описание полей
 
@@ -56,11 +57,13 @@ config = Config(
 "https://xn--d1ah4a.com"
 ```
 
-Обычно менять не нужно. Поле пригодится только если у тебя есть тестовый стенд, прокси или отдельный gateway.
+Обычно менять не требуется.
+
+---
 
 ### `timeout`
 
-Таймаут обычных запросов в секундах.
+Таймаут обычных запросов (сек).
 
 По умолчанию:
 
@@ -68,11 +71,11 @@ config = Config(
 20
 ```
 
-Используется для стандартных API-вызовов, где нет загрузки файлов.
+---
 
 ### `upload_timeout`
 
-Таймаут загрузки файлов в секундах.
+Таймаут загрузки файлов (сек).
 
 По умолчанию:
 
@@ -80,11 +83,11 @@ config = Config(
 120
 ```
 
-Нужен отдельно, потому что upload-запросы могут идти заметно дольше обычных.
+---
 
 ### `max_retries`
 
-Количество автоматических повторов для временных сетевых ошибок и ответов сервера `500`, `502`, `503`, `504`.
+Количество автоматических повторов при временных ошибках (`500`, `502`, `503`, `504`).
 
 По умолчанию:
 
@@ -92,7 +95,7 @@ config = Config(
 3
 ```
 
-Если API иногда отвечает нестабильно, это поле помогает пережить кратковременные сбои без ручной логики повтора.
+---
 
 ### `backoff_factor`
 
@@ -104,23 +107,19 @@ config = Config(
 1.5
 ```
 
-Чем больше значение, тем осторожнее библиотека ведёт себя при повторных попытках.
+---
 
 ### `sdk_version`
 
-Версия SDK, которая может использоваться в шаблоне `User-Agent`.
+Версия SDK (используется в User-Agent).
 
-По умолчанию:
+Обычно не задаётся вручную.
 
-```python
-"1.0.2"
-```
-
-Обычно вручную не задаётся.
+---
 
 ### `service`
 
-Имя твоего приложения или сервиса.
+Имя вашего сервиса или приложения.
 
 Пример:
 
@@ -128,153 +127,74 @@ config = Config(
 Config(service="my_app")
 ```
 
-Это поле используется только если включён режим `use_user_data_in_user_agent=True` или если ты сам используешь его в `user_agent_template`.
+Используется для идентификации клиента в User-Agent.
 
-### `initial_user_agent`
+---
 
-Стартовый `User-Agent`, который библиотека использует по умолчанию.
+## 🧠 User-Agent
 
-По умолчанию:
+SDK использует фиксированный формат:
 
-```python
-"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36"
+```
+itdpy/{version} (platform=python; type=sdk; service={service})
 ```
 
-Это не декоративная настройка, а вынужденная мера совместимости.
+### Важно:
 
-Причина:
+* User-Agent **не может быть изменён**
+* SDK **не имитирует браузеры**
+* SDK **не использует данные пользователя (user_id)**
+* формат одинаков для всех клиентов
 
-- refresh-запрос к API может не работать с дефолтным `python-requests/...`
-- сервер может воспринимать такой запрос как бот
-- без браузерного стартового профиля аутентификация может ломаться
+Это сделано для:
 
-ITDpy использует этот стартовый `User-Agent`, чтобы библиотека работала стабильно.
+* прозрачности
+* безопасности
+* соответствия правилам платформы
 
-Проект не поддерживает спам, абьюз API и вредоносную автоматизацию. Эта настройка нужна только для совместимости клиентских и сервисных сценариев.
+---
 
-### `custom_user_agent`
+## Как работает авторизация
 
-Полностью переопределяет `User-Agent`.
-
-Пример:
-
-```python
-Config(custom_user_agent="my-app/2.0")
-```
-
-Если поле задано, библиотека будет использовать именно его вместо `initial_user_agent` и вместо шаблонного SDK `User-Agent`.
-
-Это самый прямой способ задать собственный `User-Agent`.
-
-### `user_agent_template`
-
-Шаблон `User-Agent`, который используется после авторизации, если включён `use_user_data_in_user_agent=True`.
-
-По умолчанию:
+SDK использует:
 
 ```python
-"itdpy/{sdk_version} ({parts})"
+refresh_token
 ```
 
-Доступные плейсхолдеры:
+### Важно:
 
-- `{sdk_version}`
-- `{parts}`
-- `{user_id}`
-- `{service}`
+* `refresh_token` используется для получения `access_token`
+* `access_token` обновляется автоматически
+* пользователю не нужно управлять токенами вручную
 
-Пример:
+---
 
-```python
-Config(
-    use_user_data_in_user_agent=True,
-    user_agent_template="itdpy/{sdk_version} (uid={user_id}; {parts}; service={service})",
-)
-```
-
-### `use_user_data_in_user_agent`
-
-Флаг, который включает переключение на `User-Agent` с данными пользователя после успешной авторизации.
-
-По умолчанию:
-
-```python
-False
-```
-
-Когда флаг выключен:
-
-- библиотека продолжает использовать `initial_user_agent`
-- это самый безопасный режим совместимости
-
-Когда флаг включен:
-
-- после `users/me` библиотека собирает новый `User-Agent`
-- в него могут попасть `userid`, `platform=python` и `service`
-
-Пример:
-
-```python
-from itdpy import Config, ITDClient
-
-config = Config(
-    service="my_app",
-    use_user_data_in_user_agent=True,
-)
-
-client = ITDClient(
-    refresh_token="YOUR_REFRESH_TOKEN",
-    config=config,
-)
-```
-
-## Как работает User-Agent в библиотеке
-
-Логика такая:
-
-1. При создании сессии библиотека ставит стартовый `User-Agent`.
-2. Если задан `custom_user_agent`, используется он.
-3. Если `custom_user_agent` не задан, используется `initial_user_agent`.
-4. Если включён `use_user_data_in_user_agent=True`, после авторизации `User-Agent` обновляется по шаблону `user_agent_template`.
-
-## Рекомендуемые сценарии
-
-### Обычное использование
-
-Ничего дополнительно настраивать не нужно:
+## Пример без конфигурации
 
 ```python
 from itdpy import ITDClient
 
-client = ITDClient(refresh_token="YOUR_REFRESH_TOKEN")
-```
-
-В этом режиме библиотека использует безопасный стартовый браузерный `User-Agent`.
-
-### Свой User-Agent
-
-```python
-from itdpy import Config, ITDClient
-
-config = Config(custom_user_agent="my-app/2.0")
-client = ITDClient(refresh_token="YOUR_REFRESH_TOKEN", config=config)
-```
-
-### User-Agent с данными сервиса и пользователя
-
-```python
-from itdpy import Config, ITDClient
-
-config = Config(
-    service="my_app",
-    use_user_data_in_user_agent=True,
+client = ITDClient(
+    refresh_token="YOUR_REFRESH_TOKEN"
 )
-
-client = ITDClient(refresh_token="YOUR_REFRESH_TOKEN", config=config)
 ```
 
-## Что выбрать
+---
 
-- Если тебе нужна просто рабочая библиотека, используй настройки по умолчанию.
-- Если у тебя свой сервис и нужен собственный идентификатор клиента, используй `custom_user_agent`.
-- Если тебе нужен шаблонный SDK `User-Agent` с `userid/service`, включай `use_user_data_in_user_agent=True`.
+## Ограничения
+
+SDK не предназначена для:
+
+* массовой автоматизации
+* спама
+* обхода ограничений
+* имитации клиентов
+
+---
+
+## Рекомендации
+
+* используйте `service` для идентификации приложения
+* соблюдайте rate limits платформы
+* обрабатывайте ошибки API

@@ -73,4 +73,5 @@ class NotificationsAPI(BaseAPI):
             self._token,
             timeout=timeout,
             max_backoff=max_backoff,
+            on_token_refresh=self._request.get_token_refresh_callback(),
         )

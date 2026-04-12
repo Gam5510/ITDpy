@@ -20,7 +20,10 @@ class ITDClient:
         self._access_token: Optional[str] = None
         self._user_id: Optional[str] = None
 
-        self._request_handler = RequestHandler(self.config)
+        self._request_handler = RequestHandler(
+            self.config,
+            on_token_refresh=self._refresh_access_token,
+        )
 
         self._setup_session()
         self._authenticate()
@@ -65,29 +68,24 @@ class ITDClient:
         self._user_id = me_response.json().get("id")
         self._update_user_agent()
 
-    def _update_user_agent(self) -> None:
-        if self.config.custom_user_agent:
-            self._request_handler.session.headers["User-Agent"] = self.config.custom_user_agent
-            return
-
-        if not self.config.use_user_data_in_user_agent:
-            self._request_handler.session.headers["User-Agent"] = self.config.initial_user_agent
-            return
-
-        parts = [f"platform=python"]
-        if self._user_id:
-            parts.insert(0, f"userid={self._user_id}")
-        else:
-            parts.insert(0, "initial")
-        if self.config.service:
-            parts.append(f"service={self.config.service}")
-
-        user_agent = self.config.user_agent_template.format(
-            sdk_version=self.config.sdk_version,
-            parts="; ".join(parts),
-            user_id=self._user_id or "",
-            service=self.config.service or "",
+    def _refresh_access_token(self) -> str:
+        response = self._request_handler.request(
+            method="POST",
+            endpoint="v1/auth/refresh",
+            use_auth=False,
         )
+
+        data = response.json()
+        new_access_token = data.get("accessToken")
+
+        if not new_access_token:
+            raise AuthenticationError("Failed to refresh access token")
+
+        self._access_token = new_access_token
+        return new_access_token
+
+    def _update_user_agent(self) -> None:
+        user_agent = self.config.get_user_agent(user_id=self._user_id)
         self._request_handler.session.headers["User-Agent"] = user_agent
 
     @property
