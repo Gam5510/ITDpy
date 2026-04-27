@@ -9,6 +9,7 @@ class Pin(ITDBaseModel):
     name: str
     description: Optional[str] = None
     granted_at: Optional[str] = Field(None, alias="grantedAt")
+    url: Optional[str] = None
 
 
 class Pins(BaseList[Pin]):

@@ -192,11 +192,26 @@ class PostsAPI(BaseAPI):
         limit: int = 20,
         sort: UserPostSorting | str = UserPostSorting.NEW,
         cursor: Optional[str] = None,
+        pinned_post_id: Optional[str] = None,
     ) -> PostsList:
-        params = {"limit": limit, "sort": sort.value}
+        
+        params = {}
+        if limit:
+            params["limit"] = limit
+        elif limit == 0:
+            params["limit"] = 20
+        elif limit > 50:
+            params["limit"] = 50
+        else:
+            return PostsList([], cursor=None, has_more=False)
+        if sort:
+            params["sort"] = sort.value
+        else:
+            params["sort"] = UserPostSorting.NEW.value 
         if cursor:
             params["cursor"] = cursor
-
+        if pinned_post_id:
+            params["pinnedPostId"] = pinned_post_id
         response = self._get(f"posts/user/{username}", params=params)
         return PostsList.from_data(response.json())
 
@@ -204,25 +219,62 @@ class PostsAPI(BaseAPI):
         self,
         username: str,
         *,
-        limit: int = 50,
+        limit: int = None,
         sort: UserPostSorting | str = UserPostSorting.NEW,
     ) -> PostsList:
-        if limit <= 0:
+        
+        user = self._get(f"users/{username}").json()
+        
+        if limit is None:
+            limit = user.get("postsCount", 0)
+        elif limit <= 0:
             return PostsList([], cursor=None, has_more=False)
-
+        
         items: list[Post] = []
-        cursor: Optional[str] = None
+        seen_ids = set()
+        seen_cursors = set()
+
+        pinned_id = user.get("pinnedPostId")
+
+        cursor = None
         has_more = True
 
         while has_more and len(items) < limit:
+
+            if cursor in seen_cursors:
+                break
+            seen_cursors.add(cursor)
+
             batch_limit = min(50, limit - len(items))
-            page = self.get_user_posts(username, limit=batch_limit, sort=sort, cursor=cursor)
-            items.extend(page.to_list())
-            has_more = page.has_more
-            cursor = page.cursor
 
-        return PostsList(items[:limit], cursor=cursor, has_more=has_more and len(items) >= limit)
+            page = self.get_user_posts(
+                username,
+                limit=batch_limit,
+                sort=sort,
+                cursor=cursor,
+                pinned_post_id=pinned_id,
+            )
+            new_items = page.to_list()
 
+            if not new_items:
+                break
+
+            for post in new_items:
+                if post.id == pinned_id:
+                    continue
+                if post.id not in seen_ids:
+                    items.append(post)
+                    seen_ids.add(post.id)
+            new_cursor = new_items[-1].created_at
+
+            if new_cursor == cursor:
+                break
+
+            cursor = new_cursor
+            has_more = page.has_more 
+
+        return PostsList(items[:limit], cursor=cursor, has_more=has_more)
+    
     def vote(self, post_id: str, option_ids: str | List[str]) -> Poll:
         if isinstance(option_ids, str):
             option_ids = [option_ids]

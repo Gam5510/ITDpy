@@ -3,7 +3,7 @@
 from pydantic import Field, field_validator
 
 from .base import BaseList, ITDBaseModel, parse_list
-
+from .pagination import Pagination
 if TYPE_CHECKING:
     from .user import UserLite
 
@@ -138,6 +138,8 @@ class Post(ITDBaseModel):
     original_post: Optional["Post"] = Field(None, alias="originalPost")
     wall_recipient: Optional["UserLite"] = Field(None, alias="wallRecipient")
     wall_recipient_id: Optional[str] = Field(None, alias="wallRecipientId")
+    dominant_emoji: Optional[str] = Field(None, alias="dominantEmoji")
+    author_id: Optional[str] = Field(None, alias="authorId")
 
 
 class PostsList(BaseList[Post]):
@@ -154,29 +156,26 @@ class PostsList(BaseList[Post]):
 
     @classmethod
     def from_data(cls, data: dict | list) -> "PostsList":
-        payload = data
-        cursor: Optional[str | int] = None
+        items = []
+        cursor = None
         has_more = False
 
-        if isinstance(payload, dict) and "data" in payload:
-            payload = payload["data"]
+        if isinstance(data, dict):
 
-        if isinstance(payload, list):
-            items = payload
-        elif isinstance(payload, dict):
-            if isinstance(payload.get("items"), list):
-                items = payload.get("items", [])
-            elif isinstance(payload.get("posts"), list):
-                items = payload.get("posts", [])
-            elif "id" in payload and "createdAt" in payload:
-                items = [payload]
+            raw = data.get("data", [])
+
+            if isinstance(raw, list):
+                items = raw
+            elif isinstance(raw, dict):
+                items = raw.get("posts", []) 
             else:
                 items = []
+            pagination = Pagination.model_validate(raw.get("pagination", {}))
+            cursor = pagination.cursor
+            has_more = pagination.has_more
 
-            cursor = payload.get("cursor")
-            has_more = payload.get("hasMore", False)
-        else:
-            items = []
+        elif isinstance(data, list):
+            items = data
 
         return cls(
             parse_list(Post, items).to_list(),

@@ -39,11 +39,10 @@ class UserLite(ITDBaseModel):
 class User(UserLite):
     bio: Optional[str] = None
     banner_url: Optional[str] = Field(None, alias="bannerUrl")
-
+    pinned_post_id: Optional[str] = Field(None, alias="pinnedPostId")
     followers_count: int = Field(0, alias="followersCount")
     following_count: int = Field(0, alias="followingCount")
     posts_count: int = Field(0, alias="postsCount")
-
     created_at: Optional[str] = Field(None, alias="createdAt")
 
 
