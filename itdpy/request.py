@@ -8,12 +8,70 @@ from urllib3.util.retry import Retry
 from .config import Config
 from .exceptions import (
     APIError,
+    AccountBannedError,
+    AlreadyBlockedError,
+    AlreadyDeletedError,
+    AlreadyFollowingError,
+    AlreadyReportedError,
+    AlreadyRepostedError,
     AuthenticationError,
-    NotFoundError,
-    ValidationError,
-    RateLimitError,
+    BannedWordError,
+    BlockedUserError,
+    CantBlockYourselfError,
+    CantFollowYourselfError,
+    CantRepostYourselfError,
+    EditExpiredError,
+    ForbiddenError,
+    InvalidFileTypeError,
+    ModerationFailedError,
     NetworkError,
+    NotBlockedError,
+    NotFoundError,
+    NotMultipleChoiceError,
+    NotPinnedError,
+    OptionsNotBelongError,
+    ProfileRequiredError,
+    RateLimitError,
+    RequiresSubscriptionError,
+    RequiresVerificationError,
+    SessionExpiredError,
+    SessionNotFoundError,
+    SessionRevokedError,
+    TargetUserBannedError,
+    UploadError,
+    UsernameTakenError,
+    ValidationError,
 )
+
+_ERROR_CODE_MAP: dict[str, type] = {
+    "SESSION_NOT_FOUND": SessionNotFoundError,
+    "SESSION_EXPIRED": SessionExpiredError,
+    "SESSION_REVOKED": SessionRevokedError,
+    "ACCOUNT_BANNED": AccountBannedError,
+    "BANNED_WORD": BannedWordError,
+    "MODERATION_FAILED": ModerationFailedError,
+    "USERNAME_TAKEN": UsernameTakenError,
+    "ALREADY_FOLLOWING": AlreadyFollowingError,
+    "ALREADY_REPOSTED": AlreadyRepostedError,
+    "ALREADY_BLOCKED": AlreadyBlockedError,
+    "ALREADY_REPORTED": AlreadyReportedError,
+    "ALREADY_DELETED": AlreadyDeletedError,
+    "NOT_BLOCKED": NotBlockedError,
+    "BLOCKED_USER": BlockedUserError,
+    "CANT_FOLLOW_YOURSELF": CantFollowYourselfError,
+    "CANT_REPOST_YOURSELF": CantRepostYourselfError,
+    "CANT_BLOCK_YOURSELF": CantBlockYourselfError,
+    "TARGET_USER_BANNED": TargetUserBannedError,
+    "EDIT_EXPIRED": EditExpiredError,
+    "NOT_PINNED": NotPinnedError,
+    "OPTIONS_NOT_BELONG": OptionsNotBelongError,
+    "NOT_MULTIPLE_CHOICE": NotMultipleChoiceError,
+    "INVALID_FILE_TYPE": InvalidFileTypeError,
+    "UPLOAD_ERROR": UploadError,
+    "REQUIRES_SUBSCRIPTION": RequiresSubscriptionError,
+    "REQUIRES_VERIFICATION": RequiresVerificationError,
+    "PROFILE_REQUIRED": ProfileRequiredError,
+}
 
 
 class RequestHandler:
@@ -116,16 +174,16 @@ class RequestHandler:
             raise NetworkError(f"Network error: {e}")
     
     def _build_url(self, endpoint: str) -> str:
-        if not endpoint.startswith('/'):
-            endpoint = f'/{endpoint}'
-        return f"{self.config.base_url}/api{endpoint}"
-    
+        endpoint = endpoint.lstrip("/")
+        return f"{self.config.base_url}/api/{endpoint}"
+
     def _handle_response(self, response: requests.Response) -> None:
 
         if response.ok:
             return
 
         error_info: dict | str | None = None
+        error_code: str | None = None
         try:
             data = response.json()
             error_info = data.get('error', {})
@@ -141,12 +199,17 @@ class RequestHandler:
             else:
                 error_code = None
                 error_message = str(error_info) if error_info else json.dumps(data, ensure_ascii=False)
-        except:
+        except Exception:
             error_code = None
             error_message = response.text or f"HTTP {response.status_code}"
-        
+
+        if error_code and error_code in _ERROR_CODE_MAP:
+            raise _ERROR_CODE_MAP[error_code](error_message)
+
         if response.status_code == 401:
             raise AuthenticationError(error_message)
+        elif response.status_code == 403:
+            raise ForbiddenError(error_message)
         elif response.status_code == 404:
             raise NotFoundError(error_message)
         elif response.status_code == 422:

@@ -5,7 +5,7 @@ from ..api.base import BaseAPI
 class PinsAPI(BaseAPI):
 
     def get(self):
-        response = self._get("/users/me/pins")
+        response = self._get("users/me/pins")
         return Pins.from_data(response.json())
 
     def remove(self):

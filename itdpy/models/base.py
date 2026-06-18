@@ -1,5 +1,3 @@
-"""Base models and response helpers."""
-
 from __future__ import annotations
 
 import json
@@ -54,6 +52,9 @@ class ITDBaseModel(BaseModel):
     def to_request_dict(self) -> dict[str, object]:
         return self.to_dict()
 
+    def copy(self, **kwargs):
+        return self.model_copy(**kwargs)
+
     def __repr__(self) -> str:
         preview = ", ".join(
             f"{name}={value!r}"
@@ -67,6 +68,9 @@ class ITDBaseModel(BaseModel):
             ensure_ascii=False,
             default=str
         )
+
+    def __iter__(self):
+        yield from self.to_dict().items()
 
 
 class BaseList(Generic[T]):

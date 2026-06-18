@@ -140,6 +140,7 @@ class Post(ITDBaseModel):
     wall_recipient_id: Optional[str] = Field(None, alias="wallRecipientId")
     dominant_emoji: Optional[str] = Field(None, alias="dominantEmoji")
     author_id: Optional[str] = Field(None, alias="authorId")
+    vs: Optional[str] = None
 
 
 class PostsList(BaseList[Post]):
@@ -167,12 +168,24 @@ class PostsList(BaseList[Post]):
             if isinstance(raw, list):
                 items = raw
             elif isinstance(raw, dict):
-                items = raw.get("posts", []) 
+                items = raw.get("posts", [])
+                pagination_data = raw.get("pagination", {})
+                if isinstance(pagination_data, dict) and pagination_data:
+                    pagination = Pagination.model_validate(pagination_data)
+                    cursor = pagination.cursor
+                    has_more = pagination.has_more
             else:
                 items = []
-            pagination = Pagination.model_validate(raw.get("pagination", {}))
-            cursor = pagination.cursor
-            has_more = pagination.has_more
+
+            if isinstance(raw, list):
+                pagination_data = data.get("pagination", {})
+                if isinstance(pagination_data, dict) and pagination_data:
+                    pagination = Pagination.model_validate(pagination_data)
+                    cursor = pagination.cursor
+                    has_more = pagination.has_more
+                elif isinstance(data.get("cursor"), (str, int)):
+                    cursor = data.get("cursor")
+                    has_more = data.get("hasMore", False)
 
         elif isinstance(data, list):
             items = data

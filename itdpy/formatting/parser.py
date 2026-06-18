@@ -1,12 +1,9 @@
-"""HTML and Markdown parsers"""
-
 from html.parser import HTMLParser
 from typing import Dict, List, Any
 import re
 
 
 class HTMLSpanParser(HTMLParser):
-    """Parse HTML to extract formatting spans"""
     
     TAG_MAP = {
         'b': 'bold',
@@ -86,7 +83,6 @@ DELIMITERS = {
 
 
 def _split_with_delimiters(s: str) -> List[str]:
-    """Split text by delimiters while keeping them"""
     escaped_delimiters = [re.escape(d) for d in sorted(DELIMITERS.keys(), key=len, reverse=True)]
     link_pattern = r'\[[^\]]+\]\([^\)]*\)'
     pattern = '(' + '|'.join([r'\\.', link_pattern] + escaped_delimiters) + ')'
@@ -94,39 +90,14 @@ def _split_with_delimiters(s: str) -> List[str]:
 
 
 def format_markdown(markdown: str) -> Dict[str, Any]:
-    """
-    Parse Markdown and extract formatting
-    
-    Supports:
-    - **bold**
-    - *italic*
-    - ~~strike~~
-    - __underline__
-    - `monospace`
-    - ||spoiler||
-    - >quote>
-    - [text](url)
-    
-    Example:
-        >>> result = format_markdown("**Bold** and *italic* text")
-        >>> print(result['content'])
-        'Bold and italic text'
-        >>> print(result['spans'])
-        [
-            {'offset': 0, 'length': 4, 'type': 'bold', 'url': None},
-            {'offset': 9, 'length': 6, 'type': 'italic', 'url': None}
-        ]
-    """
     starts = {}
     result = ""
     spans = []
     
     for token in _split_with_delimiters(markdown):
         if token.startswith('\\') and len(token) > 1:
-            # Escaped character
             result += token[1]
         elif token in starts:
-            # Closing delimiter
             start = starts[token]
             del starts[token]
             spans.append({
@@ -136,10 +107,8 @@ def format_markdown(markdown: str) -> Dict[str, Any]:
                 "url": None
             })
         elif token in DELIMITERS:
-            # Opening delimiter
             starts[token] = len(result)
         elif match := re.match(r'\[([^\]]+)\]\(([^\)]*)\)', token):
-            # Link
             text = match.group(1)
             url = match.group(2) or text
             spans.append({
@@ -150,7 +119,6 @@ def format_markdown(markdown: str) -> Dict[str, Any]:
             })
             result += text
         else:
-            # Normal text
             result += token
     
     return {

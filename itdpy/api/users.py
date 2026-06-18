@@ -1,18 +1,28 @@
-﻿from typing import Optional, Sequence
+﻿from typing import List, Optional, Sequence
 
 from ..api.base import BaseAPI
 from ..enums import AccessType
 from ..models import FollowStatusItem, NotificationSettings, PrivacySettings, User, UsersList
 
+
 class UsersAPI(BaseAPI):
+
     def me(self) -> User:
         response = self._get("users/me")
         return User.model_validate(response.json())
 
+    def get_profile(self) -> dict:
+        response = self._get("profile")
+        return response.json()
+
+    def get_privacy(self) -> PrivacySettings:
+        response = self._get("users/me/privacy")
+        return PrivacySettings.model_validate(response.json())
+
     def get(self, username: str) -> User:
         response = self._get(f"users/{username}")
         return User.model_validate(response.json())
-
+    
     def follow(self, username: str) -> None:
         self._post(f"users/{username}/follow")
 
@@ -41,6 +51,45 @@ class UsersAPI(BaseAPI):
         response = self._get(f"users/{user_id}/following", params=params)
         return UsersList.from_data(response.json())
 
+    def follow_status(self, user_ids: Sequence[str]) -> List[FollowStatusItem]:
+        response = self._post("users/follow-status", json={"userIds": list(user_ids)})
+        data = response.json()
+
+        if isinstance(data, dict) and "data" in data:
+            data = data["data"]
+
+        if isinstance(data, dict):
+            if any(isinstance(value, bool) for value in data.values()):
+                items = [{"id": uid, "isFollowing": is_following} for uid, is_following in data.items()]
+            else:
+                items = data.get("items") or data.get("users") or data.get("statuses") or []
+        else:
+            items = data
+
+        return [FollowStatusItem.model_validate(item) for item in items]
+
+    def block(self, username: str) -> True:
+        blocked =  self._post(f"users/{username}/block")
+        if blocked.json().get("blocked"):
+            return True
+        return False
+
+    def unblock(self, username: str) -> True:
+        blocked =  self._delete(f"users/{username}/block")
+        if blocked.json().get("blocked"):
+            return True
+        return False
+    
+    def get_blocked(
+        self,
+        *,
+        limit: int = 20,
+        page: int = 1,
+    ) -> UsersList:
+        params = {"limit": limit, "page": page}
+        response = self._get("users/me/blocked", params=params)
+        return UsersList.from_data(response.json())
+
     def update_profile(
         self,
         *,
@@ -49,7 +98,7 @@ class UsersAPI(BaseAPI):
         bio: Optional[str] = None,
         banner_id: Optional[str] = None,
     ) -> User:
-        payload = {}
+        payload: dict = {}
         if display_name is not None:
             payload["displayName"] = display_name
         if username is not None:
@@ -66,22 +115,20 @@ class UsersAPI(BaseAPI):
         self,
         *,
         is_private: Optional[bool] = None,
-        wall_access: Optional[AccessType | str] = None,
-        likes_visibility: Optional[AccessType | str] = None,
+        wall_access: "Optional[AccessType | str]" = None,
+        likes_visibility: "Optional[AccessType | str]" = None,
         show_last_seen: Optional[bool] = None,
     ) -> PrivacySettings:
-        payload = {}
+
+        payload: dict = {}
         if is_private is not None:
             payload["isPrivate"] = is_private
-
         if wall_access is not None:
             payload["wallAccess"] = wall_access.value if isinstance(wall_access, AccessType) else str(wall_access)
-
         if likes_visibility is not None:
             payload["likesVisibility"] = (
                 likes_visibility.value if isinstance(likes_visibility, AccessType) else str(likes_visibility)
             )
-
         if show_last_seen is not None:
             payload["showLastSeen"] = show_last_seen
 
@@ -99,7 +146,7 @@ class UsersAPI(BaseAPI):
         sound: Optional[bool] = None,
         wall_posts: Optional[bool] = None,
     ) -> NotificationSettings:
-        payload: dict[str, object] = {}
+        payload: dict = {}
 
         if enabled is not None:
             payload["enabled"] = enabled
@@ -119,34 +166,5 @@ class UsersAPI(BaseAPI):
         if not payload:
             raise ValueError("No notification fields provided to update")
 
-        response = self._put("/notifications/settings", json=payload)
+        response = self._put("notifications/settings", json=payload)
         return NotificationSettings.model_validate(response.json())
-
-    def block(self, username: str) -> None:
-        self._post(f"users/{username}/block")
-
-    def unblock(self, username: str) -> None:
-        self._delete(f"users/{username}/block")
-
-    def follow_status(self, user_ids: Sequence[str]) -> list[FollowStatusItem]:
-        response = self._post("users/follow-status", json={"userIds": list(user_ids)})
-        data = response.json()
-
-        if isinstance(data, dict) and "data" in data:
-            data = data["data"]
-
-        if isinstance(data, dict):
-            if any(isinstance(value, bool) for value in data.values()):
-                items = [
-                    {
-                        "id": user_id,
-                        "isFollowing": is_following
-                    }
-                    for user_id, is_following in data.items()
-                ]
-            else:
-                items = data.get("items") or data.get("users") or data.get("statuses") or []
-        else:
-            items = data
-
-        return [FollowStatusItem.model_validate(item) for item in items]

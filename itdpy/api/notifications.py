@@ -24,7 +24,7 @@ class NotificationsAPI(BaseAPI):
         response = self._get("notifications", params=params)
         return NotificationsList.from_data(response.json())
 
-    def list_all(self, *, limit: int | None = None) -> NotificationsList:
+    def list_all(self, *, limit: "int | None" = None) -> NotificationsList:
         items = []
         offset = 0
         total = None
@@ -54,6 +54,15 @@ class NotificationsAPI(BaseAPI):
             items = items[:limit]
 
         return NotificationsList(items, total=total)
+
+    def get_unread_count(self) -> int:
+        response = self._get("notifications/count")
+        data = response.json()
+        if isinstance(data, dict):
+            return data.get("count", data.get("unread", data.get("total", 0)))
+        if isinstance(data, int):
+            return data
+        return 0
 
     def mark_read(self, notification_id: str) -> None:
         self._validate_notification_id(notification_id)

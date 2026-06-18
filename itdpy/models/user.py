@@ -120,3 +120,5 @@ class Actor(ITDBaseModel):
 
 class Me(User):
     is_private: Optional[bool] = Field(None, alias="isPrivate")
+    is_phone_verified: Optional[list] = Field(None, alias="isPhoneVerified")
+    banned: Optional[bool] = None

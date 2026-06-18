@@ -1,5 +1,3 @@
-"""Base API class"""
-
 from typing import Optional, Dict, Any
 import requests
 
