@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "itdpy"
-version = "1.1.0"
+version = "1.2.0"
 description = "Production-ready Python SDK for the ITD platform API"
 readme = "README.md"
 license = { file = "LICENSE" }

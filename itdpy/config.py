@@ -10,7 +10,7 @@ class Config:
     max_retries: int = 3
     backoff_factor: float = 1.5
 
-    sdk_version: str = "1.1.0"
+    sdk_version: str = "1.2.0"
     service: Optional[str] = None
 
     use_user_data_in_user_agent: bool = False
