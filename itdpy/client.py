@@ -1,6 +1,6 @@
 import threading
 import warnings
-from typing import Optional
+from typing import Callable, Optional
 
 from .api import (
     CommentsAPI,
@@ -17,7 +17,7 @@ from .api import (
     VerificationAPI,
 )
 from .config import Config
-from .exceptions import AuthenticationError, ITDAttributeError
+from .exceptions import AuthenticationError
 from .request import RequestHandler
 
 class ITDClient:
@@ -25,11 +25,13 @@ class ITDClient:
         self,
         refresh_token: str,
         config: Optional[Config] = None,
+        on_refresh_token_update: Optional[Callable[[str], None]] = None,
     ):
         self.config = config or Config()
         self._refresh_token = refresh_token
         self._access_token: Optional[str] = None
         self._user_id: Optional[str] = None
+        self._on_refresh_token_update = on_refresh_token_update
 
         self._request_handler = RequestHandler(
             self.config,
@@ -70,6 +72,7 @@ class ITDClient:
         )
         data = response.json()
         self._access_token = data.get("accessToken")
+        self._capture_rotated_refresh_token()
 
         if not self._access_token:
             raise AuthenticationError("Failed to get access token")
@@ -90,12 +93,24 @@ class ITDClient:
         )
         data = response.json()
         new_access_token = data.get("accessToken")
+        self._capture_rotated_refresh_token()
 
         if not new_access_token:
             raise AuthenticationError("Failed to refresh access token")
 
         self._access_token = new_access_token
         return new_access_token
+
+    def _capture_rotated_refresh_token(self) -> None:
+        new_refresh_token = self._request_handler.session.cookies.get(
+            "refresh_token", domain="xn--d1ah4a.com",
+        )
+        if not new_refresh_token or new_refresh_token == self._refresh_token:
+            return
+
+        self._refresh_token = new_refresh_token
+        if self._on_refresh_token_update:
+            self._on_refresh_token_update(new_refresh_token)
 
     def _update_user_agent(self) -> None:
         ua = self.config.get_user_agent(user_id=self._user_id)
@@ -109,6 +124,10 @@ class ITDClient:
     @property
     def user_id(self) -> Optional[str]:
         return self._user_id
+
+    @property
+    def refresh_token(self) -> str:
+        return self._refresh_token
 
 
     def _api(self, attr: str, cls):
