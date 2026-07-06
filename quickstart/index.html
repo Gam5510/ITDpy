@@ -584,10 +584,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#refresh-token" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Как получить refresh token
+        Инициализация клиента
       
     </span>
   </a>
@@ -595,10 +595,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#refresh-token" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Инициализация клиента
+        Альтернатива: вход по сохранённому refresh token
       
     </span>
   </a>
@@ -1700,10 +1700,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#refresh-token" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Как получить refresh token
+        Инициализация клиента
       
     </span>
   </a>
@@ -1711,10 +1711,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#refresh-token" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Инициализация клиента
+        Альтернатива: вход по сохранённому refresh token
       
     </span>
   </a>
@@ -1811,7 +1811,30 @@
 <h2 id="_2">Установка<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>itdpy
 </code></pre></div>
-<h2 id="refresh-token">Как получить refresh token<a class="headerlink" href="#refresh-token" title="Permanent link">&para;</a></h2>
+<h2 id="_3">Инициализация клиента<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Самый простой способ начать — авторизоваться по email и паролю. SDK сам
+пройдёт капчу Cloudflare Turnstile через браузер, авторизуется и получит
+<code>refresh_token</code> — вручную ничего копировать из DevTools не нужно. Подробности
+механизма — в разделе <a href="../README.md#-turnstile-interceptor">Turnstile Interceptor</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ITDClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ITDClient</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;user@example.com&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;my-password&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>SDK не сохраняет email/password/refresh_token на диск — вход выполняется
+через браузер при каждой инициализации клиента и заново при истечении сессии.
+Если нужно переиспользовать <code>refresh_token</code> между запусками — сохраняйте его
+самостоятельно (например, через <code>on_refresh_token_update</code>) в защищённом
+хранилище на ваше усмотрение:</p>
+<div class="highlight"><pre><span></span><code><span class="n">client</span> <span class="o">=</span> <span class="n">ITDClient</span><span class="p">(</span>
+    <span class="n">email</span><span class="o">=</span><span class="s2">&quot;user@example.com&quot;</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="s2">&quot;my-password&quot;</span><span class="p">,</span>
+    <span class="n">on_refresh_token_update</span><span class="o">=</span><span class="k">lambda</span> <span class="n">token</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Новый refresh_token:&quot;</span><span class="p">,</span> <span class="n">token</span><span class="p">),</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="refresh-token">Альтернатива: вход по сохранённому refresh token<a class="headerlink" href="#refresh-token" title="Permanent link">&para;</a></h2>
+<p>Если у вас уже есть сохранённый <code>refresh_token</code> (например, с прошлой сессии
+или для CI-окружения без браузера), можно передать его напрямую — тогда
+браузер вообще не запускается.</p>
 <blockquote>
 <p><img alt="Получение токена" src="https://i.ibb.co/DH1m8GL7/Assistant.png" />
 Как получить токен</p>
@@ -1823,7 +1846,6 @@
 <li>Найди cookie <code>refresh_token</code>.</li>
 <li>Скопируй её значение.</li>
 </ul>
-<h2 id="_3">Инициализация клиента<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ITDClient</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">ITDClient</span><span class="p">(</span><span class="n">refresh_token</span><span class="o">=</span><span class="s2">&quot;YOUR_REFRESH_TOKEN&quot;</span><span class="p">)</span>

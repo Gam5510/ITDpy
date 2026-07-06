@@ -1702,15 +1702,22 @@
 <li><a href="polls/">Polls</a></li>
 </ul>
 <h2 id="_3">Пример<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Проще всего авторизоваться по email и паролю — SDK сам пройдёт через браузер
+капчу Cloudflare Turnstile и получит токен доступа:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ITDClient</span><span class="p">,</span> <span class="n">PostsTab</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">ITDClient</span><span class="p">(</span><span class="n">refresh_token</span><span class="o">=</span><span class="s2">&quot;YOUR_REFRESH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ITDClient</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;user@example.com&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;my-password&quot;</span><span class="p">)</span>
 
 <span class="n">posts</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">tab</span><span class="o">=</span><span class="n">PostsTab</span><span class="o">.</span><span class="n">POPULAR</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">posts</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">posts</span><span class="o">.</span><span class="n">first</span><span class="p">())</span>
 
 <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<p>Как альтернативный вариант — если у вас уже есть сохранённый <code>refresh_token</code>
+(например, из предыдущей сессии или для CI без браузера), его можно передать
+напрямую:</p>
+<div class="highlight"><pre><span></span><code><span class="n">client</span> <span class="o">=</span> <span class="n">ITDClient</span><span class="p">(</span><span class="n">refresh_token</span><span class="o">=</span><span class="s2">&quot;YOUR_REFRESH_TOKEN&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 

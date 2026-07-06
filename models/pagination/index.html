@@ -1753,7 +1753,7 @@
 </tbody>
 </table>
 <h2 id="_3">Пример использования<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">posts</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_posts</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">posts</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">posts</span><span class="o">.</span><span class="n">pagination</span><span class="p">:</span> 
     <span class="nb">print</span><span class="p">(</span><span class="n">posts</span><span class="o">.</span><span class="n">pagination</span><span class="o">.</span><span class="n">page</span><span class="p">)</span> 
     <span class="nb">print</span><span class="p">(</span><span class="n">posts</span><span class="o">.</span><span class="n">pagination</span><span class="o">.</span><span class="n">total</span><span class="p">)</span>

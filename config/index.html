@@ -2125,6 +2125,10 @@
 <li><code>access_token</code> обновляется автоматически</li>
 <li>пользователю не нужно управлять токенами вручную</li>
 </ul>
+<p>Альтернативно можно передать <code>email</code> и <code>password</code> вместо <code>refresh_token</code> —
+SDK получит его автоматически через браузерный вход (см.
+<a href="../quickstart/#вход-по-email-и-паролю">Вход по email и паролю</a>) и сохранит
+локально для последующих запусков.</p>
 <hr />
 <h2 id="_6">Пример без конфигурации<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itdpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ITDClient</span>

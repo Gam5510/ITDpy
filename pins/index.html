@@ -1641,11 +1641,11 @@
 -  удалять пины
 - ставить пины</p>
 <h1 id="_1">Получить текущие пины<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p><div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">get_pins</span><span class="p">()</span>
+<p><div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 </code></pre></div>
 Возвращает модель <code>Pins</code>  <a href="../models/pins/">подробнее</a></p>
 <h3 id="_2">Пример:<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="n">pins</span>  <span class="o">=</span>  <span class="n">client</span><span class="o">.</span><span class="n">get_pins</span><span class="p">()</span>  
+<div class="highlight"><pre><span></span><code><span class="n">pins</span>  <span class="o">=</span>  <span class="n">client</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Активный пин:&quot;</span><span class="p">,</span> <span class="n">pins</span><span class="o">.</span><span class="n">active_pin</span><span class="p">)</span>  
 
@@ -1658,10 +1658,10 @@
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span>  <span class="o">*</span>  <span class="mi">30</span><span class="p">)</span>
 </code></pre></div>
 <h1 id="_3">Ставить пины<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h1>
-<div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="n">slug</span><span class="o">=</span><span class="s2">&quot;kirill67_202602_infected&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">slug</span><span class="o">=</span><span class="s2">&quot;kirill67_202602_infected&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h1 id="_4">Удалять пины<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h1>
-<div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">remove_pin</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 </code></pre></div>
 <p>← <a href="../">Назад к документации</a></p>
 

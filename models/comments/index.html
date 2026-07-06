@@ -1764,7 +1764,7 @@
 </tbody>
 </table>
 <h3 id="_1">Пример использования<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="n">comments</span>  <span class="o">=</span>  <span class="n">client</span><span class="o">.</span><span class="n">get_comments</span><span class="p">(</span><span class="n">post_id</span><span class="o">=</span><span class="s2">&quot;6f14ee05-e0c5-4133-8f42-aca16bde154c&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">comments</span>  <span class="o">=</span>  <span class="n">client</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">post_id</span><span class="o">=</span><span class="s2">&quot;6f14ee05-e0c5-4133-8f42-aca16bde154c&quot;</span><span class="p">)</span>
 
 <span class="k">for</span>  <span class="n">comment</span>  <span class="ow">in</span>  <span class="n">comments</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">comment</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>

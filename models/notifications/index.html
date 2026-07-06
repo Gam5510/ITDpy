@@ -1767,7 +1767,7 @@
 </tbody>
 </table>
 <h2 id="_1">Пример использование:<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">notifications</span>  <span class="o">=</span>  <span class="n">client</span><span class="o">.</span><span class="n">get_notifications</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">notifications</span>  <span class="o">=</span>  <span class="n">client</span><span class="o">.</span><span class="n">notifications</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Всего уведомлений:&quot;</span><span class="p">,</span>  <span class="nb">len</span><span class="p">(</span><span class="n">notifications</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span>  <span class="o">*</span>  <span class="mi">50</span><span class="p">)</span>

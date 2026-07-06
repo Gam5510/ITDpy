@@ -1842,7 +1842,7 @@
 <li>настройками уведомлений</li>
 </ul>
 <h2 id="_1">Обновить настройки приватности<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">update_privacy</span><span class="p">(</span>  
+<div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">update_privacy</span><span class="p">(</span>  
   <span class="n">is_private</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  
   <span class="n">wall_access</span><span class="o">=</span><span class="s2">&quot;followers&quot;</span><span class="p">,</span>  
   <span class="n">likes_visibility</span><span class="o">=</span><span class="s2">&quot;mutual&quot;</span>  
@@ -1860,7 +1860,7 @@
 <h3 id="_3">Возвращает<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
 <p>Модель <code>PrivacySettings</code> <a href="../models/settings/">подробнее</a></p>
 <h2 id="_4">Пример<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">privacy</span>  <span class="o">=</span>  <span class="n">client</span><span class="o">.</span><span class="n">update_privacy</span><span class="p">(</span>  
+<div class="highlight"><pre><span></span><code><span class="n">privacy</span>  <span class="o">=</span>  <span class="n">client</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">update_privacy</span><span class="p">(</span>  
   <span class="n">wall_access</span><span class="o">=</span><span class="s2">&quot;mutual&quot;</span><span class="p">,</span>  
   <span class="n">show_last_seen</span><span class="o">=</span><span class="kc">False</span>  
 <span class="p">)</span>  
@@ -1871,7 +1871,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Last seen:&quot;</span><span class="p">,</span> <span class="n">privacy</span><span class="o">.</span><span class="n">show_last_seen</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="_5">Обновить настройки уведомлений<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">update_notification_settings</span><span class="p">(</span>  
+<div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">update_notification_settings</span><span class="p">(</span>  
     <span class="n">comments</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  
     <span class="n">mentions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  
     <span class="n">sound</span><span class="o">=</span><span class="kc">False</span>  
@@ -1884,7 +1884,7 @@
 <li>Обновляются только переданные параметры.</li>
 </ul>
 <h2 id="_8">Пример<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">updated</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_notification_settings</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">updated</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">update_notification_settings</span><span class="p">(</span>
     <span class="n">likes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">sound</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">mentions</span><span class="o">=</span><span class="kc">True</span>
