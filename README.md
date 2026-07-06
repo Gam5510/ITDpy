@@ -51,14 +51,75 @@ pip install itdpy
 
 ## 🚀 Быстрый старт
 ```python
-from itdpy import Client
+from itdpy import ITDClient
 
-client = Client(refresh_token="YOUR_REFRESH_TOKEN")
+client = ITDClient(refresh_token="YOUR_REFRESH_TOKEN")
 
 me = client.users.get_me()
 print(me.id)
 print(me.username)
 ```
+
+## 🔐 Вход по email и паролю
+
+Вместо `refresh_token` можно передать `email` и `password` — SDK сам пройдёт
+через браузер капчу Cloudflare Turnstile, авторизуется и получит `refresh_token`
+(см. [Turnstile Interceptor](#-turnstile-interceptor) ниже).
+
+```python
+from itdpy import ITDClient
+
+client = ITDClient(email="user@example.com", password="my-password")
+
+me = client.users.get_me()
+print(me.username)
+```
+
+SDK **не сохраняет** email/password/refresh_token на диск — вход выполняется
+заново через браузер при каждой инициализации клиента и при истечении сессии.
+Если вам нужно переиспользовать `refresh_token` между запусками, сохраняйте
+его самостоятельно (например, через `on_refresh_token_update`) в защищённом
+хранилище на ваше усмотрение:
+
+```python
+client = ITDClient(
+    email="user@example.com",
+    password="my-password",
+    on_refresh_token_update=lambda token: print("Новый refresh_token:", token),
+)
+```
+
+### 🔁 Автообновление сессии (без повторных логинов)
+
+Держите `ITDClient` как один долгоживущий объект (не создавайте новый на
+каждый запрос) — тогда браузер и логин по email/password запускаются один
+раз. По умолчанию клиент сам раз в 4.5 минуты (`auto_refresh_interval=270`
+сек) обновляет `access_token` по имеющемуся `refresh_token` в фоновом потоке
+— без повторного открытия браузера и без повторного входа в аккаунт:
+
+```python
+client = ITDClient(email="user@example.com", password="my-password")
+# клиент можно использовать сколько угодно — сессия обновляется сама
+```
+
+Изменить интервал или отключить автообновление:
+
+```python
+client = ITDClient(
+    email="user@example.com",
+    password="my-password",
+    auto_refresh_interval=200,  # секунд
+)
+
+# либо полностью выключить и обновлять вручную
+client = ITDClient(
+    email="user@example.com",
+    password="my-password",
+    auto_refresh_interval=None,
+)
+```
+
+Фоновый поток останавливается автоматически при `client.close()`.
 
 ## ⚙️ Конфигурация
 
@@ -78,6 +139,116 @@ client = Client(config=config, refresh_token="TOKEN")
 - `timeout` — таймаут запросов
 - `max_retries` — количество повторов
 
+## 🛡 Turnstile Interceptor
+
+Этот скрипт предназначен для перехвата токена авторизации Cloudflare Turnstile и отправки самостоятельного запроса к API. Скрипт является кроссплатформенным:
+На Windows и macOS он работает в обычном оконном режиме (откроется браузер).
+На Linux-серверах (без монитора) скрипт автоматически создает виртуальный экран с помощью Xvfb, чтобы обойти блокировки Cloudflare, которые жестко пресекают классический headless режим.
+
+### 🌐 Можно ли использовать обычный установленный Chrome?
+
+Да. **DrissionPage не скачивает и не устанавливает свой браузер** — он подключается к уже установленному в системе Google Chrome (или Microsoft Edge/Chromium) через протокол CDP и управляет им напрямую. Отдельно устанавливать Chromium не нужно, если Chrome уже стоит на компьютере.
+
+- Обычно путь к браузеру находится **автоматически** (Windows/macOS/Linux) — ничего указывать не требуется.
+- Если автоопределение не сработало (нестандартная папка установки, portable-версия, несколько браузеров в системе), укажите путь к `chrome.exe` явно:
+
+```python
+from itdpy import ITDClient
+
+client = ITDClient(
+    email="user@example.com",
+    password="my-password",
+    browser_path=r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+)
+```
+
+или напрямую при использовании низкоуровневой функции:
+
+```python
+from itdpy.auth import login_with_password
+
+refresh_token = login_with_password(
+    "user@example.com",
+    "my-password",
+    browser_path="/usr/bin/google-chrome",
+)
+```
+
+### 📥 Установка Chromium/Chrome, если браузера в системе нет
+
+**Windows / macOS** — просто установите обычный Google Chrome с официального сайта: https://www.google.com/chrome/. Никаких дополнительных шагов не требуется — DrissionPage найдёт его сам.
+**Linux (сервер без GUI)** — установите Chromium или Google Chrome из репозитория:
+
+```bash
+# Вариант 1: Chromium из репозитория (проще всего)
+sudo apt-get update
+sudo apt-get install chromium-browser
+
+# Вариант 2: официальный Google Chrome
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt-get install ./google-chrome-stable_current_amd64.deb
+```
+
+После установки браузер будет найден автоматически. Если он лежит в нестандартном месте, узнайте путь командой `which chromium-browser` (или `which google-chrome`) и передайте его через `browser_path`, как показано выше.
+Xvfb (виртуальный дисплей, см. ниже) — это отдельная от самого браузера зависимость, нужна на Linux в любом случае, т.к. Cloudflare блокирует классический `--headless` режим.
+
+### 💻 Установка на локальный ПК (Windows / macOS)
+
+Установите необходимые библиотеки:
+
+```bash
+pip install requests DrissionPage
+```
+
+Запустите скрипт:
+
+```bash
+python test.py
+```
+
+### 🐧 Установка на сервер (Ubuntu / Debian / Linux)
+
+Так как на сервере нет графической оболочки (GUI), мы должны эмулировать монитор. Без этого Chromium откажется запускаться без флага headless, а с флагом headless Cloudflare заблокирует скрипт.
+
+**Шаг 1. Установка системных зависимостей**
+
+Установите виртуальный фреймбуфер Xvfb:
+
+```bash
+sudo apt-get update
+sudo apt-get install xvfb
+```
+
+(Опционально) Если на чистом сервере не установлены нужные библиотеки для работы самого браузера Chromium (шрифты, графические пакеты), вы можете установить их с помощью Playwright:
+
+```bash
+pip install playwright
+playwright install-deps chromium
+```
+
+**Шаг 2. Установка Python-библиотек**
+
+Установите библиотеки для скрипта, включая обертку для виртуального дисплея:
+
+```bash
+pip install requests DrissionPage pyvirtualdisplay
+```
+
+**Шаг 3. Запуск**
+
+```bash
+python test.py
+```
+Скрипт автоматически распознает Linux, поднимет невидимый дисплей, запустит браузер "с головой" внутри этого дисплея, пройдет все проверки, заберет токен и завершит работу.
+
+### 💡 Как это работает?
+
+Скрипт внедряет JavaScript на страницу вашего сайта.
+Подменяет глобальную функцию fetch.
+Когда React собирается отправить запрос sign-in, наш шпион читает turnstileToken из тела запроса.
+Шпион блокирует оригинальный запрос браузера (замораживает его).
+Скрипт закрывает браузер и отправляет чистый запрос к API через библиотеку requests, подставляя нужные куки и токен.
+
 ## 📚 Документация
 
 [https://gam5510.github.io/ITDpy/](https://gam5510.github.io/ITDpy/)
@@ -93,10 +264,13 @@ SDK не предназначена для:
 ## 🤝 Сотрудничество
 
 Проект открыт к взаимодействию с платформой ИТД.com и ориентирован на официальную интеграцию.
-
 Если вы представляете платформу или хотите обсудить сотрудничество, то свяжитесь через GitHub или Telegram.
 
 ## Обратная связь
 
 Telegram: [@gam5510](https://t.me/gam5510)
 GitHub Issues: [https://github.com/Gam5510/ITDpy](https://github.com/Gam5510/ITDpy)
+
+## Поддежка проекта 
+Вы можете поддержать проект с помощью перевода по TON кошельку в сети TON 
+UQBVKStaBRLERdjJ_dnzRfREzqmyzkQn14uDE-DleRXJBqqH

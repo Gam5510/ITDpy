@@ -12,6 +12,18 @@ class AuthenticationError(APIError):
     """Authentication failed (401)."""
 
 
+class InvalidCredentialsError(AuthenticationError):
+    """Email or password is incorrect (login-with-password flow)."""
+
+
+class TurnstileTimeoutError(AuthenticationError):
+    """Cloudflare Turnstile challenge was not solved in time."""
+
+
+class BrowserNotAvailableError(AuthenticationError):
+    """DrissionPage/browser is not installed or could not be launched."""
+
+
 class SessionNotFoundError(AuthenticationError):
     """Invalid or missing refresh token."""
 

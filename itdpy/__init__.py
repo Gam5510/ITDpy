@@ -1,5 +1,6 @@
 __version__ = "1.1.0"
 
+from .auth import login_with_password
 from .client import ITDClient
 from .config import Config
 from .enums import (
@@ -28,6 +29,7 @@ from .exceptions import (
     AuthenticationError,
     BannedWordError,
     BlockedUserError,
+    BrowserNotAvailableError,
     CantBlockYourselfError,
     CantFollowYourselfError,
     CantRepostYourselfError,
@@ -36,6 +38,7 @@ from .exceptions import (
     ForbiddenError,
     ITDAttributeError,
     ITDError,
+    InvalidCredentialsError,
     InvalidFileTypeError,
     ModerationFailedError,
     NetworkError,
@@ -52,6 +55,7 @@ from .exceptions import (
     SessionNotFoundError,
     SessionRevokedError,
     TargetUserBannedError,
+    TurnstileTimeoutError,
     UploadError,
     UsernameTakenError,
     ValidationError,
@@ -116,6 +120,7 @@ from .models import (
 )
 
 __all__ = [
+    "login_with_password",
     "ITDClient",
     "Config",
     "AccessType",
@@ -135,6 +140,9 @@ __all__ = [
     "ITDException",
     "APIError",
     "AuthenticationError",
+    "InvalidCredentialsError",
+    "TurnstileTimeoutError",
+    "BrowserNotAvailableError",
     "SessionNotFoundError",
     "SessionExpiredError",
     "SessionRevokedError",

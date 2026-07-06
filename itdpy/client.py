@@ -1,3 +1,4 @@
+import logging
 import threading
 import warnings
 from typing import Callable, Optional
@@ -16,22 +17,43 @@ from .api import (
     UsersAPI,
     VerificationAPI,
 )
+from .auth import login_with_password
 from .config import Config
 from .exceptions import AuthenticationError
 from .request import RequestHandler
 
+logger = logging.getLogger("itdpy.client")
+
+
 class ITDClient:
     def __init__(
         self,
-        refresh_token: str,
+        refresh_token: Optional[str] = None,
+        email: Optional[str] = None,
+        password: Optional[str] = None,
         config: Optional[Config] = None,
         on_refresh_token_update: Optional[Callable[[str], None]] = None,
+        browser_path: Optional[str] = None,
+        auto_refresh_interval: Optional[int] = 270,
     ):
+        if not refresh_token and not (email and password):
+            raise AuthenticationError(
+                "Необходимо указать либо refresh_token, либо email и password"
+            )
+
         self.config = config or Config()
-        self._refresh_token = refresh_token
+        self._email = email
+        self._password = password
+        self._browser_path = browser_path
+        self._on_refresh_token_update = on_refresh_token_update
         self._access_token: Optional[str] = None
         self._user_id: Optional[str] = None
-        self._on_refresh_token_update = on_refresh_token_update
+
+        if not refresh_token:
+            logger.info("refresh_token не передан, выполняем вход по email/password")
+            refresh_token = self._login()
+
+        self._refresh_token = refresh_token
 
         self._request_handler = RequestHandler(
             self.config,
@@ -39,7 +61,18 @@ class ITDClient:
         )
 
         self._setup_session()
-        self._authenticate()
+        try:
+            self._authenticate()
+        except AuthenticationError as e:
+            if not (self._email and self._password):
+                raise
+            logger.warning(
+                "Аутентификация по сохранённому refresh_token не удалась (%s), "
+                "перелогиниваемся по email/password", e,
+            )
+            self._refresh_token = self._login()
+            self._setup_session()
+            self._authenticate()
 
         self._posts: Optional[PostsAPI] = None
         self._users: Optional[UsersAPI] = None
@@ -54,6 +87,11 @@ class ITDClient:
         self._verification: Optional[VerificationAPI] = None
         self._platform: Optional[PlatformAPI] = None
         self._closed = False
+
+        self._auto_refresh_stop = threading.Event()
+        self._auto_refresh_thread: Optional[threading.Thread] = None
+        if auto_refresh_interval:
+            self.start_auto_refresh(auto_refresh_interval)
 
 
     def _setup_session(self) -> None:
@@ -86,13 +124,30 @@ class ITDClient:
         self._update_user_agent()
 
     def _refresh_access_token(self) -> str:
-        response = self._request_handler.request(
-            method="POST",
-            endpoint="v1/auth/refresh",
-            use_auth=False,
-        )
-        data = response.json()
-        new_access_token = data.get("accessToken")
+        try:
+            response = self._request_handler.request(
+                method="POST",
+                endpoint="v1/auth/refresh",
+                use_auth=False,
+            )
+            data = response.json()
+            new_access_token = data.get("accessToken")
+        except AuthenticationError as e:
+            if not (self._email and self._password):
+                raise
+            logger.warning(
+                "Не удалось обновить access_token (%s), перелогиниваемся по email/password", e,
+            )
+            self._refresh_token = self._login()
+            self._setup_session()
+            response = self._request_handler.request(
+                method="POST",
+                endpoint="v1/auth/refresh",
+                use_auth=False,
+            )
+            data = response.json()
+            new_access_token = data.get("accessToken")
+
         self._capture_rotated_refresh_token()
 
         if not new_access_token:
@@ -100,6 +155,11 @@ class ITDClient:
 
         self._access_token = new_access_token
         return new_access_token
+
+    def _login(self) -> str:
+        return login_with_password(
+            self._email, self._password, browser_path=self._browser_path
+        )
 
     def _capture_rotated_refresh_token(self) -> None:
         new_refresh_token = self._request_handler.session.cookies.get(
@@ -186,8 +246,34 @@ class ITDClient:
     def platform(self) -> PlatformAPI:
         return self._api("_platform", PlatformAPI)
 
+    def start_auto_refresh(self, interval: int = 270) -> threading.Thread:
+        self.stop_auto_refresh()
+        self._auto_refresh_stop.clear()
+
+        def _run():
+            while not self._auto_refresh_stop.wait(interval):
+                if self._closed:
+                    return
+                try:
+                    self._refresh_access_token()
+                    logger.debug("Access token обновлён по расписанию")
+                except Exception:
+                    logger.exception("Ошибка планового обновления access_token")
+
+        thread = threading.Thread(target=_run, daemon=True)
+        thread.start()
+        self._auto_refresh_thread = thread
+        return thread
+
+    def stop_auto_refresh(self) -> None:
+        self._auto_refresh_stop.set()
+        if self._auto_refresh_thread and self._auto_refresh_thread.is_alive():
+            self._auto_refresh_thread.join(timeout=1)
+        self._auto_refresh_thread = None
+
     def close(self) -> None:
         if not self._closed:
+            self.stop_auto_refresh()
             self._request_handler.close()
             self._closed = True
 
