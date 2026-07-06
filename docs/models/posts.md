@@ -31,7 +31,7 @@
 
 ## Пример 
 ```python
-posts = client.get_posts()
+posts = client.posts.list()
 
 print("Всего получено:", len(posts))
 print("Есть ещё посты:", posts.pagination.has_more)

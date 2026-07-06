@@ -8,7 +8,7 @@
 
 ## Обновить профиль
 ```python
-client.update_profile(  
+client.users.update_profile(  
   display_name="Фазлиддин",  
   bio="Python developer",  
   banner_id="ссылка_на_загруженный_файл"  
@@ -33,7 +33,7 @@ client.update_profile(
 
 ## Пример использования
 ```python
-me  =  client.update_profile(  
+me  =  client.users.update_profile(  
   display_name="Фазлиддин",  
   bio="Разрабатываю ITDpy"
   banner_id = "https://943701f000610900cbe86b72234e451d.bckt.ru/images/db3fb2d8-70ad-4761-a073-0b39288d1205.gif"  

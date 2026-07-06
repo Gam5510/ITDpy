@@ -13,7 +13,7 @@
   </a>
 </p>
 
-Python SDK для интеграции с платформой ИТД.com.
+Python SDK для интеграции с платформой ИТД.com — без магии, без обхода правил, просто удобный клиент поверх API.
 
 > SDK предназначен для клиентских приложений, интеграций и сервисов.
 > Проект ориентирован на безопасное, прозрачное и корректное взаимодействие с платформой.
@@ -50,28 +50,19 @@ pip install itdpy
 ```
 
 ## 🚀 Быстрый старт
-```python
-from itdpy import ITDClient
 
-client = ITDClient(refresh_token="YOUR_REFRESH_TOKEN")
-
-me = client.users.get_me()
-print(me.id)
-print(me.username)
-```
-
-## 🔐 Вход по email и паролю
-
-Вместо `refresh_token` можно передать `email` и `password` — SDK сам пройдёт
-через браузер капчу Cloudflare Turnstile, авторизуется и получит `refresh_token`
-(см. [Turnstile Interceptor](#-turnstile-interceptor) ниже).
+Самый простой способ начать работу — авторизоваться по email и паролю. SDK
+сам откроет браузер, пройдёт капчу Cloudflare Turnstile и получит токен
+доступа — вам не нужно лезть в DevTools и вручную вытаскивать куки
+(подробнее в разделе [Turnstile Interceptor](#-turnstile-interceptor) ниже):
 
 ```python
 from itdpy import ITDClient
 
 client = ITDClient(email="user@example.com", password="my-password")
 
-me = client.users.get_me()
+me = client.users.me()
+print(me.id)
 print(me.username)
 ```
 
@@ -87,6 +78,22 @@ client = ITDClient(
     password="my-password",
     on_refresh_token_update=lambda token: print("Новый refresh_token:", token),
 )
+```
+
+## 🔁 Альтернатива: вход по сохранённому refresh_token
+
+Если у вас уже есть сохранённый `refresh_token` (например, вы сохранили его
+на предыдущем шаге или используете SDK в CI, где браузер поднимать неудобно),
+можно передать его напрямую вместо email/password — тогда браузер вообще не
+запускается:
+
+```python
+from itdpy import ITDClient
+
+client = ITDClient(refresh_token="YOUR_REFRESH_TOKEN")
+
+me = client.users.me()
+print(me.username)
 ```
 
 ### 🔁 Автообновление сессии (без повторных логинов)
@@ -141,7 +148,7 @@ client = Client(config=config, refresh_token="TOKEN")
 
 ## 🛡 Turnstile Interceptor
 
-Этот скрипт предназначен для перехвата токена авторизации Cloudflare Turnstile и отправки самостоятельного запроса к API. Скрипт является кроссплатформенным:
+Самая интересная часть SDK: как именно происходит вход по email/паролю без ручного копирования токенов из DevTools. Этот скрипт предназначен для перехвата токена авторизации Cloudflare Turnstile и отправки самостоятельного запроса к API. Скрипт является кроссплатформенным:
 На Windows и macOS он работает в обычном оконном режиме (откроется браузер).
 На Linux-серверах (без монитора) скрипт автоматически создает виртуальный экран с помощью Xvfb, чтобы обойти блокировки Cloudflare, которые жестко пресекают классический headless режим.
 

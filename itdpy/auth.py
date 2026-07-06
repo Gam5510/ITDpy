@@ -87,6 +87,33 @@ def login_with_password(
     base_url: str = "https://xn--d1ah4a.com",
     max_wait_time: int = 60,
     browser_path: str = None,
+    attempts: int = 2,
+) -> str:
+    last_error = None
+    for attempt in range(1, attempts + 1):
+        try:
+            return _login_with_password_once(
+                email, password,
+                base_url=base_url,
+                max_wait_time=max_wait_time,
+                browser_path=browser_path,
+            )
+        except TurnstileTimeoutError as e:
+            last_error = e
+            logger.warning(
+                "Попытка входа %s/%s не удалась (Turnstile timeout), повтор",
+                attempt, attempts,
+            )
+    raise last_error
+
+
+def _login_with_password_once(
+    email: str,
+    password: str,
+    *,
+    base_url: str,
+    max_wait_time: int,
+    browser_path: str,
 ) -> str:
     if ChromiumPage is None:
         logger.error("DrissionPage не установлен")
@@ -95,7 +122,7 @@ def login_with_password(
         )
 
     display = None
-    if os.name == "posix" and Display is not None:
+    if os.name == "posix" and Display is not None and not os.environ.get("DISPLAY"):
         try:
             display = Display(visible=0, size=(1920, 1080))
             display.start()
@@ -103,12 +130,24 @@ def login_with_password(
         except Exception:
             logger.warning("Не удалось запустить виртуальный дисплей Xvfb", exc_info=True)
             display = None
+    elif os.environ.get("DISPLAY"):
+        logger.debug("Используется уже существующий DISPLAY=%s, Xvfb не запускается", os.environ.get("DISPLAY"))
 
     page = None
     try:
         options = ChromiumOptions()
         options.set_argument("--no-sandbox")
         options.set_argument("--disable-dev-shm-usage")
+        options.set_argument("--disable-blink-features=AutomationControlled")
+        options.set_argument("--window-size=1920,1080")
+        options.set_argument("--lang=ru-RU")
+        options.set_pref(
+            "credentials_enable_service", False,
+        )
+        options.set_user_agent(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+        )
         if browser_path:
             options.set_browser_path(browser_path)
 
@@ -121,6 +160,17 @@ def login_with_password(
                 f"Не удалось запустить браузер (проверьте, что Chrome/Chromium "
                 f"установлен, либо укажите browser_path): {e}"
             ) from e
+
+        try:
+            page.run_cdp(
+                "Page.addScriptToEvaluateOnNewDocument",
+                source=(
+                    "Object.defineProperty(navigator, 'webdriver', "
+                    "{get: () => undefined});"
+                ),
+            )
+        except Exception:
+            logger.debug("Не удалось внедрить anti-detect скрипт", exc_info=True)
 
         page.get(f"{base_url}/login")
         page.wait.load_start()

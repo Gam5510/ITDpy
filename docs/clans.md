@@ -8,7 +8,7 @@
 
 ## Получить топ кланов
 ```python
-client.get_top_clans()
+client.discovery.get_top_clans()
 ```
 
 ### Пример ответа
@@ -61,7 +61,7 @@ client.get_top_clans()
  
 ### Пример использование 
 ```python
-top  =  client.get_top_clans()
+top  =  client.discovery.get_top_clans()
 
 print("Топ кланов:")
 print("-"  *  40)

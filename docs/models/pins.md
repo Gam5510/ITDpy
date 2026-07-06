@@ -53,7 +53,7 @@
 
 # Пример использования
 ```python
-pins  =  client.get_pins()  
+pins  =  client.pins.get()  
   
 print("Активный пин:", pins.active_pin)  
   

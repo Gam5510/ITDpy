@@ -122,7 +122,7 @@ async def example_client_compat_mode():
 
     async with Client(config=config, access_token="your_token") as client:
         # User-Agent автоматически выбирается из config
-        me = await client.users.get_me()
+        me = await client.users.me()
         print(f"Current user: {me}")
 
 
@@ -139,7 +139,7 @@ async def example_client_safe_mode():
 
     async with Client(config=config, access_token="your_token") as client:
         # После авторизации User-Agent будет содержать user_id
-        me = await client.users.get_me()
+        me = await client.users.me()
         print(f"Current user: {me}")
         # На сервере увидят:
         # "itdpy/1.0.2 (userid=<user_id>; platform=python; service=my-awesome-bot)"

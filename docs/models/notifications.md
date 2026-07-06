@@ -36,7 +36,7 @@
 
 ## Пример использование:
 ```python
-notifications  =  client.get_notifications(limit=50)
+notifications  =  client.notifications.list(limit=50)
 
 print("Всего уведомлений:",  len(notifications))
 print("-"  *  50)

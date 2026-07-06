@@ -7,13 +7,13 @@
 
 # Получить текущие пины
 ```python
-client.get_pins()
+client.pins.get()
 ```
 Возвращает модель `Pins`  [подробнее](models/pins.md)
 
 ### Пример:
 ```python
-pins  =  client.get_pins()  
+pins  =  client.pins.get()  
   
 print("Активный пин:", pins.active_pin)  
   
@@ -29,13 +29,13 @@ for  pin  in  pins.pins:
 # Ставить пины
 
 ```python 
-client.set_pin(slug="kirill67_202602_infected")
+client.pins.set(slug="kirill67_202602_infected")
 ```
 
 # Удалять пины
 
 ```python 
-client.remove_pin()
+client.pins.remove()
 ```
 
 ← [Назад к документации](index.md)

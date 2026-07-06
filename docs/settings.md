@@ -9,7 +9,7 @@
 
 ## Обновить настройки приватности
 ```python
-client.update_privacy(  
+client.users.update_privacy(  
   is_private=True,  
   wall_access="followers",  
   likes_visibility="mutual"  
@@ -31,7 +31,7 @@ client.update_privacy(
 
 ## Пример
 ```python
-privacy  =  client.update_privacy(  
+privacy  =  client.users.update_privacy(  
   wall_access="mutual",  
   show_last_seen=False  
 )  
@@ -45,7 +45,7 @@ print("Last seen:", privacy.show_last_seen)
 ## Обновить настройки уведомлений
 
 ```python
-client.update_notification_settings(  
+client.users.update_notification_settings(  
 	comments=True,  
 	mentions=True,  
 	sound=False  
@@ -59,7 +59,7 @@ client.update_notification_settings(
 
 ## Пример
 ```python
-updated = client.update_notification_settings(
+updated = client.users.update_notification_settings(
     likes=False,
     sound=False,
     mentions=True

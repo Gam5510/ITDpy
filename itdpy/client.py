@@ -35,6 +35,8 @@ class ITDClient:
         on_refresh_token_update: Optional[Callable[[str], None]] = None,
         browser_path: Optional[str] = None,
         auto_refresh_interval: Optional[int] = 270,
+        turnstile_timeout: int = 60,
+        login_attempts: int = 2,
     ):
         if not refresh_token and not (email and password):
             raise AuthenticationError(
@@ -45,6 +47,8 @@ class ITDClient:
         self._email = email
         self._password = password
         self._browser_path = browser_path
+        self._turnstile_timeout = turnstile_timeout
+        self._login_attempts = login_attempts
         self._on_refresh_token_update = on_refresh_token_update
         self._access_token: Optional[str] = None
         self._user_id: Optional[str] = None
@@ -158,7 +162,11 @@ class ITDClient:
 
     def _login(self) -> str:
         return login_with_password(
-            self._email, self._password, browser_path=self._browser_path
+            self._email,
+            self._password,
+            browser_path=self._browser_path,
+            max_wait_time=self._turnstile_timeout,
+            attempts=self._login_attempts,
         )
 
     def _capture_rotated_refresh_token(self) -> None:

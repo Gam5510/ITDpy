@@ -18,7 +18,7 @@
 
 ## Пример использования
 ```python
-posts = client.get_posts()
+posts = client.posts.list()
 if posts.pagination: 
 	print(posts.pagination.page) 
 	print(posts.pagination.total)

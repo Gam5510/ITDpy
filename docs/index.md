@@ -31,14 +31,25 @@ Python SDK для итд.com API.
 
 ## Пример
 
+Проще всего авторизоваться по email и паролю — SDK сам пройдёт через браузер
+капчу Cloudflare Turnstile и получит токен доступа:
+
 ```python
 from itdpy import ITDClient, PostsTab
 
-client = ITDClient(refresh_token="YOUR_REFRESH_TOKEN")
+client = ITDClient(email="user@example.com", password="my-password")
 
 posts = client.posts.list(limit=10, tab=PostsTab.POPULAR)
 print(len(posts))
 print(posts.first())
 
 client.close()
+```
+
+Как альтернативный вариант — если у вас уже есть сохранённый `refresh_token`
+(например, из предыдущей сессии или для CI без браузера), его можно передать
+напрямую:
+
+```python
+client = ITDClient(refresh_token="YOUR_REFRESH_TOKEN")
 ```

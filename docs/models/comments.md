@@ -42,7 +42,7 @@
 
 ### Пример использования
 ```python
-comments  =  client.get_comments(post_id="6f14ee05-e0c5-4133-8f42-aca16bde154c")
+comments  =  client.comments.list(post_id="6f14ee05-e0c5-4133-8f42-aca16bde154c")
 
 for  comment  in  comments:
 	print(comment.content)
