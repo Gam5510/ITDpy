@@ -107,13 +107,16 @@ class RequestHandler:
         return session
 
     def _build_default_headers(self) -> dict[str, str]:
-        return {
+        headers = {
             "User-Agent": self.config.get_user_agent(),
             "Accept": "application/json",
             "Content-Type": "application/json",
             "Origin": self.config.base_url,
             "Referer": f"{self.config.base_url}/",
         }
+        if self.config.device_id:
+            headers["x-device-id"] = self.config.device_id
+        return headers
     
     def request(
         self,

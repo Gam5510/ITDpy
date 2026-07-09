@@ -10,11 +10,12 @@ class Config:
     max_retries: int = 3
     backoff_factor: float = 1.5
 
-    sdk_version: str = "1.3.1"
+    sdk_version: str = "1.4.0"
     service: Optional[str] = None
 
     use_user_data_in_user_agent: bool = False
     custom_user_agent: Optional[str] = None
+    device_id: Optional[str] = None
 
     def get_user_agent(self, user_id: Optional[str] = None) -> str:
         if self.custom_user_agent:

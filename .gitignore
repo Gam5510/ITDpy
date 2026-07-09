@@ -12,3 +12,4 @@ pixelbattle_config.json
 site.rar
 tests/
 .pytest_cache
+.claude

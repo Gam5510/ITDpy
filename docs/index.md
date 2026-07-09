@@ -23,6 +23,7 @@ Python SDK для итд.com API.
 ## Быстрые ссылки
 
 - [Быстрый старт](quickstart.md)
+- [Профили (мульти-аккаунт)](profiles.md)
 - [Config](config.md)
 - [Обзор API](api.md)
 - [Модели в SDK](models.md)

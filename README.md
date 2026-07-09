@@ -100,9 +100,10 @@ print(me.username)
 
 Держите `ITDClient` как один долгоживущий объект (не создавайте новый на
 каждый запрос) — тогда браузер и логин по email/password запускаются один
-раз. По умолчанию клиент сам раз в 4.5 минуты (`auto_refresh_interval=270`
-сек) обновляет `access_token` по имеющемуся `refresh_token` в фоновом потоке
-— без повторного открытия браузера и без повторного входа в аккаунт:
+раз. По умолчанию клиент сам раз в 13–14 минут (`auto_refresh_interval=(13*60, 14*60)`,
+интервал каждый раз выбирается случайно в этом диапазоне) обновляет
+`access_token` по имеющемуся `refresh_token` в фоновом потоке — без
+повторного открытия браузера и без повторного входа в аккаунт:
 
 ```python
 client = ITDClient(email="user@example.com", password="my-password")
@@ -115,7 +116,14 @@ client = ITDClient(email="user@example.com", password="my-password")
 client = ITDClient(
     email="user@example.com",
     password="my-password",
-    auto_refresh_interval=200,  # секунд
+    auto_refresh_interval=200,  # фиксированный интервал в секундах
+)
+
+# либо задать свой диапазон (мин, макс) секунд — интервал выбирается случайно
+client = ITDClient(
+    email="user@example.com",
+    password="my-password",
+    auto_refresh_interval=(600, 700),
 )
 
 # либо полностью выключить и обновлять вручную
@@ -127,6 +135,20 @@ client = ITDClient(
 ```
 
 Фоновый поток останавливается автоматически при `client.close()`.
+
+## 👤 Профили
+
+Чтобы не сохранять `refresh_token` вручную, используйте `profile` — SDK сам
+сохранит и подхватит токены из файла (по умолчанию `~/.itdpy/profiles.json`):
+
+```python
+client = ITDClient(email="user@example.com", password="my-password", profile="main")
+```
+
+При следующем запуске с тем же `profile` клиент сначала попробует
+`refresh_token` из файла профиля, и только если он не сработает — токен,
+переданный в аргументах конструктора. Путь к файлу можно изменить через
+`profiles_path`. Подробнее — в [docs/profiles.md](docs/profiles.md).
 
 ## ⚙️ Конфигурация
 

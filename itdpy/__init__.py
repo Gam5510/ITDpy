@@ -3,6 +3,7 @@ __version__ = "1.1.0"
 from .auth import login_with_password
 from .client import ITDClient
 from .config import Config
+from .profiles import Profile, ProfileStore
 from .enums import (
     AccessType,
     CommentSort,
@@ -123,6 +124,8 @@ __all__ = [
     "login_with_password",
     "ITDClient",
     "Config",
+    "Profile",
+    "ProfileStore",
     "AccessType",
     "CommentSort",
     "DeviceType",
